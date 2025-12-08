@@ -1,0 +1,64 @@
+---
+import Logo from "../assets/ticka_logo.svg";
+---
+
+<nav
+  class="fixed w-full bg-charcoal-brown-2/80 backdrop-blur-xl z-50 border-b border-lime-moss/10"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-lemon-lime to-lime-moss rounded-lg flex items-center justify-center font-bold text-charcoal-brown"
+        >
+          T
+        </div>
+        <span
+          class="text-2xl font-bold bg-gradient-to-r from-lemon-lime to-lime-moss bg-clip-text text-transparent"
+        >
+          Ticka.pe
+        </span>
+      </div>
+      <div class="hidden md:flex space-x-8">
+        <a
+          href="#caracteristicas"
+          class="text-gray-300 hover:text-lemon-lime transition-colors duration-300"
+          >Características</a
+        >
+        <a
+          href="#como-funciona"
+          class="text-gray-300 hover:text-lemon-lime transition-colors duration-300"
+          >Cómo funciona</a
+        >
+        <a
+          href="#beneficios"
+          class="text-gray-300 hover:text-lemon-lime transition-colors duration-300"
+          >Beneficios</a
+        >
+      </div>
+      <div>
+        <a
+          href="#suscribirse"
+          class="bg-gradient-to-r from-lemon-lime to-lime-moss text-charcoal-brown px-6 py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-lemon-lime/50 transition-all duration-300 transform hover:scale-105"
+        >
+          Acceso anticipado
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute("href"));
+      if (target) {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    });
+  });
+</script>

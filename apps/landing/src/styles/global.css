@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal-brown: #20240e;
+  --color-charcoal-brown-2: #22260c;
+  --color-dark-khaki: #242804;
+  --color-dark-khaki-2: #2c2f0f;
+  --color-lime-moss: #aab44a;
+  --color-lemon-lime: #c0d820;
+}
+
+/* Float Animation for Text */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+}
+
+.float-animation {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Glow Pulse for Background Orbs */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/* NEW: Spark/Particle Animation */
+@keyframes spark-float {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(var(--tx), var(--ty)) scale(1);
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--tx) * 1.5), calc(var(--ty) * 1.5)) scale(0);
+  }
+}
+
+.spark {
+  /* Using 5s as base, but this can be overridden inline or via random classes */
+  animation: spark-float 5s ease-in-out infinite;
+}
+
+/* Text Gradient Shift */
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}

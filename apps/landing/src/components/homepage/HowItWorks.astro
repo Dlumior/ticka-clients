@@ -1,0 +1,97 @@
+---
+const steps = [
+  {
+    number: 1,
+    title: "Crea tu cuenta",
+    description:
+      "Regístrate en Ticka.pe y recibe tu email único para facturas.",
+    icon: "📝",
+  },
+  {
+    number: 2,
+    title: "Reenvía tus facturas",
+    description:
+      "Simplemente reenvía los correos con facturas a tu email de Ticka.pe.",
+    icon: "📧",
+  },
+  {
+    number: 3,
+    title: "Descarga y utiliza",
+    description:
+      "Todos los datos extraídos y organizados listos para exportar a Excel.",
+    icon: "✨",
+  },
+];
+---
+
+<section id="como-funciona" class="relative py-32 overflow-hidden">
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-charcoal-brown via-dark-khaki to-charcoal-brown-2"
+  >
+  </div>
+
+  <!-- Animated Grid -->
+  <div
+    class="absolute inset-0 bg-[linear-gradient(rgba(192,216,32,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(192,216,32,0.05)_1px,transparent_1px)] bg-[size:100px_100px]"
+  >
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20">
+      <div
+        class="inline-block mb-4 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
+      >
+        <span class="text-lime-moss text-sm font-semibold">⚡ Proceso</span>
+      </div>
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        <span
+          class="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
+        >
+          ¿Cómo funciona?
+        </span>
+      </h2>
+      <p class="text-xl text-gray-400">
+        Tres simples pasos para automatizar tu flujo de trabajo
+      </p>
+    </div>
+
+    <div class="max-w-5xl mx-auto space-y-12">
+      {
+        steps.map((step, index) => (
+          <>
+            <div class="relative">
+              <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="relative flex-shrink-0">
+                  <div class="absolute inset-0 bg-gradient-to-br from-lemon-lime to-lime-moss rounded-full blur-xl opacity-50" />
+                  <div class="relative bg-gradient-to-br from-lemon-lime to-lime-moss text-charcoal-brown rounded-full w-20 h-20 flex items-center justify-center text-3xl font-black shadow-2xl">
+                    {step.number}
+                  </div>
+                </div>
+                <div class="flex-1 bg-dark-khaki-2/40 backdrop-blur-xl rounded-2xl p-8 border border-lime-moss/20 hover:border-lime-moss/40 transition-all duration-300 group">
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <h3 class="text-3xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                        {step.title}
+                      </h3>
+                      <p class="text-gray-400 text-lg leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                    <div class="text-6xl ml-6 transform group-hover:scale-110 transition-transform duration-300">
+                      {step.icon}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {index < steps.length - 1 && (
+              <div class="flex justify-center">
+                <div class="w-1 h-16 bg-gradient-to-b from-lime-moss to-lemon-lime opacity-30" />
+              </div>
+            )}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
