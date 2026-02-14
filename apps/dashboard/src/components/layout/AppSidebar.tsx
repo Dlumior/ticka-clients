@@ -1,0 +1,37 @@
+import { WorkspaceSelector } from './WorkspaceSelector'
+import { SidebarNavigation } from './SidebarNavigation'
+import { SidebarUserMenu } from './SidebarUserMenu'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from '@/components/ui/sidebar'
+
+export function AppSidebar() {
+  return (
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <div className="flex items-center px-2 py-3">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <span className="font-serif font-bold text-lg">T</span>
+          </div>
+          <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden ml-3">
+            <span className="truncate font-serif font-bold text-lg">Ticka</span>
+          </div>
+        </div>
+        <div className="px-2 group-data-[collapsible=icon]:hidden">
+          <WorkspaceSelector />
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarNavigation />
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarUserMenu />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  )
+}
