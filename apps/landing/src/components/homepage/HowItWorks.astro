@@ -41,16 +41,18 @@ const steps = [
       <div
         class="inline-block mb-4 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
       >
-        <span class="text-lime-moss text-sm font-semibold">⚡ Proceso</span>
+        <span class="text-lime-moss text-sm font-semibold font-sans"
+          >⚡ Proceso</span
+        >
       </div>
-      <h2 class="text-5xl md:text-6xl font-black mb-6">
+      <h2 class="text-5xl md:text-6xl font-serif font-bold mb-6">
         <span
           class="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
         >
           ¿Cómo funciona?
         </span>
       </h2>
-      <p class="text-xl text-gray-400">
+      <p class="text-xl text-gray-400 font-sans">
         Tres simples pasos para automatizar tu flujo de trabajo
       </p>
     </div>
@@ -63,17 +65,17 @@ const steps = [
               <div class="flex flex-col md:flex-row items-center gap-8">
                 <div class="relative flex-shrink-0">
                   <div class="absolute inset-0 bg-gradient-to-br from-lemon-lime to-lime-moss rounded-full blur-xl opacity-50" />
-                  <div class="relative bg-gradient-to-br from-lemon-lime to-lime-moss text-charcoal-brown rounded-full w-20 h-20 flex items-center justify-center text-3xl font-black shadow-2xl">
+                  <div class="relative bg-gradient-to-br from-lemon-lime to-lime-moss text-charcoal-brown rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold font-sans shadow-2xl">
                     {step.number}
                   </div>
                 </div>
                 <div class="flex-1 bg-dark-khaki-2/40 backdrop-blur-xl rounded-2xl p-8 border border-lime-moss/20 hover:border-lime-moss/40 transition-all duration-300 group">
                   <div class="flex items-start justify-between">
                     <div class="flex-1">
-                      <h3 class="text-3xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                      <h3 class="text-3xl font-serif font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                         {step.title}
                       </h3>
-                      <p class="text-gray-400 text-lg leading-relaxed">
+                      <p class="text-gray-400 text-lg leading-relaxed font-sans">
                         {step.description}
                       </p>
                     </div>

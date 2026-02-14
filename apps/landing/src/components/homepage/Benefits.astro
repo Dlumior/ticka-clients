@@ -46,9 +46,11 @@ const benefits = [
       <div
         class="inline-block mb-4 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
       >
-        <span class="text-lime-moss text-sm font-semibold">💎 Beneficios</span>
+        <span class="text-lime-moss text-sm font-semibold font-sans"
+          >💎 Beneficios</span
+        >
       </div>
-      <h2 class="text-5xl md:text-6xl font-black mb-6">
+      <h2 class="text-5xl md:text-6xl font-serif font-bold mb-6">
         <span
           class="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
         >
@@ -72,16 +74,18 @@ const benefits = [
               <div class="bg-gradient-to-br from-lemon-lime/10 to-lime-moss/10 rounded-2xl w-24 h-24 flex items-center justify-center mx-auto mb-6 border border-lime-moss/20">
                 <span class="text-6xl">{benefit.icon}</span>
               </div>
-              <div class="text-5xl font-black bg-gradient-to-r from-lemon-lime to-lime-moss bg-clip-text text-transparent mb-2">
+              <div class="text-5xl font-bold font-sans bg-gradient-to-r from-lemon-lime to-lime-moss bg-clip-text text-transparent mb-2">
                 {benefit.stat}
               </div>
-              <div class="text-lime-moss text-sm font-semibold mb-4">
+              <div class="text-lime-moss text-sm font-semibold font-sans mb-4">
                 {benefit.statLabel}
               </div>
-              <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h3 class="text-2xl font-serif font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 {benefit.title}
               </h3>
-              <p class="text-gray-400 leading-relaxed">{benefit.description}</p>
+              <p class="text-gray-400 leading-relaxed font-sans">
+                {benefit.description}
+              </p>
             </div>
           </div>
         ))
