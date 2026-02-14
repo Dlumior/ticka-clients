@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-
-import { getCurrentUser, isAuthenticated, login, logout, register } from '@/lib/api/auth'
+import {
+  getCurrentUser,
+  isAuthenticated,
+  login,
+  logout,
+  register,
+} from '@/lib/api/auth'
 
 const AUTH_QUERY_KEY = ['auth', 'user'] as const
 
@@ -48,17 +53,28 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: AUTH_QUERY_KEY })
+      // Clear all queries first
+      queryClient.clear()
+      // Navigate to signin
       navigate({ to: '/signin' })
     },
     onError: () => {
-      queryClient.removeQueries({ queryKey: AUTH_QUERY_KEY })
+      // Clear all queries even on error
+      queryClient.clear()
       navigate({ to: '/signin' })
     },
   })
 }
 
 export function useIsAuthenticated(): boolean {
-  const { data: user, isLoading } = useCurrentUser()
-  return isAuthenticated() && (!isLoading || !!user)
+  // First check token-based auth
+  if (!isAuthenticated()) {
+    return false
+  }
+
+  const { data: user } = useCurrentUser()
+
+  // If we have a token, we're authenticated
+  // (the query will validate the token when it runs)
+  return !!user
 }

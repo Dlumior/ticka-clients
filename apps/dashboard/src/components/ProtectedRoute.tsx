@@ -1,15 +1,22 @@
 import { Navigate, useLocation } from '@tanstack/react-router'
 import { IconLoader2 } from '@tabler/icons-react'
-import { useCurrentUser, useIsAuthenticated } from '@/hooks/useAuth'
+import { useCurrentUser } from '@/hooks/useAuth'
+import { isAuthenticated } from '@/lib/api/auth'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const isAuth = useIsAuthenticated()
-  const { isLoading } = useCurrentUser()
   const location = useLocation()
+
+  // Quick check: if no token, redirect immediately
+  if (!isAuthenticated()) {
+    return <Navigate to="/signin" search={{ redirect: location.href }} />
+  }
+
+  // If we have a token, verify it with the query
+  const { data: user, isLoading } = useCurrentUser()
 
   if (isLoading) {
     return (
@@ -19,13 +26,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     )
   }
 
-  if (!isAuth) {
-    return (
-      <Navigate
-        to="/signin"
-        search={{ redirect: location.href }}
-      />
-    )
+  // Token exists but user fetch failed = invalid token
+  if (!user) {
+    return <Navigate to="/signin" search={{ redirect: location.href }} />
   }
 
   return <>{children}</>
