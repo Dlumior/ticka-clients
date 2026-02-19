@@ -1,18 +1,25 @@
 import type { AuthResponse, LoginInput, RegisterInput, User } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_TICKA_SERVER_API_BASE_URL || 'http://localhost:8000/api/v1'
-
+const API_BASE_URL =
+  import.meta.env.VITE_TICKA_SERVER_API_BASE_URL ||
+  'http://localhost:8000/api/v1'
 const AUTH_TOKEN_KEY = 'ticka_auth_token'
 
+// Helper to check if we're in the browser
+const isBrowser = typeof window !== 'undefined'
+
 export function getAuthToken(): string | null {
+  if (!isBrowser) return null
   return localStorage.getItem(AUTH_TOKEN_KEY)
 }
 
 export function setAuthToken(token: string): void {
+  if (!isBrowser) return
   localStorage.setItem(AUTH_TOKEN_KEY, token)
 }
 
 export function removeAuthToken(): void {
+  if (!isBrowser) return
   localStorage.removeItem(AUTH_TOKEN_KEY)
 }
 
@@ -24,9 +31,12 @@ interface RequestOptions extends RequestInit {
   skipAuth?: boolean
 }
 
-export async function apiClient<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+export async function apiClient<T>(
+  endpoint: string,
+  options: RequestOptions = {},
+): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`
-  
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers ? (options.headers as Record<string, string>) : {}),
@@ -43,7 +53,9 @@ export async function apiClient<T>(endpoint: string, options: RequestOptions = {
   })
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'An error occurred' }))
+    const error = await response
+      .json()
+      .catch(() => ({ message: 'An error occurred' }))
     throw new Error(error.message || error.detail || `HTTP ${response.status}`)
   }
 
