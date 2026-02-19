@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { DashboardLayout } from '@/components/layout/DashboardLayout'
-import { WorkspaceProvider } from '@/hooks/useWorkspace'
+import { OrganizationProvider } from '@/hooks/useOrganization'
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardLayoutWrapper,
@@ -8,10 +8,10 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardLayoutWrapper() {
   return (
-    <WorkspaceProvider>
+    <OrganizationProvider>
       <DashboardLayout>
         <Outlet />
       </DashboardLayout>
-    </WorkspaceProvider>
+    </OrganizationProvider>
   )
 }

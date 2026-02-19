@@ -12,6 +12,7 @@
     "check": "prettier --write . && eslint --fix"
   },
   "dependencies": {
+    "@repo/api-types": "workspace:*",
     "@base-ui/react": "^1.1.0",
     "@fontsource-variable/nunito-sans": "^5.2.7",
     "@tabler/icons-react": "^3.36.1",
@@ -23,6 +24,7 @@
     "@tanstack/react-router-devtools": "^1.132.0",
     "@tanstack/react-start": "^1.132.0",
     "@tanstack/router-plugin": "^1.132.0",
+    "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "nitro": "latest",

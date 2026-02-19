@@ -3,7 +3,7 @@ import { IconLoader2 } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
 import { useCurrentUser } from '@/hooks/useAuth'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useWorkspace } from '@/hooks/useWorkspace'
+import { useOrganization } from '@/hooks/useOrganization'
 
 export const Route = createFileRoute('/dashboard/')({
   component: DashboardHomePage,
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/dashboard/')({
 
 function DashboardHomePage() {
   const { data: user, isLoading } = useCurrentUser()
-  const { currentWorkspace } = useWorkspace()
+  const { currentWorkspace } = useOrganization()
 
   if (!currentWorkspace) {
     return (

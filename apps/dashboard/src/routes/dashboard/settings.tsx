@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { useWorkspace } from '@/hooks/useWorkspace'
+import { useOrganization } from '@/hooks/useOrganization'
 
 export const Route = createFileRoute('/dashboard/settings')({
   component: SettingsPage,
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/dashboard/settings')({
 })
 
 function SettingsPage() {
-  const { currentWorkspace } = useWorkspace()
+  const { currentWorkspace } = useOrganization()
 
   if (!currentWorkspace) {
     return (

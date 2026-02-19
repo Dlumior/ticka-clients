@@ -1,4 +1,4 @@
-import { WorkspaceSelector } from './WorkspaceSelector'
+import { OrganizationSelector } from './OrganizationSelector'
 import { SidebarNavigation } from './SidebarNavigation'
 import { SidebarUserMenu } from './SidebarUserMenu'
 import {
@@ -24,7 +24,7 @@ export function AppSidebar() {
           </div>
         </div>
         <div className="px-2 group-data-[collapsible=icon]:hidden">
-          <WorkspaceSelector />
+          <OrganizationSelector />
         </div>
       </SidebarHeader>
       <SidebarContent>

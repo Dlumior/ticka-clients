@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useWorkspace } from '@/hooks/useWorkspace'
+import { useOrganization } from '@/hooks/useOrganization'
 
 const mockUsers = [
   { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/dashboard/users')({
 })
 
 function UsersPage() {
-  const { currentWorkspace } = useWorkspace()
+  const { currentWorkspace } = useOrganization()
 
   if (!currentWorkspace) {
     return (

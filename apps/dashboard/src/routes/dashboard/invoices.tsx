@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useWorkspace } from '@/hooks/useWorkspace'
+import { useOrganization } from '@/hooks/useOrganization'
 
 const mockInvoices = [
   { id: 'INV-001', client: 'Acme Corp', amount: 2500.00, status: 'Paid', date: '2024-02-01' },
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/dashboard/invoices')({
 })
 
 function InvoicesPage() {
-  const { currentWorkspace } = useWorkspace()
+  const { currentWorkspace } = useOrganization()
 
   if (!currentWorkspace) {
     return (

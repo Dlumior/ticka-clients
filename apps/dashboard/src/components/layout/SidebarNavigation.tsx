@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { useWorkspace } from '@/hooks/useWorkspace'
+import { useOrganization } from '@/hooks/useOrganization'
 
 const navigationItems = [
   {
@@ -43,7 +43,7 @@ const navigationItems = [
 
 export function SidebarNavigation() {
   const location = useLocation()
-  const { currentWorkspace } = useWorkspace()
+  const { currentWorkspace } = useOrganization()
 
   if (!currentWorkspace) {
     return (
