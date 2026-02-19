@@ -2,12 +2,138 @@
 
 import { z } from "zod";
 
-export const zInputRequest = z.object({
-  email: z.string().email().min(1),
-  password: z.string().min(1),
+export const zInvitationAcceptInputRequest = z.object({
+  token: z.string().uuid(),
 });
 
-export const zUserOutput = z.object({
+export const zInvitationAcceptOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  inbox_email: z.string().email(),
+});
+
+/**
+ * * `owner` - Owner
+ * * `admin` - Admin
+ * * `member` - Member
+ * * `viewer` - Viewer
+ */
+export const zRoleEnum = z.enum(["owner", "admin", "member", "viewer"]);
+
+/**
+ * * `pending` - Pending
+ * * `accepted` - Accepted
+ * * `declined` - Declined
+ * * `expired` - Expired
+ */
+export const zStatusEnum = z.enum([
+  "pending",
+  "accepted",
+  "declined",
+  "expired",
+]);
+
+export const zInvitationListOutput = z.object({
+  id: z.string().uuid().readonly(),
+  organization: z.string().uuid(),
+  organization_name: z.string().readonly(),
+  email: z.string().email().max(254),
+  role: zRoleEnum,
+  invited_by: z.string().uuid().readonly(),
+  invited_by_email: z.string().email().readonly(),
+  status: zStatusEnum,
+  created_at: z.string().datetime().readonly(),
+  expires_at: z.string().datetime().readonly(),
+});
+
+export const zOrganizationCreateInputRequest = z.object({
+  name: z.string().min(1).max(255),
+  slug: z
+    .string()
+    .min(1)
+    .max(100)
+    .regex(/^[-a-zA-Z0-9_]+$/),
+});
+
+export const zOrganizationCreateOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+});
+
+export const zWorkspaceBrief = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  is_active: z.boolean(),
+});
+
+export const zOrganizationDetailOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  type: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+  member_count: z.number().int(),
+  workspace_count: z.number().int(),
+  user_role: z.string(),
+  workspaces: z.array(zWorkspaceBrief),
+});
+
+export const zOrganizationInvitationListOutput = z.object({
+  id: z.string().uuid().readonly(),
+  organization: z.string().uuid(),
+  organization_name: z.string().readonly(),
+  email: z.string().email().max(254),
+  role: zRoleEnum,
+  invited_by: z.string().uuid().readonly(),
+  invited_by_email: z.string().email().readonly(),
+  status: zStatusEnum,
+  created_at: z.string().datetime().readonly(),
+  expires_at: z.string().datetime().readonly(),
+});
+
+export const zOrganizationListOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  type: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+  member_count: z.number().int(),
+  workspace_count: z.number().int(),
+  user_role: z.string(),
+});
+
+export const zOrganizationMemberInviteInputRequest = z.object({
+  email: z.string().email().min(1),
+  role: zRoleEnum,
+});
+
+export const zOrganizationMemberInviteOutput = z.object({
+  id: z.string().uuid().readonly(),
+  organization: z.string().uuid(),
+  organization_name: z.string().readonly(),
+  email: z.string().email().max(254),
+  role: zRoleEnum,
+  invited_by: z.string().uuid().readonly(),
+  invited_by_email: z.string().email().readonly(),
+  status: zStatusEnum,
+  created_at: z.string().datetime().readonly(),
+  expires_at: z.string().datetime().readonly(),
+});
+
+export const zUser = z.object({
   id: z.string().uuid().readonly(),
   email: z.string().email().max(255),
   first_name: z.string().max(150).optional(),
@@ -16,19 +142,157 @@ export const zUserOutput = z.object({
   date_joined: z.string().datetime().readonly(),
 });
 
-export const zOutput = z.object({
-  user: zUserOutput,
+export const zOrganizationMemberListOutput = z.object({
+  id: z.string().uuid().readonly(),
+  organization: z.string().uuid().readonly(),
+  organization_name: z.string().readonly(),
+  user: zUser,
+  role: zRoleEnum.optional(),
+  joined_at: z.string().datetime().readonly(),
+});
+
+export const zOrganizationMemberUpdateRoleOutput = z.object({
+  id: z.string().uuid().readonly(),
+  organization: z.string().uuid().readonly(),
+  organization_name: z.string().readonly(),
+  user: zUser,
+  role: zRoleEnum.optional(),
+  joined_at: z.string().datetime().readonly(),
+});
+
+export const zOrganizationUpdateOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  inbox_email: z.string().email(),
+  is_active: z.boolean(),
+  updated_at: z.string().datetime(),
+});
+
+export const zOrganizationWorkspaceCreateInputRequest = z.object({
+  name: z.string().min(1).max(255),
+});
+
+export const zOrganizationWorkspaceCreateOutput = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+});
+
+export const zOrganizationWorkspaceListOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+});
+
+export const zPatchedOrganizationMemberUpdateRoleInputRequest = z.object({
+  role: zRoleEnum.optional(),
+});
+
+export const zPatchedOrganizationUpdateInputRequest = z.object({
+  name: z.string().min(1).max(255).optional(),
+  slug: z
+    .string()
+    .min(1)
+    .max(100)
+    .regex(/^[-a-zA-Z0-9_]+$/)
+    .optional(),
+  is_active: z.boolean().optional(),
+});
+
+export const zPatchedWorkspaceUpdateInputRequest = z.object({
+  name: z.string().min(1).max(255).optional(),
+  is_active: z.boolean().optional(),
+});
+
+export const zUserLoginInputRequest = z.object({
+  email: z.string().email().min(1),
+  password: z.string().min(1),
+});
+
+export const zUserLoginOutput = z.object({
+  user: zUser,
   token: z.string(),
 });
 
+export const zUserMeOutput = z.object({
+  id: z.string().uuid().readonly(),
+  email: z.string().email().max(255),
+  first_name: z.string().max(150).optional(),
+  last_name: z.string().max(150).optional(),
+  full_name: z.string().readonly(),
+  date_joined: z.string().datetime().readonly(),
+});
+
+export const zUserRegisterInputRequest = z.object({
+  email: z.string().email().min(1),
+  password: z.string().min(8),
+  password_confirm: z.string().min(8),
+  first_name: z.string().min(1).max(150),
+  last_name: z.string().min(1).max(150),
+});
+
+export const zUserRegisterOutput = z.object({
+  user: zUser,
+  token: z.string(),
+});
+
+export const zWorkspaceCreateInputRequest = z.object({
+  organization_id: z.string().uuid(),
+  name: z.string().min(1).max(255),
+});
+
+export const zWorkspaceCreateOutput = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+});
+
+export const zWorkspaceDetailOutput = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  organization_name: z.string(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+});
+
+export const zWorkspaceListOutput = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  organization_name: z.string(),
+  name: z.string(),
+  inbox_email: z.string().email(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  is_active: z.boolean(),
+});
+
+export const zWorkspaceUpdateOutput = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  name: z.string(),
+  is_active: z.boolean(),
+  updated_at: z.string().datetime(),
+});
+
 export const zV1IdentitiesAuthLoginCreateData = z.object({
-  body: zInputRequest,
+  body: zUserLoginInputRequest,
   headers: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesAuthLoginCreateResponse = zOutput;
+export const zV1IdentitiesAuthLoginCreateResponse = zUserLoginOutput;
 
 export const zV1IdentitiesAuthLogoutCreateData = z.object({
   body: z.never().optional(),
@@ -37,6 +301,11 @@ export const zV1IdentitiesAuthLogoutCreateData = z.object({
   query: z.never().optional(),
 });
 
+/**
+ * No response body
+ */
+export const zV1IdentitiesAuthLogoutCreateResponse = z.void();
+
 export const zV1IdentitiesAuthMeRetrieveData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
@@ -44,19 +313,27 @@ export const zV1IdentitiesAuthMeRetrieveData = z.object({
   query: z.never().optional(),
 });
 
+export const zV1IdentitiesAuthMeRetrieveResponse = zUserMeOutput;
+
 export const zV1IdentitiesAuthRegisterCreateData = z.object({
+  body: zUserRegisterInputRequest,
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesAuthRegisterCreateResponse = zUserRegisterOutput;
+
+export const zV1IdentitiesInvitationsListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesInvitationsRetrieveData = z.object({
-  body: z.never().optional(),
-  headers: z.never().optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
-});
+export const zV1IdentitiesInvitationsListResponse = z.array(
+  zInvitationListOutput,
+);
 
 export const zV1IdentitiesInvitationsDeclineCreateData = z.object({
   body: z.never().optional(),
@@ -67,21 +344,33 @@ export const zV1IdentitiesInvitationsDeclineCreateData = z.object({
   query: z.never().optional(),
 });
 
+/**
+ * No response body
+ */
+export const zV1IdentitiesInvitationsDeclineCreateResponse = z.void();
+
 export const zV1IdentitiesInvitationsAcceptCreateData = z.object({
+  body: zInvitationAcceptInputRequest,
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesInvitationsAcceptCreateResponse =
+  zInvitationAcceptOutput;
+
+export const zV1IdentitiesOrganizationsListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesOrganizationsRetrieveData = z.object({
-  body: z.never().optional(),
-  headers: z.never().optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
-});
+export const zV1IdentitiesOrganizationsListResponse = z.array(
+  zOrganizationListOutput,
+);
 
-export const zV1IdentitiesOrganizationsInvitationsRetrieveData = z.object({
+export const zV1IdentitiesOrganizationsInvitationsListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.object({
@@ -90,7 +379,11 @@ export const zV1IdentitiesOrganizationsInvitationsRetrieveData = z.object({
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesOrganizationsMembersRetrieveData = z.object({
+export const zV1IdentitiesOrganizationsInvitationsListResponse = z.array(
+  zOrganizationInvitationListOutput,
+);
+
+export const zV1IdentitiesOrganizationsMembersListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.object({
@@ -98,6 +391,10 @@ export const zV1IdentitiesOrganizationsMembersRetrieveData = z.object({
   }),
   query: z.never().optional(),
 });
+
+export const zV1IdentitiesOrganizationsMembersListResponse = z.array(
+  zOrganizationMemberListOutput,
+);
 
 export const zV1IdentitiesOrganizationsMembersRemoveDestroyData = z.object({
   body: z.never().optional(),
@@ -116,7 +413,7 @@ export const zV1IdentitiesOrganizationsMembersRemoveDestroyResponse = z.void();
 
 export const zV1IdentitiesOrganizationsMembersUpdateRolePartialUpdateData =
   z.object({
-    body: z.never().optional(),
+    body: zPatchedOrganizationMemberUpdateRoleInputRequest.optional(),
     headers: z.never().optional(),
     path: z.object({
       member_id: z.string().uuid(),
@@ -125,7 +422,22 @@ export const zV1IdentitiesOrganizationsMembersUpdateRolePartialUpdateData =
     query: z.never().optional(),
   });
 
+export const zV1IdentitiesOrganizationsMembersUpdateRolePartialUpdateResponse =
+  zOrganizationMemberUpdateRoleOutput;
+
 export const zV1IdentitiesOrganizationsMembersInviteCreateData = z.object({
+  body: zOrganizationMemberInviteInputRequest,
+  headers: z.never().optional(),
+  path: z.object({
+    organization_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesOrganizationsMembersInviteCreateResponse =
+  zOrganizationMemberInviteOutput;
+
+export const zV1IdentitiesOrganizationsWorkspacesListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.object({
@@ -134,17 +446,12 @@ export const zV1IdentitiesOrganizationsMembersInviteCreateData = z.object({
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesOrganizationsWorkspacesRetrieveData = z.object({
-  body: z.never().optional(),
-  headers: z.never().optional(),
-  path: z.object({
-    organization_id: z.string().uuid(),
-  }),
-  query: z.never().optional(),
-});
+export const zV1IdentitiesOrganizationsWorkspacesListResponse = z.array(
+  zOrganizationWorkspaceListOutput,
+);
 
 export const zV1IdentitiesOrganizationsWorkspacesCreateCreateData = z.object({
-  body: z.never().optional(),
+  body: zOrganizationWorkspaceCreateInputRequest,
   headers: z.never().optional(),
   path: z.object({
     organization_id: z.string().uuid(),
@@ -152,7 +459,10 @@ export const zV1IdentitiesOrganizationsWorkspacesCreateCreateData = z.object({
   query: z.never().optional(),
 });
 
-export const zV1IdentitiesOrganizationsRetrieve2Data = z.object({
+export const zV1IdentitiesOrganizationsWorkspacesCreateCreateResponse =
+  zOrganizationWorkspaceCreateOutput;
+
+export const zV1IdentitiesOrganizationsRetrieveData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.object({
@@ -160,6 +470,9 @@ export const zV1IdentitiesOrganizationsRetrieve2Data = z.object({
   }),
   query: z.never().optional(),
 });
+
+export const zV1IdentitiesOrganizationsRetrieveResponse =
+  zOrganizationDetailOutput;
 
 export const zV1IdentitiesOrganizationsDeleteDestroyData = z.object({
   body: z.never().optional(),
@@ -176,7 +489,7 @@ export const zV1IdentitiesOrganizationsDeleteDestroyData = z.object({
 export const zV1IdentitiesOrganizationsDeleteDestroyResponse = z.void();
 
 export const zV1IdentitiesOrganizationsUpdatePartialUpdateData = z.object({
-  body: z.never().optional(),
+  body: zPatchedOrganizationUpdateInputRequest.optional(),
   headers: z.never().optional(),
   path: z.object({
     id: z.string().uuid(),
@@ -184,28 +497,39 @@ export const zV1IdentitiesOrganizationsUpdatePartialUpdateData = z.object({
   query: z.never().optional(),
 });
 
+export const zV1IdentitiesOrganizationsUpdatePartialUpdateResponse =
+  zOrganizationUpdateOutput;
+
 export const zV1IdentitiesOrganizationsCreateCreateData = z.object({
+  body: zOrganizationCreateInputRequest,
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesOrganizationsCreateCreateResponse =
+  zOrganizationCreateOutput;
+
+export const zV1IdentitiesWorkspacesListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
+
+export const zV1IdentitiesWorkspacesListResponse =
+  z.array(zWorkspaceListOutput);
 
 export const zV1IdentitiesWorkspacesRetrieveData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
-});
-
-export const zV1IdentitiesWorkspacesRetrieve2Data = z.object({
-  body: z.never().optional(),
-  headers: z.never().optional(),
   path: z.object({
     id: z.string().uuid(),
   }),
   query: z.never().optional(),
 });
+
+export const zV1IdentitiesWorkspacesRetrieveResponse = zWorkspaceDetailOutput;
 
 export const zV1IdentitiesWorkspacesDeleteDestroyData = z.object({
   body: z.never().optional(),
@@ -222,7 +546,7 @@ export const zV1IdentitiesWorkspacesDeleteDestroyData = z.object({
 export const zV1IdentitiesWorkspacesDeleteDestroyResponse = z.void();
 
 export const zV1IdentitiesWorkspacesUpdatePartialUpdateData = z.object({
-  body: z.never().optional(),
+  body: zPatchedWorkspaceUpdateInputRequest.optional(),
   headers: z.never().optional(),
   path: z.object({
     id: z.string().uuid(),
@@ -230,9 +554,15 @@ export const zV1IdentitiesWorkspacesUpdatePartialUpdateData = z.object({
   query: z.never().optional(),
 });
 
+export const zV1IdentitiesWorkspacesUpdatePartialUpdateResponse =
+  zWorkspaceUpdateOutput;
+
 export const zV1IdentitiesWorkspacesCreateCreateData = z.object({
-  body: z.never().optional(),
+  body: zWorkspaceCreateInputRequest,
   headers: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
+
+export const zV1IdentitiesWorkspacesCreateCreateResponse =
+  zWorkspaceCreateOutput;
