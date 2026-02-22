@@ -1,88 +1,64 @@
+import { useParams } from '@tanstack/react-router'
 import {
-  IconFileInvoice,
-  IconHome,
-  IconSettings,
-  IconUsers,
-} from '@tabler/icons-react'
-import { Link, useLocation } from '@tanstack/react-router'
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar'
+  getOrgNavItems,
+  getWorkspaceListItems,
+  getWorkspaceNavItems,
+} from './nav-config'
+import { NavSubItem } from './NavSubItem'
+import { NavSection } from './NavSection'
+import { NavPlaceholder } from './NavPlaceholder'
+import { SidebarMenuSub } from '@/components/ui/sidebar'
 import { useOrganization } from '@/hooks/useOrganization'
 
-const navigationItems = [
-  {
-    title: 'Home',
-    icon: IconHome,
-    path: '/dashboard',
-    exact: true,
-  },
-  {
-    title: 'Users',
-    icon: IconUsers,
-    path: '/dashboard/users',
-    exact: false,
-  },
-  {
-    title: 'Invoices',
-    icon: IconFileInvoice,
-    path: '/dashboard/invoices',
-    exact: false,
-  },
-  {
-    title: 'Configuration',
-    icon: IconSettings,
-    path: '/dashboard/settings',
-    exact: false,
-  },
-]
-
 export function SidebarNavigation() {
-  const location = useLocation()
-  const { currentWorkspace } = useOrganization()
+  const params = useParams({ strict: false })
+  const { currentOrganization, currentWorkspace, workspacesByOrg, isLoading } =
+    useOrganization()
 
-  if (!currentWorkspace) {
+  const { organizationId, workspaceId } = params
+
+  const workspaces = currentOrganization
+    ? (workspacesByOrg[currentOrganization.id] ?? [])
+    : []
+  const activeWorkspaces = workspaces.filter((w) => w.is_active)
+
+  if (isLoading) return <NavPlaceholder message="Loading..." />
+  if (!organizationId || !currentOrganization)
     return (
-      <SidebarGroup>
-        <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton disabled className="text-muted-foreground">
-              Select a workspace to view navigation
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
+      <NavPlaceholder message="Select an organization to view navigation" />
     )
-  }
+
+  const orgItems = getOrgNavItems(organizationId)
+  const workspaceListItems = getWorkspaceListItems(
+    organizationId,
+    activeWorkspaces,
+  )
+  const workspaceItems = workspaceId
+    ? getWorkspaceNavItems(organizationId, workspaceId)
+    : []
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-      <SidebarMenu>
-        {navigationItems.map((item) => {
-          const isActive = item.exact
-            ? location.pathname === item.path
-            : location.pathname.startsWith(item.path)
+    <>
+      <NavSection label="Organization" name={currentOrganization.name}>
+        {orgItems.map((item) => (
+          <NavSubItem key={item.label} {...item} />
+        ))}
+        {workspaceListItems.length > 0 && (
+          <SidebarMenuSub>
+            {workspaceListItems.map((item) => (
+              <NavSubItem key={item.to + item.params.workspaceId} {...item} />
+            ))}
+          </SidebarMenuSub>
+        )}
+      </NavSection>
 
-          return (
-            <SidebarMenuItem key={item.path}>
-              <SidebarMenuButton
-                render={<Link to={item.path} />}
-                isActive={isActive}
-                tooltip={item.title}
-              >
-                <item.icon className="size-4" />
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )
-        })}
-      </SidebarMenu>
-    </SidebarGroup>
+      {workspaceId && currentWorkspace && (
+        <NavSection label="Workspace" name={currentWorkspace.name}>
+          {workspaceItems.map((item) => (
+            <NavSubItem key={item.label} {...item} />
+          ))}
+        </NavSection>
+      )}
+    </>
   )
 }

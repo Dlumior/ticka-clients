@@ -16,6 +16,10 @@ export type WorkspaceCreateInput = z.infer<
   typeof zOrganizationWorkspaceCreateInputRequest
 >
 
+export interface WorkspaceBriefWithOrg extends WorkspaceBrief {
+  organizationId: string
+}
+
 export async function listWorkspaces(): Promise<Array<Workspace>> {
   return apiRequest(
     {

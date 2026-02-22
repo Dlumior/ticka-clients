@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   IconBuilding,
   IconCheck,
@@ -49,11 +48,7 @@ export function OrganizationSelector() {
     setCurrentOrganization,
     setCurrentWorkspace,
     isLoading,
-    createWorkspaceMutation,
   } = useOrganization()
-
-  const [newWorkspaceOrgId, setNewWorkspaceOrgId] = useState<string | null>(null)
-  const [newWorkspaceName, setNewWorkspaceName] = useState('')
 
   if (isLoading) {
     return (
@@ -61,20 +56,6 @@ export function OrganizationSelector() {
         <div className="h-3.5 w-20 rounded bg-muted animate-pulse" />
         <div className="h-3 w-16 rounded bg-muted animate-pulse" />
       </div>
-    )
-  }
-
-  const handleCreateWorkspace = () => {
-    if (!newWorkspaceOrgId || !newWorkspaceName.trim()) return
-    createWorkspaceMutation.mutate(
-      { organizationId: newWorkspaceOrgId, name: newWorkspaceName.trim() },
-      {
-        onSuccess: (data) => {
-          setCurrentWorkspace({ ...data, organizationId: newWorkspaceOrgId })
-          setNewWorkspaceOrgId(null)
-          setNewWorkspaceName('')
-        },
-      },
     )
   }
 
@@ -122,7 +103,7 @@ export function OrganizationSelector() {
             .map((org) => {
               const workspaces = workspacesByOrg[org.id] ?? []
               const isActiveOrg = currentOrganization?.id === org.id
-              const hasWorkspaces = workspaces.length > 0
+              const hasWorkspaces = workspaces.some((ws) => ws.is_active)
 
               if (!hasWorkspaces) {
                 return (
@@ -186,15 +167,6 @@ export function OrganizationSelector() {
                           </DropdownMenuItem>
                         )
                       })}
-
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      onClick={() => setNewWorkspaceOrgId(org.id)}
-                    >
-                      <IconPlus className="h-4 w-4 mr-2" />
-                      Create workspace
-                    </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
               )

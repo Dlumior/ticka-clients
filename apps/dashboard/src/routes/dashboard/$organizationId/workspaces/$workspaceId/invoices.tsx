@@ -1,35 +1,43 @@
-import { IconDownload, IconPlus } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
+import { IconDownload, IconPlus } from '@tabler/icons-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useOrganization } from '@/hooks/useOrganization'
 
 const mockInvoices = [
-  { id: 'INV-001', client: 'Acme Corp', amount: 2500.00, status: 'Paid', date: '2024-02-01' },
-  { id: 'INV-002', client: 'TechStart Inc', amount: 1800.00, status: 'Pending', date: '2024-02-05' },
-  { id: 'INV-003', client: 'Design Studio', amount: 3200.00, status: 'Overdue', date: '2024-01-15' },
-  { id: 'INV-004', client: 'Global Systems', amount: 4500.00, status: 'Paid', date: '2024-02-10' },
+  { id: 'INV-001', client: 'Acme Corp', amount: 2500.0, status: 'Paid', date: '2024-02-01' },
+  { id: 'INV-002', client: 'TechStart Inc', amount: 1800.0, status: 'Pending', date: '2024-02-05' },
+  { id: 'INV-003', client: 'Design Studio', amount: 3200.0, status: 'Overdue', date: '2024-01-15' },
+  { id: 'INV-004', client: 'Global Systems', amount: 4500.0, status: 'Paid', date: '2024-02-10' },
 ]
 
-export const Route = createFileRoute('/dashboard/invoices')({
-  component: InvoicesPage,
-  context: () => ({
+export const Route = createFileRoute('/dashboard/$organizationId/workspaces/$workspaceId/invoices')({
+  component: WorkspaceInvoicesPage,
+  beforeLoad: () => ({
     breadcrumb: 'Invoices',
   }),
 })
 
-function InvoicesPage() {
-  const { currentWorkspace } = useOrganization()
+function WorkspaceInvoicesPage() {
+  const { currentOrganization, currentWorkspace, isLoading } = useOrganization()
 
-  if (!currentWorkspace) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    )
+  }
+
+  if (!currentOrganization || !currentWorkspace) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="font-serif">Select a Workspace</CardTitle>
+            <CardTitle className="font-serif">Workspace Not Found</CardTitle>
             <CardDescription>
-              Please select a workspace to view invoices
+              The workspace you are looking for does not exist.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -51,7 +59,7 @@ function InvoicesPage() {
         <div>
           <h1 className="text-3xl font-serif font-bold">Invoices</h1>
           <p className="text-muted-foreground mt-1">
-            Manage and track your workspace invoices
+            Manage and track invoices for {currentWorkspace.name}
           </p>
         </div>
         <Button>
@@ -109,8 +117,8 @@ function InvoicesPage() {
                         invoice.status === 'Paid'
                           ? 'default'
                           : invoice.status === 'Pending'
-                          ? 'secondary'
-                          : 'destructive'
+                            ? 'secondary'
+                            : 'destructive'
                       }
                     >
                       {invoice.status}
@@ -120,9 +128,7 @@ function InvoicesPage() {
                   <p className="text-xs text-muted-foreground">{invoice.date}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-bold">
-                    ${invoice.amount.toLocaleString()}
-                  </span>
+                  <span className="text-lg font-bold">${invoice.amount.toLocaleString()}</span>
                   <Button variant="ghost" size="icon">
                     <IconDownload className="h-4 w-4" />
                   </Button>
