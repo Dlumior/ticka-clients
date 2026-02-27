@@ -1,7 +1,13 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { IconFolder, IconSettings, IconUsers } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useOrganization } from '@/hooks/useOrganization'
 
 export const Route = createFileRoute('/dashboard/$organizationId/')({
@@ -12,39 +18,21 @@ export const Route = createFileRoute('/dashboard/$organizationId/')({
 })
 
 function OrganizationHomePage() {
-  const { currentOrganization, workspacesByOrg, isLoading } = useOrganization()
-  const workspaces = currentOrganization ? workspacesByOrg[currentOrganization.id] ?? [] : []
+  // currentOrganization is guaranteed non-null here — the parent beforeLoad
+  // redirects away if the org is missing or inactive.
+  const { currentOrganization, workspacesByOrg } = useOrganization()
+  const workspaces = workspacesByOrg[currentOrganization!.id] ?? []
+  const activeWorkspaces = workspaces.filter((w) => w.is_active)
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
-    )
-  }
-
-  if (!currentOrganization) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="font-serif">Organization Not Found</CardTitle>
-            <CardDescription>
-              The organization you are looking for does not exist or you do not have access.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    )
-  }
-
-  const activeWorkspaces = workspaces.filter(w => w.is_active)
+  // Placeholder — replace with real data when the API supports it
   const totalUsers = activeWorkspaces.length * 5
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-serif font-bold">{currentOrganization.name}</h1>
+        <h1 className="text-3xl font-serif font-bold">
+          {currentOrganization!.name}
+        </h1>
         <p className="text-muted-foreground mt-1">
           Organization overview and management
         </p>
@@ -61,6 +49,7 @@ function OrganizationHomePage() {
             <p className="text-xs text-muted-foreground">Active workspaces</p>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -68,9 +57,12 @@ function OrganizationHomePage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalUsers}</div>
-            <p className="text-xs text-muted-foreground">Across all workspaces</p>
+            <p className="text-xs text-muted-foreground">
+              Across all workspaces
+            </p>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Status</CardTitle>
@@ -90,15 +82,42 @@ function OrganizationHomePage() {
             <CardDescription>Common tasks and shortcuts</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button variant="outline" className="w-full justify-start" render={<Link to="/dashboard/$organizationId/workspaces" params={{ organizationId: currentOrganization.id }} />}>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/workspaces"
+                  params={{ organizationId: currentOrganization!.id }}
+                />
+              }
+            >
               <IconFolder className="mr-2 h-4 w-4" />
               Manage Workspaces
             </Button>
-            <Button variant="outline" className="w-full justify-start" render={<Link to="/dashboard/$organizationId/users" params={{ organizationId: currentOrganization.id }} />}>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/users"
+                  params={{ organizationId: currentOrganization!.id }}
+                />
+              }
+            >
               <IconUsers className="mr-2 h-4 w-4" />
               View All Users
             </Button>
-            <Button variant="outline" className="w-full justify-start" render={<Link to="/dashboard/$organizationId/settings" params={{ organizationId: currentOrganization.id }} />}>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/settings"
+                  params={{ organizationId: currentOrganization!.id }}
+                />
+              }
+            >
               <IconSettings className="mr-2 h-4 w-4" />
               Organization Settings
             </Button>
@@ -124,7 +143,7 @@ function OrganizationHomePage() {
                       <Link
                         to="/dashboard/$organizationId/workspaces/$workspaceId"
                         params={{
-                          organizationId: currentOrganization.id,
+                          organizationId: currentOrganization!.id,
                           workspaceId: workspace.id,
                         }}
                       />
