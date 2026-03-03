@@ -6,7 +6,13 @@ import { useLoginMutation } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -43,9 +49,7 @@ function SignInPage() {
           <h1 className="text-4xl font-serif font-bold text-ticka-gradient mb-2">
             Welcome Back
           </h1>
-          <p className="text-muted-foreground">
-            Sign in to your Ticka account
-          </p>
+          <p className="text-muted-foreground">Sign in to your Ticka account</p>
         </div>
 
         <Card className="backdrop-ticka">
@@ -136,7 +140,9 @@ function SignInPage() {
             </form>
 
             <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
+              <span className="text-muted-foreground">
+                Don't have an account?{' '}
+              </span>
               <Link
                 to="/signup"
                 search={search}

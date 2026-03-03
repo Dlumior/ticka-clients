@@ -5,27 +5,24 @@ import type { z } from 'zod'
 const API_BASE_URL =
   import.meta.env.VITE_TICKA_SERVER_API_BASE_URL ||
   'http://localhost:8000/api/v1'
-const AUTH_TOKEN_KEY = 'ticka_auth_token'
 
 const isBrowser = typeof window !== 'undefined'
 
-export function getAuthToken(): string | null {
-  if (!isBrowser) return null
-  return localStorage.getItem(AUTH_TOKEN_KEY)
+let isRefreshing = false
+let refreshSubscribers: Array<(token: string) => void> = []
+
+function subscribeTokenRefresh(callback: (token: string) => void) {
+  refreshSubscribers.push(callback)
 }
 
-export function setAuthToken(token: string): void {
-  if (!isBrowser) return
-  localStorage.setItem(AUTH_TOKEN_KEY, token)
-}
-
-export function removeAuthToken(): void {
-  if (!isBrowser) return
-  localStorage.removeItem(AUTH_TOKEN_KEY)
+function onTokenRefreshed(token: string) {
+  refreshSubscribers.forEach((callback) => callback(token))
+  refreshSubscribers = []
 }
 
 export function isAuthenticated(): boolean {
-  return !!getAuthToken()
+  if (!isBrowser) return false
+  return true
 }
 
 export class ValidationError extends Error {
@@ -55,22 +52,54 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-})
-
-api.interceptors.request.use((config) => {
-  const token = getAuthToken()
-  if (token) {
-    config.headers.Authorization = `Token ${token}`
-  }
-  return config
+  withCredentials: true,
 })
 
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ message?: string; detail?: string }>) => {
+  async (
+    error: AxiosError<{ message?: string; detail?: string; error?: string }>,
+  ) => {
+    const originalRequest = error.config
+
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest.url?.includes('/auth/refresh/') &&
+      !originalRequest.url?.includes('/auth/login/') &&
+      !originalRequest.url?.includes('/auth/register/')
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          subscribeTokenRefresh((token: string) => {
+            if (originalRequest.headers) {
+              originalRequest.headers.Authorization = `Token ${token}`
+            }
+            resolve(api(originalRequest))
+          })
+        })
+      }
+
+      isRefreshing = true
+
+      try {
+        await api.post('/identities/auth/refresh/')
+        isRefreshing = false
+        onTokenRefreshed('')
+        return api(originalRequest)
+      } catch (refreshError) {
+        isRefreshing = false
+        if (isBrowser) {
+          window.location.href = '/signin'
+        }
+        return Promise.reject(refreshError)
+      }
+    }
+
     if (error.response) {
       const { status, data } = error.response
-      const message = data.message || data.detail || `HTTP ${status}`
+      const message =
+        data.message || data.detail || data.error || `HTTP ${status}`
       throw new ApiError(status, data, message)
     }
     throw error
@@ -85,24 +114,14 @@ export async function apiRequest<T extends z.ZodType>(
   config: RequestOptions,
   schema: T,
 ): Promise<z.infer<T>> {
-  const { skipAuth, ...axiosConfig } = config
-
-  if (skipAuth) {
-    const response = await api.request({
-      ...axiosConfig,
-      headers: {
-        ...axiosConfig.headers,
-        Authorization: undefined,
-      },
-    })
-    return parseResponse(response.data, schema)
-  }
-
-  const response = await api.request(axiosConfig)
+  const response = await api.request(config)
   return parseResponse(response.data, schema)
 }
 
-function parseResponse<T extends z.ZodType>(data: unknown, schema: T): z.infer<T> {
+function parseResponse<T extends z.ZodType>(
+  data: unknown,
+  schema: T,
+): z.infer<T> {
   const result = schema.safeParse(data)
   if (!result.success) {
     throw new ValidationError(result.error.issues)

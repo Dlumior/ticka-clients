@@ -144,7 +144,8 @@ export function OrganizationSelector() {
                     {workspaces
                       .filter((ws) => ws.is_active)
                       .map((workspace) => {
-                        const isActiveWorkspace = currentWorkspace?.id === workspace.id
+                        const isActiveWorkspace =
+                          currentWorkspace?.id === workspace.id
 
                         return (
                           <DropdownMenuItem
@@ -159,7 +160,9 @@ export function OrganizationSelector() {
                           >
                             <div className="flex items-center gap-2 w-full">
                               <WorkspaceAvatar name={workspace.name} />
-                              <span className="flex-1 truncate">{workspace.name}</span>
+                              <span className="flex-1 truncate">
+                                {workspace.name}
+                              </span>
                               {isActiveWorkspace && (
                                 <IconCheck className="h-4 w-4 text-primary shrink-0" />
                               )}

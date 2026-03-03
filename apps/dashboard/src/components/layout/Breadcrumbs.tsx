@@ -32,13 +32,16 @@ export function AppBreadcrumbs() {
     .filter((match) => match.routeId !== '__root__')
     .map((match, index, array) => {
       let label = match.context?.breadcrumb || getBreadcrumbLabel(match.routeId)
-      
-      if (match.routeId.includes('$organizationId') && !match.routeId.includes('$workspaceId')) {
+
+      if (
+        match.routeId.includes('$organizationId') &&
+        !match.routeId.includes('$workspaceId')
+      ) {
         if (label === 'Organization' && currentOrganization) {
           label = currentOrganization.name
         }
       }
-      
+
       if (match.routeId.includes('$workspaceId')) {
         if (label === 'Workspace' && currentWorkspace) {
           label = currentWorkspace.name
@@ -61,9 +64,7 @@ export function AppBreadcrumbs() {
             render={
               <Link
                 to={
-                  organizationId
-                    ? '/dashboard/$organizationId'
-                    : '/dashboard'
+                  organizationId ? '/dashboard/$organizationId' : '/dashboard'
                 }
                 params={organizationId ? { organizationId } : undefined}
               />

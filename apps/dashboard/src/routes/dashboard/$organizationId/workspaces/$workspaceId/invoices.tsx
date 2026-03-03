@@ -2,17 +2,49 @@ import { createFileRoute } from '@tanstack/react-router'
 import { IconDownload, IconPlus } from '@tabler/icons-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useOrganization } from '@/hooks/useOrganization'
 
 const mockInvoices = [
-  { id: 'INV-001', client: 'Acme Corp', amount: 2500.0, status: 'Paid', date: '2024-02-01' },
-  { id: 'INV-002', client: 'TechStart Inc', amount: 1800.0, status: 'Pending', date: '2024-02-05' },
-  { id: 'INV-003', client: 'Design Studio', amount: 3200.0, status: 'Overdue', date: '2024-01-15' },
-  { id: 'INV-004', client: 'Global Systems', amount: 4500.0, status: 'Paid', date: '2024-02-10' },
+  {
+    id: 'INV-001',
+    client: 'Acme Corp',
+    amount: 2500.0,
+    status: 'Paid',
+    date: '2024-02-01',
+  },
+  {
+    id: 'INV-002',
+    client: 'TechStart Inc',
+    amount: 1800.0,
+    status: 'Pending',
+    date: '2024-02-05',
+  },
+  {
+    id: 'INV-003',
+    client: 'Design Studio',
+    amount: 3200.0,
+    status: 'Overdue',
+    date: '2024-01-15',
+  },
+  {
+    id: 'INV-004',
+    client: 'Global Systems',
+    amount: 4500.0,
+    status: 'Paid',
+    date: '2024-02-10',
+  },
 ]
 
-export const Route = createFileRoute('/dashboard/$organizationId/workspaces/$workspaceId/invoices')({
+export const Route = createFileRoute(
+  '/dashboard/$organizationId/workspaces/$workspaceId/invoices',
+)({
   component: WorkspaceInvoicesPage,
   beforeLoad: () => ({
     breadcrumb: 'Invoices',
@@ -74,7 +106,9 @@ function WorkspaceInvoicesPage() {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalAmount.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ${totalAmount.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -82,7 +116,9 @@ function WorkspaceInvoicesPage() {
             <CardTitle className="text-sm font-medium">Paid</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">${paidAmount.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-green-600">
+              ${paidAmount.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -90,7 +126,9 @@ function WorkspaceInvoicesPage() {
             <CardTitle className="text-sm font-medium">Pending</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">${pendingAmount.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-yellow-600">
+              ${pendingAmount.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -124,11 +162,17 @@ function WorkspaceInvoicesPage() {
                       {invoice.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">{invoice.client}</p>
-                  <p className="text-xs text-muted-foreground">{invoice.date}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {invoice.client}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {invoice.date}
+                  </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-bold">${invoice.amount.toLocaleString()}</span>
+                  <span className="text-lg font-bold">
+                    ${invoice.amount.toLocaleString()}
+                  </span>
                   <Button variant="ghost" size="icon">
                     <IconDownload className="h-4 w-4" />
                   </Button>

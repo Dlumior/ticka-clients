@@ -3,16 +3,64 @@ import { IconMail, IconTrash } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useOrganization } from '@/hooks/useOrganization'
 
 const mockOrgUsers = [
-  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin', workspace: 'Marketing', status: 'Active' },
-  { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Member', workspace: 'Development', status: 'Active' },
-  { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'Member', workspace: 'Marketing', status: 'Pending' },
-  { id: '4', name: 'Alice Williams', email: 'alice@example.com', role: 'Viewer', workspace: 'Development', status: 'Active' },
-  { id: '5', name: 'Charlie Brown', email: 'charlie@example.com', role: 'Admin', workspace: 'Development', status: 'Active' },
-  { id: '6', name: 'Diana Ross', email: 'diana@example.com', role: 'Member', workspace: 'Sales', status: 'Active' },
+  {
+    id: '1',
+    name: 'John Doe',
+    email: 'john@example.com',
+    role: 'Admin',
+    workspace: 'Marketing',
+    status: 'Active',
+  },
+  {
+    id: '2',
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    role: 'Member',
+    workspace: 'Development',
+    status: 'Active',
+  },
+  {
+    id: '3',
+    name: 'Bob Johnson',
+    email: 'bob@example.com',
+    role: 'Member',
+    workspace: 'Marketing',
+    status: 'Pending',
+  },
+  {
+    id: '4',
+    name: 'Alice Williams',
+    email: 'alice@example.com',
+    role: 'Viewer',
+    workspace: 'Development',
+    status: 'Active',
+  },
+  {
+    id: '5',
+    name: 'Charlie Brown',
+    email: 'charlie@example.com',
+    role: 'Admin',
+    workspace: 'Development',
+    status: 'Active',
+  },
+  {
+    id: '6',
+    name: 'Diana Ross',
+    email: 'diana@example.com',
+    role: 'Member',
+    workspace: 'Sales',
+    status: 'Active',
+  },
 ]
 
 export const Route = createFileRoute('/dashboard/$organizationId/users')({
@@ -24,7 +72,9 @@ export const Route = createFileRoute('/dashboard/$organizationId/users')({
 
 function OrganizationUsersPage() {
   const { currentOrganization, workspacesByOrg, isLoading } = useOrganization()
-  const workspaces = currentOrganization ? workspacesByOrg[currentOrganization.id] ?? [] : []
+  const workspaces = currentOrganization
+    ? (workspacesByOrg[currentOrganization.id] ?? [])
+    : []
 
   if (isLoading) {
     return (
@@ -49,7 +99,7 @@ function OrganizationUsersPage() {
     )
   }
 
-  const activeWorkspaces = workspaces.filter(w => w.is_active)
+  const activeWorkspaces = workspaces.filter((w) => w.is_active)
 
   return (
     <div className="space-y-6">
@@ -80,7 +130,10 @@ function OrganizationUsersPage() {
                 <div className="flex items-center gap-4">
                   <Avatar>
                     <AvatarFallback className="bg-primary text-primary-foreground">
-                      {user.name.split(' ').map((n) => n[0]).join('')}
+                      {user.name
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')}
                     </AvatarFallback>
                   </Avatar>
                   <div>
@@ -94,12 +147,18 @@ function OrganizationUsersPage() {
                 <div className="flex items-center gap-4">
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center gap-2">
-                      <Badge variant={user.role === 'Admin' ? 'default' : 'secondary'}>
+                      <Badge
+                        variant={
+                          user.role === 'Admin' ? 'default' : 'secondary'
+                        }
+                      >
                         {user.role}
                       </Badge>
                       <Badge variant="outline">{user.workspace}</Badge>
                     </div>
-                    <span className="text-xs text-muted-foreground">{user.status}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {user.status}
+                    </span>
                   </div>
                   <Button variant="ghost" size="icon" className="text-red-600">
                     <IconTrash className="h-4 w-4" />

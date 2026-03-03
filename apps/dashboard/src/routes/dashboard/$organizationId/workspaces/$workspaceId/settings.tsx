@@ -1,12 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useOrganization } from '@/hooks/useOrganization'
 
-export const Route = createFileRoute('/dashboard/$organizationId/workspaces/$workspaceId/settings')({
+export const Route = createFileRoute(
+  '/dashboard/$organizationId/workspaces/$workspaceId/settings',
+)({
   component: WorkspaceSettingsPage,
   beforeLoad: () => ({
     breadcrumb: 'Settings',
@@ -60,7 +68,11 @@ function WorkspaceSettingsPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="workspace-id">Workspace ID</Label>
-            <Input id="workspace-id" defaultValue={currentWorkspace.id} disabled />
+            <Input
+              id="workspace-id"
+              defaultValue={currentWorkspace.id}
+              disabled
+            />
           </div>
           <Button>Save Changes</Button>
         </CardContent>
@@ -71,7 +83,9 @@ function WorkspaceSettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Notifications</CardTitle>
-          <CardDescription>Configure your notification preferences</CardDescription>
+          <CardDescription>
+            Configure your notification preferences
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -91,7 +105,9 @@ function WorkspaceSettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-red-600">Danger Zone</CardTitle>
-          <CardDescription>Irreversible actions for your workspace</CardDescription>
+          <CardDescription>
+            Irreversible actions for your workspace
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">

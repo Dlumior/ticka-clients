@@ -1,11 +1,24 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { IconFileInvoice, IconLoader2, IconSettings, IconUsers } from '@tabler/icons-react'
+import {
+  IconFileInvoice,
+  IconLoader2,
+  IconSettings,
+  IconUsers,
+} from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useOrganization } from '@/hooks/useOrganization'
 import { useCurrentUser } from '@/hooks/useAuth'
 
-export const Route = createFileRoute('/dashboard/$organizationId/workspaces/$workspaceId/')({
+export const Route = createFileRoute(
+  '/dashboard/$organizationId/workspaces/$workspaceId/',
+)({
   component: WorkspaceHomePage,
   beforeLoad: () => ({
     breadcrumb: 'Home',
@@ -51,9 +64,19 @@ function WorkspaceHomePage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <MetricCard title="Total Revenue" value="$45,231.89" change="+20.1%" trend="up" />
+        <MetricCard
+          title="Total Revenue"
+          value="$45,231.89"
+          change="+20.1%"
+          trend="up"
+        />
         <MetricCard title="Active Projects" value="12" change="+3" trend="up" />
-        <MetricCard title="Tasks Completed" value="89" change="+12" trend="up" />
+        <MetricCard
+          title="Tasks Completed"
+          value="89"
+          change="+12"
+          trend="up"
+        />
         <MetricCard title="Team Members" value="24" change="+2" trend="up" />
       </div>
 
@@ -61,7 +84,9 @@ function WorkspaceHomePage() {
         <Card className="backdrop-ticka">
           <CardHeader>
             <CardTitle className="font-serif">Account Information</CardTitle>
-            <CardDescription>Your profile details and account status</CardDescription>
+            <CardDescription>
+              Your profile details and account status
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {userLoading ? (
@@ -72,16 +97,22 @@ function WorkspaceHomePage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Full Name
+                    </label>
                     <p className="text-lg">{user.full_name}</p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Email</label>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Email
+                    </label>
                     <p className="text-lg">{user.email}</p>
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Member Since</label>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Member Since
+                  </label>
                   <p className="text-lg">
                     {new Date(user.date_joined).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -92,7 +123,9 @@ function WorkspaceHomePage() {
                 </div>
               </div>
             ) : (
-              <p className="text-muted-foreground">Unable to load user information</p>
+              <p className="text-muted-foreground">
+                Unable to load user information
+              </p>
             )}
           </CardContent>
         </Card>
@@ -103,30 +136,51 @@ function WorkspaceHomePage() {
             <CardDescription>Common tasks and shortcuts</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button variant="outline" className="w-full justify-start" render={
-              <Link
-                to="/dashboard/$organizationId/workspaces/$workspaceId/invoices"
-                params={{ organizationId: currentOrganization.id, workspaceId: currentWorkspace.id }}
-              />
-            }>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/workspaces/$workspaceId/invoices"
+                  params={{
+                    organizationId: currentOrganization.id,
+                    workspaceId: currentWorkspace.id,
+                  }}
+                />
+              }
+            >
               <IconFileInvoice className="mr-2 h-4 w-4" />
               View Invoices
             </Button>
-            <Button variant="outline" className="w-full justify-start" render={
-              <Link
-                to="/dashboard/$organizationId/workspaces/$workspaceId/users"
-                params={{ organizationId: currentOrganization.id, workspaceId: currentWorkspace.id }}
-              />
-            }>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/workspaces/$workspaceId/users"
+                  params={{
+                    organizationId: currentOrganization.id,
+                    workspaceId: currentWorkspace.id,
+                  }}
+                />
+              }
+            >
               <IconUsers className="mr-2 h-4 w-4" />
               Team Members
             </Button>
-            <Button variant="outline" className="w-full justify-start" render={
-              <Link
-                to="/dashboard/$organizationId/workspaces/$workspaceId/settings"
-                params={{ organizationId: currentOrganization.id, workspaceId: currentWorkspace.id }}
-              />
-            }>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              render={
+                <Link
+                  to="/dashboard/$organizationId/workspaces/$workspaceId/settings"
+                  params={{
+                    organizationId: currentOrganization.id,
+                    workspaceId: currentWorkspace.id,
+                  }}
+                />
+              }
+            >
               <IconSettings className="mr-2 h-4 w-4" />
               Workspace Settings
             </Button>
@@ -140,7 +194,9 @@ function WorkspaceHomePage() {
           <CardDescription>Your latest actions and updates</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm">No recent activity to display</p>
+          <p className="text-muted-foreground text-sm">
+            No recent activity to display
+          </p>
         </CardContent>
       </Card>
     </div>
@@ -162,7 +218,9 @@ function MetricCard({ title, value, change, trend }: MetricCardProps) {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
-        <p className={`text-xs ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+        <p
+          className={`text-xs ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}
+        >
           {change} from last month
         </p>
       </CardContent>

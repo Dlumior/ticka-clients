@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -60,7 +66,11 @@ function OrganizationSettingsPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="org-slug">Organization Slug</Label>
-            <Input id="org-slug" defaultValue={currentOrganization.slug} disabled />
+            <Input
+              id="org-slug"
+              defaultValue={currentOrganization.slug}
+              disabled
+            />
           </div>
           <Button>Save Changes</Button>
         </CardContent>
@@ -71,7 +81,9 @@ function OrganizationSettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Billing</CardTitle>
-          <CardDescription>Manage your subscription and billing</CardDescription>
+          <CardDescription>
+            Manage your subscription and billing
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -89,7 +101,9 @@ function OrganizationSettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-red-600">Danger Zone</CardTitle>
-          <CardDescription>Irreversible actions for your organization</CardDescription>
+          <CardDescription>
+            Irreversible actions for your organization
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">

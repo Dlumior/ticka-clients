@@ -210,6 +210,10 @@ export const zPatchedWorkspaceUpdateInputRequest = z.object({
   is_active: z.boolean().optional(),
 });
 
+export const zRefreshTokenOutput = z.object({
+  success: z.boolean(),
+});
+
 export const zUserLoginInputRequest = z.object({
   email: z.string().email().min(1),
   password: z.string().min(1),
@@ -217,7 +221,6 @@ export const zUserLoginInputRequest = z.object({
 
 export const zUserLoginOutput = z.object({
   user: zUser,
-  token: z.string(),
 });
 
 export const zUserMeOutput = z.object({
@@ -239,7 +242,6 @@ export const zUserRegisterInputRequest = z.object({
 
 export const zUserRegisterOutput = z.object({
   user: zUser,
-  token: z.string(),
 });
 
 export const zWorkspaceCreateInputRequest = z.object({
@@ -314,6 +316,15 @@ export const zV1IdentitiesAuthMeRetrieveData = z.object({
 });
 
 export const zV1IdentitiesAuthMeRetrieveResponse = zUserMeOutput;
+
+export const zV1IdentitiesAuthRefreshCreateData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesAuthRefreshCreateResponse = zRefreshTokenOutput;
 
 export const zV1IdentitiesAuthRegisterCreateData = z.object({
   body: zUserRegisterInputRequest,

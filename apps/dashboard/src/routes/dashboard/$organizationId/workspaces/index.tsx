@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { IconPlus, IconSettings, IconUsers } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useOrganization } from '@/hooks/useOrganization'
@@ -15,8 +21,15 @@ export const Route = createFileRoute('/dashboard/$organizationId/workspaces/')({
 })
 
 function WorkspacesPage() {
-  const { currentOrganization, workspacesByOrg, isLoading, createWorkspaceMutation } = useOrganization()
-  const workspaces = currentOrganization ? workspacesByOrg[currentOrganization.id] ?? [] : []
+  const {
+    currentOrganization,
+    workspacesByOrg,
+    isLoading,
+    createWorkspaceMutation,
+  } = useOrganization()
+  const workspaces = currentOrganization
+    ? (workspacesByOrg[currentOrganization.id] ?? [])
+    : []
   const [newWorkspaceName, setNewWorkspaceName] = useState('')
   const [showForm, setShowForm] = useState(false)
 
@@ -43,7 +56,7 @@ function WorkspacesPage() {
     )
   }
 
-  const activeWorkspaces = workspaces.filter(w => w.is_active)
+  const activeWorkspaces = workspaces.filter((w) => w.is_active)
 
   const handleCreateWorkspace = () => {
     if (!newWorkspaceName.trim()) return
@@ -77,7 +90,9 @@ function WorkspacesPage() {
         <Card>
           <CardHeader>
             <CardTitle>Create New Workspace</CardTitle>
-            <CardDescription>Add a new workspace to your organization</CardDescription>
+            <CardDescription>
+              Add a new workspace to your organization
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-2">
@@ -92,9 +107,13 @@ function WorkspacesPage() {
             <div className="flex gap-2">
               <Button
                 onClick={handleCreateWorkspace}
-                disabled={!newWorkspaceName.trim() || createWorkspaceMutation.isPending}
+                disabled={
+                  !newWorkspaceName.trim() || createWorkspaceMutation.isPending
+                }
               >
-                {createWorkspaceMutation.isPending ? 'Creating...' : 'Create Workspace'}
+                {createWorkspaceMutation.isPending
+                  ? 'Creating...'
+                  : 'Create Workspace'}
               </Button>
               <Button variant="outline" onClick={() => setShowForm(false)}>
                 Cancel
@@ -106,7 +125,10 @@ function WorkspacesPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {activeWorkspaces.map((workspace) => (
-          <Card key={workspace.id} className="hover:shadow-md transition-shadow">
+          <Card
+            key={workspace.id}
+            className="hover:shadow-md transition-shadow"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded bg-muted flex items-center justify-center">
@@ -116,41 +138,55 @@ function WorkspacesPage() {
                 </div>
                 {workspace.name}
               </CardTitle>
-              <CardDescription>ID: {workspace.id.slice(0, 8)}...</CardDescription>
+              <CardDescription>
+                ID: {workspace.id.slice(0, 8)}...
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" render={
-                  <Link
-                    to="/dashboard/$organizationId/workspaces/$workspaceId"
-                    params={{
-                      organizationId: currentOrganization.id,
-                      workspaceId: workspace.id,
-                    }}
-                  />
-                }>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  render={
+                    <Link
+                      to="/dashboard/$organizationId/workspaces/$workspaceId"
+                      params={{
+                        organizationId: currentOrganization.id,
+                        workspaceId: workspace.id,
+                      }}
+                    />
+                  }
+                >
                   Open
                 </Button>
-                <Button variant="ghost" size="sm" render={
-                  <Link
-                    to="/dashboard/$organizationId/workspaces/$workspaceId/settings"
-                    params={{
-                      organizationId: currentOrganization.id,
-                      workspaceId: workspace.id,
-                    }}
-                  />
-                }>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  render={
+                    <Link
+                      to="/dashboard/$organizationId/workspaces/$workspaceId/settings"
+                      params={{
+                        organizationId: currentOrganization.id,
+                        workspaceId: workspace.id,
+                      }}
+                    />
+                  }
+                >
                   <IconSettings className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" render={
-                  <Link
-                    to="/dashboard/$organizationId/workspaces/$workspaceId/users"
-                    params={{
-                      organizationId: currentOrganization.id,
-                      workspaceId: workspace.id,
-                    }}
-                  />
-                }>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  render={
+                    <Link
+                      to="/dashboard/$organizationId/workspaces/$workspaceId/users"
+                      params={{
+                        organizationId: currentOrganization.id,
+                        workspaceId: workspace.id,
+                      }}
+                    />
+                  }
+                >
                   <IconUsers className="h-4 w-4" />
                 </Button>
               </div>
