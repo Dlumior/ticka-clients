@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 
+export const zBlankEnum = z.enum([""]);
+
 export const zInvitationAcceptInputRequest = z.object({
   token: z.string().uuid(),
 });
@@ -19,7 +21,27 @@ export const zInvitationAcceptOutput = z.object({
  * * `member` - Member
  * * `viewer` - Viewer
  */
-export const zRoleEnum = z.enum(["owner", "admin", "member", "viewer"]);
+export const zOrganizationRoleEnum = z.enum([
+  "owner",
+  "admin",
+  "member",
+  "viewer",
+]);
+
+/**
+ * * `admin` - Admin
+ * * `member` - Member
+ * * `viewer` - Viewer
+ */
+export const zWorkspaceRoleEnum = z.enum(["admin", "member", "viewer"]);
+
+export const zNullEnum = z.unknown();
+
+/**
+ * * `organization` - Organization
+ * * `workspace` - Workspace
+ */
+export const zInvitationTypeEnum = z.enum(["organization", "workspace"]);
 
 /**
  * * `pending` - Pending
@@ -38,8 +60,14 @@ export const zInvitationListOutput = z.object({
   id: z.string().uuid().readonly(),
   organization: z.string().uuid(),
   organization_name: z.string().readonly(),
+  workspace: z.union([z.string().uuid(), z.null()]).optional(),
+  workspace_name: z.union([z.string().readonly(), z.null()]).readonly(),
   email: z.string().email().max(254),
-  role: zRoleEnum,
+  role: zOrganizationRoleEnum.optional(),
+  workspace_role: z
+    .union([zWorkspaceRoleEnum, zBlankEnum, zNullEnum, z.null()])
+    .optional(),
+  invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
   status: zStatusEnum,
@@ -92,8 +120,14 @@ export const zOrganizationInvitationListOutput = z.object({
   id: z.string().uuid().readonly(),
   organization: z.string().uuid(),
   organization_name: z.string().readonly(),
+  workspace: z.union([z.string().uuid(), z.null()]).optional(),
+  workspace_name: z.union([z.string().readonly(), z.null()]).readonly(),
   email: z.string().email().max(254),
-  role: zRoleEnum,
+  role: zOrganizationRoleEnum.optional(),
+  workspace_role: z
+    .union([zWorkspaceRoleEnum, zBlankEnum, zNullEnum, z.null()])
+    .optional(),
+  invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
   status: zStatusEnum,
@@ -117,15 +151,21 @@ export const zOrganizationListOutput = z.object({
 
 export const zOrganizationMemberInviteInputRequest = z.object({
   email: z.string().email().min(1),
-  role: zRoleEnum,
+  role: zOrganizationRoleEnum,
 });
 
 export const zOrganizationMemberInviteOutput = z.object({
   id: z.string().uuid().readonly(),
   organization: z.string().uuid(),
   organization_name: z.string().readonly(),
+  workspace: z.union([z.string().uuid(), z.null()]).optional(),
+  workspace_name: z.union([z.string().readonly(), z.null()]).readonly(),
   email: z.string().email().max(254),
-  role: zRoleEnum,
+  role: zOrganizationRoleEnum.optional(),
+  workspace_role: z
+    .union([zWorkspaceRoleEnum, zBlankEnum, zNullEnum, z.null()])
+    .optional(),
+  invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
   status: zStatusEnum,
@@ -147,7 +187,8 @@ export const zOrganizationMemberListOutput = z.object({
   organization: z.string().uuid().readonly(),
   organization_name: z.string().readonly(),
   user: zUser,
-  role: zRoleEnum.optional(),
+  role: zOrganizationRoleEnum.optional(),
+  restricted: z.boolean().optional(),
   joined_at: z.string().datetime().readonly(),
 });
 
@@ -156,7 +197,8 @@ export const zOrganizationMemberUpdateRoleOutput = z.object({
   organization: z.string().uuid().readonly(),
   organization_name: z.string().readonly(),
   user: zUser,
-  role: zRoleEnum.optional(),
+  role: zOrganizationRoleEnum.optional(),
+  restricted: z.boolean().optional(),
   joined_at: z.string().datetime().readonly(),
 });
 
@@ -191,7 +233,7 @@ export const zOrganizationWorkspaceListOutput = z.object({
 });
 
 export const zPatchedOrganizationMemberUpdateRoleInputRequest = z.object({
-  role: zRoleEnum.optional(),
+  role: zOrganizationRoleEnum.optional(),
 });
 
 export const zPatchedOrganizationUpdateInputRequest = z.object({
@@ -203,6 +245,10 @@ export const zPatchedOrganizationUpdateInputRequest = z.object({
     .regex(/^[-a-zA-Z0-9_]+$/)
     .optional(),
   is_active: z.boolean().optional(),
+});
+
+export const zPatchedWorkspaceMemberUpdateRoleInputRequest = z.object({
+  role: zWorkspaceRoleEnum.optional(),
 });
 
 export const zPatchedWorkspaceUpdateInputRequest = z.object({
@@ -277,6 +323,30 @@ export const zWorkspaceListOutput = z.object({
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   is_active: z.boolean(),
+});
+
+export const zWorkspaceMember = z.object({
+  id: z.string().uuid().readonly(),
+  workspace: z.string().uuid().readonly(),
+  workspace_name: z.string().readonly(),
+  user: zUser,
+  role: zWorkspaceRoleEnum.optional(),
+  joined_at: z.string().datetime().readonly(),
+});
+
+export const zWorkspaceMemberInviteInputRequest = z.object({
+  email: z.string().email().min(1),
+  role: zWorkspaceRoleEnum.optional(),
+});
+
+export const zWorkspaceMemberListOutput = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  user_email: z.string().email(),
+  user_first_name: z.string(),
+  user_last_name: z.string(),
+  role: z.string(),
+  joined_at: z.string().datetime(),
 });
 
 export const zWorkspaceUpdateOutput = z.object({
@@ -567,6 +637,60 @@ export const zV1IdentitiesWorkspacesUpdatePartialUpdateData = z.object({
 
 export const zV1IdentitiesWorkspacesUpdatePartialUpdateResponse =
   zWorkspaceUpdateOutput;
+
+export const zV1IdentitiesWorkspacesMembersListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesWorkspacesMembersListResponse = z.array(
+  zWorkspaceMemberListOutput,
+);
+
+export const zV1IdentitiesWorkspacesMembersDestroyData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    member_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+/**
+ * No response body
+ */
+export const zV1IdentitiesWorkspacesMembersDestroyResponse = z.void();
+
+export const zV1IdentitiesWorkspacesMembersUpdateRolePartialUpdateData =
+  z.object({
+    body: zPatchedWorkspaceMemberUpdateRoleInputRequest.optional(),
+    headers: z.never().optional(),
+    path: z.object({
+      member_id: z.string().uuid(),
+      workspace_id: z.string().uuid(),
+    }),
+    query: z.never().optional(),
+  });
+
+export const zV1IdentitiesWorkspacesMembersUpdateRolePartialUpdateResponse =
+  zWorkspaceMember;
+
+export const zV1IdentitiesWorkspacesMembersInviteCreateData = z.object({
+  body: zWorkspaceMemberInviteInputRequest,
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesWorkspacesMembersInviteCreateResponse =
+  zWorkspaceMember;
 
 export const zV1IdentitiesWorkspacesCreateCreateData = z.object({
   body: zWorkspaceCreateInputRequest,
