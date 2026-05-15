@@ -48,7 +48,46 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
+/* ─── Theme: Ticka (default — matches landing page, dark earthy-green) ─── */
+/* :root double-selector ensures the Ticka theme renders before JS loads (no FOUC) */
+:root,
+.theme-ticka {
+    --background: oklch(0.148 0.038 116.5);
+    --foreground: oklch(0.951 0.009 97.0);
+    --card: oklch(0.157 0.042 118.0);
+    --card-foreground: oklch(0.951 0.009 97.0);
+    --popover: oklch(0.163 0.051 122.0);
+    --popover-foreground: oklch(0.951 0.009 97.0);
+    --primary: oklch(0.822 0.185 122.0);
+    --primary-foreground: oklch(0.148 0.038 116.5);
+    --secondary: oklch(0.19 0.045 118.0);
+    --secondary-foreground: oklch(0.951 0.009 97.0);
+    --muted: oklch(0.19 0.045 118.0);
+    --muted-foreground: oklch(0.681 0.132 124.0);
+    --accent: oklch(0.681 0.132 124.0);
+    --accent-foreground: oklch(0.148 0.038 116.5);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(0.19 0.045 118.0);
+    --ring: oklch(0.822 0.185 122.0);
+    --chart-1: oklch(0.822 0.185 122.0);
+    --chart-2: oklch(0.768 0.233 130.85);
+    --chart-3: oklch(0.648 0.2 131.684);
+    --chart-4: oklch(0.681 0.132 124.0);
+    --chart-5: oklch(0.453 0.124 130.933);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.163 0.051 122.0);
+    --sidebar-foreground: oklch(0.951 0.009 97.0);
+    --sidebar-primary: oklch(0.822 0.185 122.0);
+    --sidebar-primary-foreground: oklch(0.148 0.038 116.5);
+    --sidebar-accent: oklch(0.19 0.045 118.0);
+    --sidebar-accent-foreground: oklch(0.681 0.132 124.0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.822 0.185 122.0);
+}
+
+/* ─── Theme: Slate Light ─── */
+.theme-slate-light {
     --background: oklch(1 0 0);
     --foreground: oklch(0.147 0.004 49.25);
     --card: oklch(1 0 0);
@@ -83,7 +122,8 @@
     --sidebar-ring: oklch(0.709 0.01 56.259);
 }
 
-.dark {
+/* ─── Theme: Slate Dark ─── */
+.theme-slate-dark {
     --background: oklch(0.147 0.004 49.25);
     --foreground: oklch(0.985 0.001 106.423);
     --card: oklch(0.216 0.006 56.043);

@@ -16,7 +16,7 @@ interface AppProvidersProps {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="ticka">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           {children}

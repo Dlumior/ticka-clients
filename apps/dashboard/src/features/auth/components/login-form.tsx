@@ -1,14 +1,14 @@
-import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
-import { Button } from '@/components/ui/button'
-import { useLogin } from '@/features/auth/api/auth.api'
-import { zUserLoginInputRequest } from '@repo/api-types'
+import { useForm } from "@tanstack/react-form"
+import { zodValidator } from "@tanstack/zod-form-adapter"
+import { Button } from "@/components/ui/button"
+import { useLogin } from "@/features/auth/api/auth.api"
+import { zUserLoginInputRequest } from "@repo/api-types"
 
 export function LoginForm() {
   const login = useLogin()
 
   const form = useForm({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
     validatorAdapter: zodValidator(),
     validators: {
       onSubmit: zUserLoginInputRequest,
@@ -91,7 +91,7 @@ export function LoginForm() {
                 disabled={isSubmitting || login.isPending}
                 className="mt-2 w-full"
               >
-                {isSubmitting || login.isPending ? 'Signing in…' : 'Sign in'}
+                {isSubmitting || login.isPending ? "Signing in…" : "Sign in"}
               </Button>
             )}
           </form.Subscribe>
