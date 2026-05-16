@@ -1,6 +1,5 @@
 import { useRef, useState } from "react"
 import { useForm } from "@tanstack/react-form"
-import { RiAddLine } from "@remixicon/react"
 
 import {
   Dialog,
