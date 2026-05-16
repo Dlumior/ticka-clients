@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient, queryOptions } from '@tanstack/react-query'
+import { useMutation, useQueryClient, queryOptions } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
 import { zUserLoginOutput, zUserMeOutput } from '@repo/api-types'
 import type { z } from 'zod'
@@ -11,14 +11,12 @@ type LoginOutput = z.infer<typeof zUserLoginOutput>
 export const currentUserQueryOptions = queryOptions({
   queryKey: ['auth', 'me'],
   queryFn: ({ signal }) =>
-    apiClient.get<UserMe>('/api/v1/identities/auth/me/', { signal }).then((r) => r.data),
+    apiClient
+      .get<UserMe>('/api/v1/identities/auth/me/', { signal })
+      .then((r) => zUserMeOutput.parse(r.data)),
   retry: false,
   staleTime: 5 * 60 * 1000,
 })
-
-export function useCurrentUser() {
-  return useQuery(currentUserQueryOptions)
-}
 
 export function useLogin() {
   const queryClient = useQueryClient()
@@ -41,8 +39,13 @@ export function useLogout() {
   return useMutation({
     mutationFn: () => apiClient.post('/api/v1/identities/auth/logout/').then((r) => r.data),
     onSuccess: () => {
+      // Mark the user cache as cleared FIRST so the next navigation's auth
+      // guard sees "no user" without firing a fresh /me (which would 401 and
+      // pointlessly hit /auth/refresh/ before redirecting).
+      queryClient.setQueryData(currentUserQueryOptions.queryKey, null)
+      router.navigate({ to: '/login' })
+      // Drop the rest of the cache last; safe because we already navigated.
       queryClient.clear()
-      router.invalidate()
     },
   })
 }

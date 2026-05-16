@@ -10,7 +10,7 @@ export const Route = createFileRoute('/login')({
   beforeLoad: ({ context, search }) => {
     const user = context.queryClient.getQueryData(currentUserQueryOptions.queryKey)
     if (user) {
-      throw redirect({ to: search.redirect ?? '/dashboard' })
+      throw redirect({ to: search.redirect ?? '/' })
     }
   },
   component: LoginPage,

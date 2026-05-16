@@ -97,6 +97,7 @@ export const zOrganizationCreateOutput = z.object({
 export const zWorkspaceBrief = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   is_active: z.boolean(),
 });
@@ -219,6 +220,7 @@ export const zOrganizationWorkspaceCreateOutput = z.object({
   id: z.string().uuid(),
   organization_id: z.string().uuid(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   created_at: z.string().datetime(),
 });
@@ -226,6 +228,7 @@ export const zOrganizationWorkspaceCreateOutput = z.object({
 export const zOrganizationWorkspaceListOutput = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -299,6 +302,7 @@ export const zWorkspaceCreateOutput = z.object({
   id: z.string().uuid(),
   organization_id: z.string().uuid(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   created_at: z.string().datetime(),
 });
@@ -308,6 +312,7 @@ export const zWorkspaceDetailOutput = z.object({
   organization_id: z.string().uuid(),
   organization_name: z.string(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -319,6 +324,7 @@ export const zWorkspaceListOutput = z.object({
   organization_id: z.string().uuid(),
   organization_name: z.string(),
   name: z.string(),
+  slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -355,6 +361,13 @@ export const zWorkspaceUpdateOutput = z.object({
   name: z.string(),
   is_active: z.boolean(),
   updated_at: z.string().datetime(),
+});
+
+export const zV1IdentitiesAuthCsrfRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
 });
 
 export const zV1IdentitiesAuthLoginCreateData = z.object({

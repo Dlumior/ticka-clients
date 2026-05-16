@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './app/routes/__root'
 import { Route as LoginRouteImport } from './app/routes/login'
 import { Route as AuthenticatedRouteImport } from './app/routes/_authenticated'
-import { Route as IndexRouteImport } from './app/routes/index'
-import { Route as AuthenticatedDashboardRouteImport } from './app/routes/_authenticated/dashboard'
+import { Route as AuthenticatedIndexRouteImport } from './app/routes/_authenticated/index'
+import { Route as AuthenticatedOrgsOrgSlugRouteImport } from './app/routes/_authenticated/orgs/$orgSlug'
+import { Route as AuthenticatedOrgsOrgSlugIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/index'
+import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
+import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/index'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -23,49 +26,87 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedOrgsOrgSlugRoute =
+  AuthenticatedOrgsOrgSlugRouteImport.update({
+    id: '/orgs/$orgSlug',
+    path: '/orgs/$orgSlug',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedOrgsOrgSlugIndexRoute =
+  AuthenticatedOrgsOrgSlugIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedOrgsOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute =
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteImport.update({
+    id: '/workspaces/$workspaceSlug',
+    path: '/workspaces/$workspaceSlug',
+    getParentRoute: () => AuthenticatedOrgsOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute =
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
+  '/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
+  '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugIndexRoute
+  '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
+  '/_authenticated/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
+  '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/orgs/$orgSlug'
+    | '/orgs/$orgSlug/'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard'
+  to:
+    | '/login'
+    | '/'
+    | '/orgs/$orgSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug'
   id:
     | '__root__'
-    | '/'
     | '/_authenticated'
     | '/login'
-    | '/_authenticated/dashboard'
+    | '/_authenticated/'
+    | '/_authenticated/orgs/$orgSlug'
+    | '/_authenticated/orgs/$orgSlug/'
+    | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
@@ -86,29 +127,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/orgs/$orgSlug': {
+      id: '/_authenticated/orgs/$orgSlug'
+      path: '/orgs/$orgSlug'
+      fullPath: '/orgs/$orgSlug'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/orgs/$orgSlug/': {
+      id: '/_authenticated/orgs/$orgSlug/'
+      path: '/'
+      fullPath: '/orgs/$orgSlug/'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugIndexRouteImport
+      parentRoute: typeof AuthenticatedOrgsOrgSlugRoute
+    }
+    '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug': {
+      id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
+      path: '/workspaces/$workspaceSlug'
+      fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteImport
+      parentRoute: typeof AuthenticatedOrgsOrgSlugRoute
+    }
+    '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/': {
+      id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/'
+      path: '/'
+      fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug/'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport
+      parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
     }
   }
 }
 
+interface AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren {
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
+}
+
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren: AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren =
+  {
+    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute:
+      AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute,
+  }
+
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren =
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute._addFileChildren(
+    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren,
+  )
+
+interface AuthenticatedOrgsOrgSlugRouteChildren {
+  AuthenticatedOrgsOrgSlugIndexRoute: typeof AuthenticatedOrgsOrgSlugIndexRoute
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+}
+
+const AuthenticatedOrgsOrgSlugRouteChildren: AuthenticatedOrgsOrgSlugRouteChildren =
+  {
+    AuthenticatedOrgsOrgSlugIndexRoute: AuthenticatedOrgsOrgSlugIndexRoute,
+    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute:
+      AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren,
+  }
+
+const AuthenticatedOrgsOrgSlugRouteWithChildren =
+  AuthenticatedOrgsOrgSlugRoute._addFileChildren(
+    AuthenticatedOrgsOrgSlugRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedOrgsOrgSlugRoute: typeof AuthenticatedOrgsOrgSlugRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedOrgsOrgSlugRoute: AuthenticatedOrgsOrgSlugRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -116,7 +212,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
 }
