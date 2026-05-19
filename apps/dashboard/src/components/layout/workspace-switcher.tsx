@@ -27,6 +27,7 @@ import type {
   Workspace,
 } from '@/features/organizations/api/organizations.api'
 import { CreateWorkspaceDialog } from '@/features/workspaces/components/create-workspace-dialog'
+import { asOrgRole, useOrgPermissions } from '@/features/permissions'
 
 interface WorkspaceSwitcherProps {
   organization: OrganizationDetail
@@ -37,7 +38,8 @@ export function WorkspaceSwitcher({ organization, workspace }: WorkspaceSwitcher
   const { state } = useSidebar()
   const collapsed = state === 'collapsed'
   const [createOpen, setCreateOpen] = useState(false)
-  const canCreate = ['owner', 'admin'].includes(organization.user_role)
+  const orgRole = asOrgRole(organization.user_role) ?? 'viewer'
+  const { canManageWorkspaces: canCreate } = useOrgPermissions(orgRole)
 
   return (
     <SidebarMenu>

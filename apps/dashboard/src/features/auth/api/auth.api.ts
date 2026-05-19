@@ -3,7 +3,7 @@ import { useRouter } from '@tanstack/react-router'
 import { zUserLoginOutput, zUserMeOutput } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
-import type { LoginFormValues } from './auth.schema'
+import type { LoginFormValues, RegisterFormValues } from './auth.schema'
 
 type UserMe = z.infer<typeof zUserMeOutput>
 type LoginOutput = z.infer<typeof zUserLoginOutput>
@@ -30,6 +30,28 @@ export function useLogin() {
       queryClient.setQueryData(currentUserQueryOptions.queryKey, data.user)
       router.invalidate()
     },
+  })
+}
+
+export function useRegister() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: RegisterFormValues) =>
+      apiClient
+        .post<{ user: UserMe }>('/api/v1/identities/auth/register/', data)
+        .then((r) => r.data),
+    onSuccess: (data) => {
+      queryClient.setQueryData(currentUserQueryOptions.queryKey, data.user)
+    },
+  })
+}
+
+export function useAcceptInvitation() {
+  return useMutation({
+    mutationFn: (token: string) =>
+      apiClient
+        .post('/api/v1/identities/invitations/accept/', { token })
+        .then((r) => r.data),
   })
 }
 

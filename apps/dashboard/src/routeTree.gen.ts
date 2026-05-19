@@ -9,14 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as RegisterRouteImport } from './app/routes/register'
 import { Route as LoginRouteImport } from './app/routes/login'
 import { Route as AuthenticatedRouteImport } from './app/routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './app/routes/_authenticated/index'
+import { Route as InvitationsAcceptRouteImport } from './app/routes/invitations/accept'
 import { Route as AuthenticatedOrgsOrgSlugRouteImport } from './app/routes/_authenticated/orgs/$orgSlug'
 import { Route as AuthenticatedOrgsOrgSlugIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/index'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/index'
+import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -30,6 +38,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const InvitationsAcceptRoute = InvitationsAcceptRouteImport.update({
+  id: '/invitations/accept',
+  path: '/invitations/accept',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOrgsOrgSlugRoute =
   AuthenticatedOrgsOrgSlugRouteImport.update({
@@ -55,29 +68,44 @@ const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
   } as any)
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute =
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/invitations/accept': typeof InvitationsAcceptRoute
   '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
   '/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/invitations/accept': typeof InvitationsAcceptRoute
   '/': typeof AuthenticatedIndexRoute
   '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugIndexRoute
+  '/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/invitations/accept': typeof InvitationsAcceptRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
   '/_authenticated/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 export interface FileRouteTypes {
@@ -85,34 +113,52 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/register'
+    | '/invitations/accept'
     | '/orgs/$orgSlug'
     | '/orgs/$orgSlug/'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/register'
+    | '/invitations/accept'
     | '/'
     | '/orgs/$orgSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
+    | '/register'
+    | '/invitations/accept'
     | '/_authenticated/'
     | '/_authenticated/orgs/$orgSlug'
     | '/_authenticated/orgs/$orgSlug/'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  InvitationsAcceptRoute: typeof InvitationsAcceptRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -133,6 +179,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/invitations/accept': {
+      id: '/invitations/accept'
+      path: '/invitations/accept'
+      fullPath: '/invitations/accept'
+      preLoaderRoute: typeof InvitationsAcceptRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/orgs/$orgSlug': {
       id: '/_authenticated/orgs/$orgSlug'
@@ -162,15 +215,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport
       parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
     }
+    '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members': {
+      id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members'
+      path: '/members'
+      fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug/members'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRouteImport
+      parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
+    }
   }
 }
 
 interface AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren {
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
 }
 
 const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren: AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren =
   {
+    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute:
+      AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute,
     AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute:
       AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute,
   }
@@ -214,6 +277,8 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  InvitationsAcceptRoute: InvitationsAcceptRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

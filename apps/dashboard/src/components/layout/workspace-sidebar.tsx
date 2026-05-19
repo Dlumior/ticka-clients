@@ -1,5 +1,6 @@
-import { Link, useParams } from '@tanstack/react-router'
-import { RiDashboardLine, RiLogoutBoxRLine } from '@remixicon/react'
+import { Link, useMatchRoute, useParams } from '@tanstack/react-router'
+import { RiDashboardLine, RiLogoutBoxRLine, RiTeamLine } from '@remixicon/react'
+import type { ComponentType } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +23,27 @@ import { useAuth } from '@/features/auth/auth.context'
 import { useLogout } from '@/features/auth/api/auth.api'
 import { WorkspaceSwitcher } from './workspace-switcher'
 
+interface NavItem {
+  label: string
+  to: string
+  icon: ComponentType<{ className?: string }>
+  exact?: boolean
+}
+
+const workspaceNavItems: NavItem[] = [
+  {
+    label: 'Overview',
+    to: '/orgs/$orgSlug/workspaces/$workspaceSlug',
+    icon: RiDashboardLine,
+    exact: true,
+  },
+  {
+    label: 'Members',
+    to: '/orgs/$orgSlug/workspaces/$workspaceSlug/members',
+    icon: RiTeamLine,
+  },
+]
+
 export function WorkspaceSidebar() {
   const params = useParams({ strict: false }) as {
     orgSlug?: string
@@ -30,6 +52,7 @@ export function WorkspaceSidebar() {
   const { data: organizations } = useOrganizations()
   const activeOrg = organizations?.find((o) => o.slug === params.orgSlug)
   const { data: orgDetail } = useOrganizationDetail(activeOrg?.id ?? '')
+  const matchRoute = useMatchRoute()
 
   if (!activeOrg || !orgDetail) {
     return (
@@ -52,6 +75,11 @@ export function WorkspaceSidebar() {
     (ws) => ws.slug === params.workspaceSlug,
   )
 
+  const navParams = {
+    orgSlug: orgDetail.slug,
+    workspaceSlug: activeWorkspace?.slug ?? '',
+  }
+
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="border-b border-sidebar-border/60 group-data-[collapsible=icon]:px-0">
@@ -64,29 +92,34 @@ export function WorkspaceSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive
-                  tooltip="Overview"
-                  render={
-                    activeWorkspace
-                      ? (
-                          <Link
-                            to="/orgs/$orgSlug/workspaces/$workspaceSlug"
-                            params={{
-                              orgSlug: orgDetail.slug,
-                              workspaceSlug: activeWorkspace.slug,
-                            }}
-                            activeOptions={{ exact: true }}
-                          />
-                        )
-                      : <span aria-disabled />
-                  }
-                >
-                  <RiDashboardLine />
-                  <span>Overview</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {workspaceNavItems.map((item) => {
+                const isActive = !!matchRoute({
+                  to: item.to,
+                  params: navParams,
+                  fuzzy: !item.exact,
+                })
+                return (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      isActive={isActive}
+                      tooltip={item.label}
+                      render={
+                        activeWorkspace
+                          ? (
+                              <Link
+                                to={item.to}
+                                params={navParams}
+                              />
+                            )
+                          : <span aria-disabled />
+                      }
+                    >
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -1,0 +1,132 @@
+import { useState } from 'react'
+import { RiTeamLine, RiMailSendLine, RiUserAddLine } from '@remixicon/react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+import { MemberCard } from './member-card'
+import { InvitationCard } from './invitation-card'
+import { InviteMemberDialog } from './invite-member-dialog'
+import { useWorkspaceMembers, useOrgInvitations } from '../api/members.api'
+import { useOrgPermissions, asOrgRole } from '@/features/permissions'
+
+interface WorkspaceMembersListProps {
+  workspaceId: string
+  orgId: string
+  orgRole: string
+}
+
+export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceMembersListProps) {
+  const [inviteOpen, setInviteOpen] = useState(false)
+  const { data: members, isLoading: membersLoading } = useWorkspaceMembers(workspaceId)
+  const { data: allInvitations, isLoading: invitesLoading } = useOrgInvitations(orgId)
+
+  const invitations = allInvitations?.filter((inv) => inv.workspace === workspaceId) ?? []
+  const { canManageMembers } = useOrgPermissions(asOrgRole(orgRole) ?? 'viewer')
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-end">
+        {canManageMembers && (
+          <InviteMemberDialog
+            workspaceId={workspaceId}
+            orgId={orgId}
+            open={inviteOpen}
+            onOpenChange={setInviteOpen}
+            trigger={
+              <Button size="sm">
+                <RiUserAddLine className="size-4" />
+                Invite member
+              </Button>
+            }
+          />
+        )}
+      </div>
+
+      <Tabs defaultValue="members">
+        <TabsList>
+          <TabsTrigger value="members" className="gap-1.5">
+            Members
+            {members && members.length > 0 && (
+              <Badge variant="secondary" className="h-4 px-1.5 py-0 text-[10px]">
+                {members.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="invitations" className="gap-1.5">
+            Invitations
+            {invitations.length > 0 && (
+              <Badge variant="secondary" className="h-4 px-1.5 py-0 text-[10px]">
+                {invitations.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="members" className="mt-4">
+          {membersLoading ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-[88px] rounded-xl" />
+              ))}
+            </div>
+          ) : members && members.length > 0 ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {members.map((m) => (
+                <MemberCard key={m.id} member={m} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={<RiTeamLine className="size-6" />}
+              title="No members yet"
+              description="Invite people to collaborate in this workspace."
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="invitations" className="mt-4">
+          {invitesLoading ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-[88px] rounded-xl" />
+              ))}
+            </div>
+          ) : invitations.length > 0 ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {invitations.map((inv) => (
+                <InvitationCard key={inv.id} invitation={inv} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={<RiMailSendLine className="size-6" />}
+              title="No invitations"
+              description="Invitations you send will appear here."
+            />
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
+
+function EmptyState({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode
+  title: string
+  description: string
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 text-center">
+      <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-muted/50 text-muted-foreground ring-1 ring-border/40">
+        {icon}
+      </div>
+      <p className="text-sm font-medium">{title}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+    </div>
+  )
+}
