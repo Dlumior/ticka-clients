@@ -7,8 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { MemberCard } from './member-card'
 import { InvitationCard } from './invitation-card'
 import { InviteMemberDialog } from './invite-member-dialog'
-import { useWorkspaceMembers, useOrgInvitations } from '../api/members.api'
-import { useOrgPermissions, asOrgRole } from '@/features/permissions'
+import { useWorkspaceMembers, useOrgInvitations, useWorkspaceMembership } from '../api/members.api'
+import { useWorkspacePermissions, asOrgRole, asWorkspaceRole } from '@/features/permissions'
 
 interface WorkspaceMembersListProps {
   workspaceId: string
@@ -22,12 +22,14 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
   const { data: allInvitations, isLoading: invitesLoading } = useOrgInvitations(orgId)
 
   const invitations = allInvitations?.filter((inv) => inv.workspace === workspaceId) ?? []
-  const { canManageMembers } = useOrgPermissions(asOrgRole(orgRole) ?? 'viewer')
+  const { data: membership } = useWorkspaceMembership(workspaceId)
+  const wsRole = asWorkspaceRole(membership?.workspace_role ?? '') ?? 'viewer'
+  const { canInvite } = useWorkspacePermissions(wsRole, asOrgRole(orgRole))
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-end">
-        {canManageMembers && (
+        {canInvite && (
           <InviteMemberDialog
             workspaceId={workspaceId}
             orgId={orgId}
