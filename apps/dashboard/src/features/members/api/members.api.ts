@@ -54,6 +54,21 @@ export function useWorkspaceMembership(workspaceId: string) {
   })
 }
 
+export function useResendWorkspaceInvitation(workspaceId: string, orgId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (invitationId: string) =>
+      apiClient
+        .post(
+          `/api/v1/identities/workspaces/${workspaceId}/members/invitations/${invitationId}/resend/`,
+        )
+        .then((r) => r.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['org-invitations', orgId] })
+    },
+  })
+}
+
 export function useInviteWorkspaceMember(workspaceId: string, orgId: string) {
   const queryClient = useQueryClient()
   return useMutation({

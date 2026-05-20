@@ -97,7 +97,13 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
           ) : invitations.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {invitations.map((inv) => (
-                <InvitationCard key={inv.id} invitation={inv} />
+                <InvitationCard
+                  key={inv.id}
+                  invitation={inv}
+                  workspaceId={workspaceId}
+                  orgId={orgId}
+                  canResend={canInvite}
+                />
               ))}
             </div>
           ) : (
