@@ -1,14 +1,22 @@
-import { useState } from 'react'
-import { RiTeamLine, RiMailSendLine, RiUserAddLine } from '@remixicon/react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Skeleton } from '@/components/ui/skeleton'
-import { MemberCard } from './member-card'
-import { InvitationCard } from './invitation-card'
-import { InviteMemberDialog } from './invite-member-dialog'
-import { useWorkspaceMembers, useOrgInvitations, useWorkspaceMembership } from '../api/members.api'
-import { useWorkspacePermissions, asOrgRole, asWorkspaceRole } from '@/features/permissions'
+import { useState } from "react"
+import { RiTeamLine, RiMailSendLine, RiUserAddLine } from "@remixicon/react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { MemberCard } from "./member-card"
+import { InvitationCard } from "./invitation-card"
+import { InviteMemberDialog } from "./invite-member-dialog"
+import {
+  useWorkspaceMembers,
+  useOrgInvitations,
+  useWorkspaceMembership,
+} from "../api/members.api"
+import {
+  useWorkspacePermissions,
+  asOrgRole,
+  asWorkspaceRole,
+} from "@/features/permissions"
 
 interface WorkspaceMembersListProps {
   workspaceId: string
@@ -16,14 +24,21 @@ interface WorkspaceMembersListProps {
   orgRole: string
 }
 
-export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceMembersListProps) {
+export function WorkspaceMembersList({
+  workspaceId,
+  orgId,
+  orgRole,
+}: WorkspaceMembersListProps) {
   const [inviteOpen, setInviteOpen] = useState(false)
-  const { data: members, isLoading: membersLoading } = useWorkspaceMembers(workspaceId)
-  const { data: allInvitations, isLoading: invitesLoading } = useOrgInvitations(orgId)
+  const { data: members, isLoading: membersLoading } =
+    useWorkspaceMembers(workspaceId)
+  const { data: allInvitations, isLoading: invitesLoading } =
+    useOrgInvitations(orgId)
 
-  const invitations = allInvitations?.filter((inv) => inv.workspace === workspaceId) ?? []
+  const invitations =
+    allInvitations?.filter((inv) => inv.workspace === workspaceId) ?? []
   const { data: membership } = useWorkspaceMembership(workspaceId)
-  const wsRole = asWorkspaceRole(membership?.workspace_role ?? '') ?? 'viewer'
+  const wsRole = asWorkspaceRole(membership?.workspace_role ?? "") ?? "viewer"
   const { canInvite } = useWorkspacePermissions(wsRole, asOrgRole(orgRole))
 
   return (
@@ -50,7 +65,10 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
           <TabsTrigger value="members" className="gap-1.5">
             Members
             {members && members.length > 0 && (
-              <Badge variant="secondary" className="h-4 px-1.5 py-0 text-[10px]">
+              <Badge
+                variant="secondary"
+                className="h-4 px-1.5 py-0 text-[10px]"
+              >
                 {members.length}
               </Badge>
             )}
@@ -58,7 +76,10 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
           <TabsTrigger value="invitations" className="gap-1.5">
             Invitations
             {invitations.length > 0 && (
-              <Badge variant="secondary" className="h-4 px-1.5 py-0 text-[10px]">
+              <Badge
+                variant="secondary"
+                className="h-4 px-1.5 py-0 text-[10px]"
+              >
                 {invitations.length}
               </Badge>
             )}
@@ -69,7 +90,7 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
           {membersLoading ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] rounded-xl" />
+                <Skeleton key={i} className="h-22 rounded-xl" />
               ))}
             </div>
           ) : members && members.length > 0 ? (
@@ -91,7 +112,7 @@ export function WorkspaceMembersList({ workspaceId, orgId, orgRole }: WorkspaceM
           {invitesLoading ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-[88px] rounded-xl" />
+                <Skeleton key={i} className="h-22 rounded-xl" />
               ))}
             </div>
           ) : invitations.length > 0 ? (
