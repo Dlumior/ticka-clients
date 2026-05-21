@@ -3,6 +3,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios'
+import { ApiError } from './api-error'
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
@@ -54,18 +55,15 @@ function performRefresh(): Promise<void> {
   return refreshPromise
 }
 
-function wrapError(error: AxiosError): Error {
+function wrapError(error: AxiosError): ApiError {
   const data = error.response?.data as
-    | { message?: string; detail?: string }
+    | { message?: string; code?: string; errors?: Record<string, string[]> }
     | undefined
-  const message =
-    data?.message ??
-    data?.detail ??
-    error.message ??
-    'An unexpected error occurred'
-  const wrapped = new Error(message) as Error & { status?: number }
-  wrapped.status = error.response?.status
-  return wrapped
+  const message = data?.message ?? error.message ?? 'An unexpected error occurred'
+  const code = data?.code ?? 'error'
+  const status = error.response?.status ?? 0
+  const errors = data?.errors ?? {}
+  return new ApiError(message, code, status, errors)
 }
 
 apiClient.interceptors.response.use(
