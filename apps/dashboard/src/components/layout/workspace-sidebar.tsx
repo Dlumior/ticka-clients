@@ -49,12 +49,14 @@ export function WorkspaceSidebar() {
     orgSlug?: string
     workspaceSlug?: string
   }
-  const { data: organizations } = useOrganizations()
+  const { data: organizations, isLoading: orgsLoading } = useOrganizations()
   const activeOrg = organizations?.find((o) => o.slug === params.orgSlug)
-  const { data: orgDetail } = useOrganizationDetail(activeOrg?.id ?? '')
+  const { data: orgDetail, isLoading: detailLoading } = useOrganizationDetail(activeOrg?.id ?? '')
   const matchRoute = useMatchRoute()
 
-  if (!activeOrg || !orgDetail) {
+  const isLoading = orgsLoading || (!!activeOrg && detailLoading)
+
+  if (isLoading) {
     return (
       <Sidebar collapsible="icon" className="border-r">
         <SidebarHeader>
@@ -67,6 +69,17 @@ export function WorkspaceSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
+      </Sidebar>
+    )
+  }
+
+  if (!activeOrg || !orgDetail) {
+    return (
+      <Sidebar collapsible="icon" className="border-r">
+        <SidebarContent />
+        <SidebarFooter className="border-t border-sidebar-border/60">
+          <SidebarUserFooter />
+        </SidebarFooter>
       </Sidebar>
     )
   }

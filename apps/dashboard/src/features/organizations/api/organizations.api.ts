@@ -1,4 +1,5 @@
 import { useMutation, queryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
 import { zOrganizationCreateOutput, zOrganizationDetailOutput, zOrganizationListOutput } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
@@ -40,13 +41,15 @@ export function useOrganizationDetail(organizationId: string) {
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient()
+  const router = useRouter()
   return useMutation({
     mutationFn: (data: CreateOrganizationFormValues) =>
       apiClient
         .post<CreatedOrganization>('/api/v1/identities/organizations/create/', data)
         .then((r) => r.data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['organizations'] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      router.invalidate()
     },
   })
 }

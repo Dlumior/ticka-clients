@@ -16,8 +16,8 @@ export function useCreateWorkspace(organizationId: string) {
           data,
         )
         .then((r) => r.data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['organizations', organizationId] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['organizations', organizationId] })
     },
   })
 }

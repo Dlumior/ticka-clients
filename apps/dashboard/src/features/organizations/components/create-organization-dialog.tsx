@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { zOrganizationCreateInputRequest } from "@/features/organizations/api/organizations.schema"
+import { zCreateOrganizationForm } from "@/features/organizations/api/organizations.schema"
 import { useCreateOrganization } from "@/features/organizations/api/organizations.api"
 
 function slugify(value: string): string {
@@ -30,6 +30,13 @@ function slugify(value: string): string {
     .replace(/[^a-z0-9_-]/g, "")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
+}
+
+function identifierize(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean)
+  if (words.length === 0) return ""
+  if (words.length === 1) return words[0].slice(0, 3).toUpperCase()
+  return words.slice(0, 4).map((w) => w[0]?.toUpperCase() ?? "").join("")
 }
 
 interface CreateOrganizationDialogProps {
@@ -60,8 +67,8 @@ export function CreateOrganizationDialog({
   }
 
   const form = useForm({
-    defaultValues: { name: "", slug: "" },
-    validators: { onSubmit: zOrganizationCreateInputRequest },
+    defaultValues: { name: "", slug: "", identifier: "" },
+    validators: { onSubmit: zCreateOrganizationForm },
     onSubmit: async ({ value }) => {
       await createOrg.mutateAsync(value)
       form.reset()
@@ -85,7 +92,7 @@ export function CreateOrganizationDialog({
         <DialogHeader className="pt-4">
           <DialogTitle>New organization</DialogTitle>
           <DialogDescription>
-            Create a new workspace to organise your projects and invoices.
+            Create a new organization to group your workspaces and team members.
           </DialogDescription>
         </DialogHeader>
 
@@ -112,11 +119,12 @@ export function CreateOrganizationDialog({
                       onChange={(e) => {
                         field.handleChange(e.target.value)
                         const rawSlug = form.getFieldValue("slug")
-                        if (
-                          !rawSlug ||
-                          rawSlug === slugify(field.state.value)
-                        ) {
+                        if (!rawSlug || rawSlug === slugify(field.state.value)) {
                           form.setFieldValue("slug", slugify(e.target.value))
+                        }
+                        const rawId = form.getFieldValue("identifier")
+                        if (!rawId || rawId === identifierize(field.state.value)) {
+                          form.setFieldValue("identifier", identifierize(e.target.value))
                         }
                       }}
                       aria-invalid={isInvalid}
@@ -164,6 +172,41 @@ export function CreateOrganizationDialog({
                     >
                       URL-friendly identifier. Letters, numbers, hyphens and
                       underscores only.
+                    </p>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )
+              }}
+            />
+
+            <form.Field
+              name="identifier"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>Short code</FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) =>
+                        field.handleChange(e.target.value.toUpperCase().slice(0, 4))
+                      }
+                      aria-invalid={isInvalid}
+                      placeholder="ACM"
+                      autoComplete="off"
+                      maxLength={4}
+                    />
+                    <p
+                      className="text-sm leading-normal font-normal text-muted-foreground"
+                      data-slot="field-description"
+                    >
+                      2–4 character code used as a prefix for issue IDs (e.g. ACM-42).
                     </p>
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
