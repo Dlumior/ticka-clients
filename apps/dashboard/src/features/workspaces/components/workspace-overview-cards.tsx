@@ -1,8 +1,8 @@
 import {
-  RiBuildingLine,
   RiCheckLine,
   RiFileCopyLine,
   RiInboxLine,
+  RiInformationLine,
   RiTeamLine,
 } from '@remixicon/react'
 import { Badge } from '@/components/ui/badge'
@@ -20,51 +20,36 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import type {
-  Organization,
-  OrganizationDetail,
-  Workspace,
-} from '@/features/organizations/api/organizations.api'
+import type { Workspace } from '@/features/organizations/api/organizations.api'
 import { useClipboard } from '@/hooks/use-clipboard'
 import { cn } from '@/lib/utils'
-import { asOrgRole, asWorkspaceRole, ORG_ROLE_BADGE_VARIANT, WORKSPACE_ROLE_BADGE_VARIANT } from '@/features/permissions'
-import { useWorkspaceMembership } from '@/features/members/api/members.api'
+import { asWorkspaceRole, WORKSPACE_ROLE_BADGE_VARIANT } from '@/features/permissions'
+import { useWorkspaceMembership, useWorkspaceMembers } from '@/features/members/api/members.api'
 
 interface WorkspaceOverviewCardsProps {
   workspace: Workspace
-  organization: Organization
-  organizationDetail: OrganizationDetail
 }
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function formatMonth(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric',
-  })
-}
-
 export function WorkspaceOverviewCards({
   workspace,
-  organization,
-  organizationDetail,
 }: WorkspaceOverviewCardsProps) {
   const { copied, copy } = useClipboard()
-
-  const orgRole = asOrgRole(organization.user_role)
-  const roleVariant = orgRole ? ORG_ROLE_BADGE_VARIANT[orgRole] : 'outline'
 
   const { data: membership } = useWorkspaceMembership(workspace.id)
   const wsRole = membership?.workspace_role ? asWorkspaceRole(membership.workspace_role) : undefined
   const wsRoleVariant = wsRole ? WORKSPACE_ROLE_BADGE_VARIANT[wsRole] : 'outline'
 
+  const { data: members } = useWorkspaceMembers(workspace.id)
+  const memberCount = members?.length ?? 0
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {/* Workspace identity + inbox email — spans 2 cols on large screens */}
-      <Card className="lg:col-span-2">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      {/* Workspace identity + inbox email — spans 2 cols */}
+      <Card className="md:col-span-2">
         <CardHeader>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <RiInboxLine className="size-3.5 shrink-0" />
@@ -141,10 +126,14 @@ export function WorkspaceOverviewCards({
                 </TooltipContent>
               </Tooltip>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Forward emails to this address to create tickets in this
-              workspace.
-            </p>
+            <div className="flex gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2.5">
+              <RiInformationLine className="mt-0.5 size-3.5 shrink-0 text-primary/70" />
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Forward your vendor invoices and receipts to this address. Ticka
+                will automatically extract the details and create tickets in this
+                workspace.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -162,10 +151,10 @@ export function WorkspaceOverviewCards({
         <CardContent className="flex flex-col gap-5">
           <div>
             <p className="text-5xl font-bold tabular-nums leading-none">
-              {organization.member_count}
+              {memberCount}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {organization.member_count === 1 ? 'Member' : 'Members'}
+              {memberCount === 1 ? 'Member' : 'Members'} in workspace
             </p>
           </div>
 
@@ -173,59 +162,13 @@ export function WorkspaceOverviewCards({
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Org role</span>
-              <Badge variant={roleVariant}>
-                {capitalize(organization.user_role)}
-              </Badge>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Workspace role</span>
+              <span className="text-muted-foreground">Your role</span>
               {wsRole ? (
                 <Badge variant={wsRoleVariant}>{capitalize(wsRole)}</Badge>
               ) : (
                 <span className="text-xs text-muted-foreground">—</span>
               )}
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Workspaces</span>
-              <span className="font-medium tabular-nums">
-                {organization.workspace_count}
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Organization info */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-1.5 text-muted-foreground">
-            <RiBuildingLine className="size-3.5 shrink-0" />
-            <span className="text-xs font-medium tracking-wider uppercase">
-              Organization
-            </span>
-          </div>
-          <CardTitle className="text-base">{organization.name}</CardTitle>
-          <CardDescription>{capitalize(organization.type)}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2 text-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Created</span>
-            <span className="font-medium">
-              {formatMonth(organization.created_at)}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Workspaces</span>
-            <span className="font-medium tabular-nums">
-              {organizationDetail.workspaces.length}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Members</span>
-            <span className="font-medium tabular-nums">
-              {organization.member_count}
-            </span>
           </div>
         </CardContent>
       </Card>
