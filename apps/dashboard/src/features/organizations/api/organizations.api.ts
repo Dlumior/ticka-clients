@@ -1,6 +1,6 @@
 import { useMutation, queryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from '@tanstack/react-router'
-import { zOrganizationCreateOutput, zOrganizationDetailOutput, zOrganizationListOutput } from '@repo/api-types'
+import { zOrganizationCreateOutput, zOrganizationDetailOutput, zOrganizationListOutput, zOrganizationUpdateOutput, zPatchedOrganizationUpdateInputRequest } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
 import type { CreateOrganizationFormValues } from './organizations.schema'
@@ -9,6 +9,8 @@ export type Organization = z.infer<typeof zOrganizationListOutput>
 export type OrganizationDetail = z.infer<typeof zOrganizationDetailOutput>
 export type Workspace = OrganizationDetail['workspaces'][number]
 export type CreatedOrganization = z.infer<typeof zOrganizationCreateOutput>
+export type UpdateOrganizationValues = z.infer<typeof zPatchedOrganizationUpdateInputRequest>
+type UpdatedOrganization = z.infer<typeof zOrganizationUpdateOutput>
 
 export const organizationsQueryOptions = queryOptions({
   queryKey: ['organizations'],
@@ -50,6 +52,29 @@ export function useCreateOrganization() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['organizations'] })
       router.invalidate()
+    },
+  })
+}
+
+export function useUpdateOrganization(organizationId: string) {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  return useMutation({
+    mutationFn: (data: UpdateOrganizationValues) =>
+      apiClient
+        .patch<UpdatedOrganization>(
+          `/api/v1/identities/organizations/${organizationId}/update/`,
+          data,
+        )
+        .then((r) => r.data),
+    onSuccess: async (updated) => {
+      await queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      await queryClient.invalidateQueries({ queryKey: ['organizations', organizationId] })
+      router.navigate({
+        to: '/orgs/$orgSlug/settings',
+        params: { orgSlug: updated.slug },
+        replace: true,
+      })
     },
   })
 }

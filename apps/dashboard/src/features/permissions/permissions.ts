@@ -61,6 +61,13 @@ export const ORG_ROLE_BADGE_VARIANT: Record<OrgRole, BadgeVariant> = {
   viewer: 'outline',
 }
 
+export const ORG_ROLE_LABEL: Record<OrgRole, string> = {
+  owner: 'Owner',
+  admin: 'Admin',
+  member: 'Member',
+  viewer: 'Viewer',
+}
+
 export const WORKSPACE_ROLE_BADGE_VARIANT: Record<WorkspaceRole, BadgeVariant> = {
   admin:  'default',
   member: 'secondary',

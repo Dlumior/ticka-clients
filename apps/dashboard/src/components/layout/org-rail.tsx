@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { Link, useParams } from "@tanstack/react-router"
-import { RiAddLine, RiInboxLine } from "@remixicon/react"
+import { Link, useMatchRoute, useParams } from "@tanstack/react-router"
+import { RiAddLine, RiInboxLine, RiSettings3Line } from "@remixicon/react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Tooltip,
@@ -23,6 +23,14 @@ export function OrgRail() {
   const { data: organizations, isLoading } = useOrganizations()
   const params = useParams({ strict: false }) as { orgSlug?: string }
   const activeOrgSlug = params.orgSlug
+  const matchRoute = useMatchRoute()
+  const isOnSettings =
+    !!activeOrgSlug &&
+    !!matchRoute({
+      to: "/orgs/$orgSlug/settings",
+      params: { orgSlug: activeOrgSlug },
+      fuzzy: true,
+    })
 
   return (
     <aside
@@ -75,6 +83,34 @@ export function OrgRail() {
           onOpenChange={setCreateOpen}
         />
       </div>
+
+      {activeOrgSlug && (
+        <>
+          <Separator />
+          <div className="pb-3 pt-1">
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Link
+                    to="/orgs/$orgSlug/settings"
+                    params={{ orgSlug: activeOrgSlug }}
+                    aria-label="Organization settings"
+                    className={cn(
+                      "flex size-10 items-center justify-center rounded-xl transition-colors",
+                      isOnSettings
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    <RiSettings3Line className="size-5" />
+                  </Link>
+                }
+              />
+              <TooltipContent side="right">Organization settings</TooltipContent>
+            </Tooltip>
+          </div>
+        </>
+      )}
     </aside>
   )
 }

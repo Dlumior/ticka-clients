@@ -12,6 +12,7 @@ export {
   canManageWorkspaceMembers,
   canInviteToWorkspace,
   ORG_ROLE_BADGE_VARIANT,
+  ORG_ROLE_LABEL,
   WORKSPACE_ROLE_BADGE_VARIANT,
   WORKSPACE_ROLE_LABEL,
 } from './permissions'
