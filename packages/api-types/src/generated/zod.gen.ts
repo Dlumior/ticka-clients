@@ -2,7 +2,86 @@
 
 import { z } from "zod";
 
+export const zAttachmentReprocessOutput = z.object({
+  status: z.string(),
+  attachment_id: z.string().uuid(),
+});
+
 export const zBlankEnum = z.enum([""]);
+
+/**
+ * * `stored` - Stored
+ * * `queued` - Queued
+ * * `processing` - Processing
+ * * `completed` - Completed
+ * * `failed` - Failed
+ * * `duplicate` - Duplicate
+ */
+export const zInboundAttachmentListOutputStatusEnum = z.enum([
+  "stored",
+  "queued",
+  "processing",
+  "completed",
+  "failed",
+  "duplicate",
+]);
+
+export const zInboundAttachmentListOutput = z.object({
+  id: z.string().uuid().readonly(),
+  inbound_email_id: z.string().uuid().readonly(),
+  workspace_id: z.string().uuid().readonly(),
+  original_filename: z.string().max(512),
+  content_type: z.string().max(255),
+  file_size_bytes: z.coerce
+    .bigint()
+    .gte(BigInt(0))
+    .lte(BigInt(9223372036854776000)),
+  storage_path: z.string().max(1024).optional(),
+  source_nesting_depth: z
+    .number()
+    .int()
+    .gte(-2147483648)
+    .lte(2147483647)
+    .optional(),
+  status: zInboundAttachmentListOutputStatusEnum.optional(),
+  failure_reason: z.union([z.string(), z.null()]).optional(),
+  created_at: z.string().datetime().readonly(),
+});
+
+/**
+ * * `pending` - Pending
+ * * `processing` - Processing
+ * * `completed` - Completed
+ * * `failed` - Failed
+ * * `no_attachments_found` - No Attachments Found
+ */
+export const zInboundEmailListOutputStatusEnum = z.enum([
+  "pending",
+  "processing",
+  "completed",
+  "failed",
+  "no_attachments_found",
+]);
+
+export const zInboundEmailListOutput = z.object({
+  id: z.string().uuid().readonly(),
+  workspace_id: z.string().uuid().readonly(),
+  sender_email: z.string().email().max(254),
+  sender_name: z.string().max(255).optional(),
+  subject: z.string().optional(),
+  received_at: z.string().datetime(),
+  status: zInboundEmailListOutputStatusEnum.optional(),
+  failure_reason: z.union([z.string(), z.null()]).optional(),
+  nesting_depth_reached: z
+    .number()
+    .int()
+    .gte(-2147483648)
+    .lte(2147483647)
+    .optional(),
+  raw_email_stored: z.boolean().optional(),
+  attachment_count: z.number().int().readonly(),
+  created_at: z.string().datetime().readonly(),
+});
 
 export const zInvitationAcceptInputRequest = z.object({
   token: z.string().uuid(),
@@ -49,7 +128,7 @@ export const zInvitationTypeEnum = z.enum(["organization", "workspace"]);
  * * `declined` - Declined
  * * `expired` - Expired
  */
-export const zStatusEnum = z.enum([
+export const zInvitationStatusEnum = z.enum([
   "pending",
   "accepted",
   "declined",
@@ -70,7 +149,7 @@ export const zInvitationListOutput = z.object({
   invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
-  status: zStatusEnum,
+  status: zInvitationStatusEnum,
   created_at: z.string().datetime().readonly(),
   expires_at: z.string().datetime().readonly(),
 });
@@ -82,13 +161,16 @@ export const zOrganizationCreateInputRequest = z.object({
     .min(1)
     .max(100)
     .regex(/^[-a-zA-Z0-9_]+$/),
+  identifier: z.string().min(2).max(4),
 });
 
 export const zOrganizationCreateOutput = z.object({
   id: z.string().uuid(),
   name: z.string(),
   slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
+  identifier: z.string(),
   inbox_email: z.string().email(),
+  timezone: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   is_active: z.boolean(),
@@ -108,6 +190,7 @@ export const zOrganizationDetailOutput = z.object({
   slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   type: z.string(),
   inbox_email: z.string().email(),
+  timezone: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   is_active: z.boolean(),
@@ -131,7 +214,7 @@ export const zOrganizationInvitationListOutput = z.object({
   invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
-  status: zStatusEnum,
+  status: zInvitationStatusEnum,
   created_at: z.string().datetime().readonly(),
   expires_at: z.string().datetime().readonly(),
 });
@@ -142,6 +225,7 @@ export const zOrganizationListOutput = z.object({
   slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   type: z.string(),
   inbox_email: z.string().email(),
+  timezone: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   is_active: z.boolean(),
@@ -169,7 +253,7 @@ export const zOrganizationMemberInviteOutput = z.object({
   invitation_type: zInvitationTypeEnum.optional(),
   invited_by: z.string().uuid().readonly(),
   invited_by_email: z.string().email().readonly(),
-  status: zStatusEnum,
+  status: zInvitationStatusEnum,
   created_at: z.string().datetime().readonly(),
   expires_at: z.string().datetime().readonly(),
 });
@@ -208,6 +292,7 @@ export const zOrganizationUpdateOutput = z.object({
   name: z.string(),
   slug: z.string().regex(/^[-a-zA-Z0-9_]+$/),
   inbox_email: z.string().email(),
+  timezone: z.string(),
   is_active: z.boolean(),
   updated_at: z.string().datetime(),
 });
@@ -248,6 +333,7 @@ export const zPatchedOrganizationUpdateInputRequest = z.object({
     .regex(/^[-a-zA-Z0-9_]+$/)
     .optional(),
   is_active: z.boolean().optional(),
+  timezone: z.string().min(1).max(64).optional(),
 });
 
 export const zPatchedWorkspaceMemberUpdateRoleInputRequest = z.object({
@@ -331,6 +417,11 @@ export const zWorkspaceListOutput = z.object({
   is_active: z.boolean(),
 });
 
+export const zWorkspaceMeOutput = z.object({
+  workspace_role: z.union([z.string(), z.null()]),
+  org_role: z.union([z.string(), z.null()]),
+});
+
 export const zWorkspaceMember = z.object({
   id: z.string().uuid().readonly(),
   workspace: z.string().uuid().readonly(),
@@ -338,6 +429,14 @@ export const zWorkspaceMember = z.object({
   user: zUser,
   role: zWorkspaceRoleEnum.optional(),
   joined_at: z.string().datetime().readonly(),
+});
+
+export const zWorkspaceMemberInvitationResendOutput = z.object({
+  id: z.string().uuid(),
+  email: z.string().email(),
+  workspace_role: zWorkspaceRoleEnum,
+  status: z.string(),
+  expires_at: z.string().datetime(),
 });
 
 export const zWorkspaceMemberInviteInputRequest = z.object({
@@ -651,6 +750,17 @@ export const zV1IdentitiesWorkspacesUpdatePartialUpdateData = z.object({
 export const zV1IdentitiesWorkspacesUpdatePartialUpdateResponse =
   zWorkspaceUpdateOutput;
 
+export const zV1IdentitiesWorkspacesMeRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IdentitiesWorkspacesMeRetrieveResponse = zWorkspaceMeOutput;
+
 export const zV1IdentitiesWorkspacesMembersListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
@@ -693,6 +803,20 @@ export const zV1IdentitiesWorkspacesMembersUpdateRolePartialUpdateData =
 export const zV1IdentitiesWorkspacesMembersUpdateRolePartialUpdateResponse =
   zWorkspaceMember;
 
+export const zV1IdentitiesWorkspacesMembersInvitationsResendCreateData =
+  z.object({
+    body: z.never().optional(),
+    headers: z.never().optional(),
+    path: z.object({
+      invitation_id: z.string().uuid(),
+      workspace_id: z.string().uuid(),
+    }),
+    query: z.never().optional(),
+  });
+
+export const zV1IdentitiesWorkspacesMembersInvitationsResendCreateResponse =
+  zWorkspaceMemberInvitationResendOutput;
+
 export const zV1IdentitiesWorkspacesMembersInviteCreateData = z.object({
   body: zWorkspaceMemberInviteInputRequest,
   headers: z.never().optional(),
@@ -714,3 +838,50 @@ export const zV1IdentitiesWorkspacesCreateCreateData = z.object({
 
 export const zV1IdentitiesWorkspacesCreateCreateResponse =
   zWorkspaceCreateOutput;
+
+export const zV1IngestionAttachmentsReprocessCreateData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    attachment_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IngestionAttachmentsReprocessCreateResponse =
+  zAttachmentReprocessOutput;
+
+export const zV1IngestionWorkspacesAttachmentsListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z
+    .object({
+      inbound_email_id: z.string().optional(),
+      status: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const zV1IngestionWorkspacesAttachmentsListResponse = z.array(
+  zInboundAttachmentListOutput,
+);
+
+export const zV1IngestionWorkspacesEmailsListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z
+    .object({
+      status: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const zV1IngestionWorkspacesEmailsListResponse = z.array(
+  zInboundEmailListOutput,
+);
