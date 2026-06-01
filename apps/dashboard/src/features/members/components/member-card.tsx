@@ -4,20 +4,18 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { WORKSPACE_ROLE_BADGE_VARIANT, WORKSPACE_ROLE_LABEL } from '@/features/permissions'
 import type { WorkspaceRole } from '@/features/permissions'
+import { formatDateInTz } from '@/lib/date'
 
 function getInitials(first: string, last: string, email: string) {
   return ([first[0], last[0]].filter(Boolean).join('') || email[0]).toUpperCase()
 }
 
-function formatDate(d: string) {
-  return new Date(d).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+interface Props {
+  member: WorkspaceMember
+  timezone: string
 }
 
-export function MemberCard({ member }: { member: WorkspaceMember }) {
+export function MemberCard({ member, timezone }: Props) {
   const initials = getInitials(member.user_first_name, member.user_last_name, member.user_email)
   const fullName = [member.user_first_name, member.user_last_name].filter(Boolean).join(' ')
   const role = member.role as WorkspaceRole
@@ -43,7 +41,7 @@ export function MemberCard({ member }: { member: WorkspaceMember }) {
             <p className="mt-0.5 truncate text-xs text-muted-foreground">{member.user_email}</p>
           )}
           <p className="mt-2 text-[11px] text-muted-foreground/70">
-            Joined {formatDate(member.joined_at)}
+            Joined {formatDateInTz(member.joined_at, timezone)}
           </p>
         </div>
       </CardContent>

@@ -8,7 +8,7 @@ export const Route = createFileRoute(
 })
 
 function MembersPage() {
-  const { organization, workspace } = Route.useRouteContext()
+  const { organization, organizationDetail, workspace } = Route.useRouteContext()
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
@@ -24,6 +24,7 @@ function MembersPage() {
         workspaceId={workspace.id}
         orgId={organization.id}
         orgRole={organization.user_role}
+        timezone={organizationDetail.timezone}
       />
     </div>
   )

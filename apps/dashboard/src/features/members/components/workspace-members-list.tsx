@@ -22,12 +22,14 @@ interface WorkspaceMembersListProps {
   workspaceId: string
   orgId: string
   orgRole: string
+  timezone: string
 }
 
 export function WorkspaceMembersList({
   workspaceId,
   orgId,
   orgRole,
+  timezone,
 }: WorkspaceMembersListProps) {
   const [inviteOpen, setInviteOpen] = useState(false)
   const { data: members, isLoading: membersLoading } =
@@ -96,7 +98,7 @@ export function WorkspaceMembersList({
           ) : members && members.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {members.map((m) => (
-                <MemberCard key={m.id} member={m} />
+                <MemberCard key={m.id} member={m} timezone={timezone} />
               ))}
             </div>
           ) : (
