@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
-import { zInboundEmailListOutputStatusEnum } from '@repo/api-types'
-import { Input } from '@/components/ui/input'
+import { useEffect, useState } from "react"
+import { zInboundEmailStatusEnum } from "@repo/api-types"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select"
 
 interface InboxToolbarProps {
   search: string
@@ -17,14 +17,19 @@ interface InboxToolbarProps {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: 'Pending',
-  processing: 'Processing',
-  completed: 'Completed',
-  failed: 'Failed',
-  no_attachments_found: 'No attachments',
+  pending: "Pending",
+  processing: "Processing",
+  completed: "Completed",
+  failed: "Failed",
+  no_attachments_found: "No attachments",
 }
 
-export function InboxToolbar({ search, onSearchChange, status, onStatusChange }: InboxToolbarProps) {
+export function InboxToolbar({
+  search,
+  onSearchChange,
+  status,
+  onStatusChange,
+}: InboxToolbarProps) {
   const [localSearch, setLocalSearch] = useState(search)
 
   useEffect(() => {
@@ -52,7 +57,7 @@ export function InboxToolbar({ search, onSearchChange, status, onStatusChange }:
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="">All statuses</SelectItem>
-          {zInboundEmailListOutputStatusEnum.options.map((s) => (
+          {zInboundEmailStatusEnum.options.map((s) => (
             <SelectItem key={s} value={s}>
               {STATUS_LABELS[s] ?? s}
             </SelectItem>

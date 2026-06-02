@@ -1,3 +1,4 @@
+import { RiAttachmentLine } from "@remixicon/react"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -9,9 +10,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { formatDatetimeInTz } from "@/lib/date"
-import { useInboxAttachments } from "../api/inbox.api"
+import { useInboxAttachments, useInboxEmailDetail } from "../api/inbox.api"
 import type { InboundEmail, InboundAttachment } from "../api/inbox.api"
-import { RiAttachmentLine } from "@remixicon/react"
 
 interface EmailDetailSheetProps {
   open: boolean
@@ -72,6 +72,43 @@ function AttachmentRow({ attachment }: { attachment: InboundAttachment }) {
   )
 }
 
+function EmailBody({ bodyHtml, bodyText, isLoading }: { bodyHtml: string; bodyText: string; isLoading: boolean }) {
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-3/4 rounded" />
+        <Skeleton className="h-4 w-full rounded" />
+        <Skeleton className="h-4 w-5/6 rounded" />
+        <Skeleton className="h-4 w-2/3 rounded" />
+      </div>
+    )
+  }
+
+  if (bodyHtml) {
+    return (
+      <iframe
+        srcDoc={bodyHtml}
+        sandbox=""
+        title="Email body"
+        className="h-80 w-full rounded-md border bg-white"
+        style={{ minHeight: '200px' }}
+      />
+    )
+  }
+
+  if (bodyText) {
+    return (
+      <pre className="whitespace-pre-wrap break-words rounded-md bg-muted/50 p-3 text-sm font-sans text-foreground">
+        {bodyText}
+      </pre>
+    )
+  }
+
+  return (
+    <p className="text-sm text-muted-foreground">No message body.</p>
+  )
+}
+
 export function EmailDetailSheet({
   open,
   onOpenChange,
@@ -79,6 +116,10 @@ export function EmailDetailSheet({
   workspaceId,
   timezone,
 }: EmailDetailSheetProps) {
+  const { data: detail, isFetching: detailFetching } = useInboxEmailDetail(
+    workspaceId,
+    email?.id ?? "",
+  )
   const { data: attachments, isFetching: attachmentsFetching } =
     useInboxAttachments(workspaceId, email?.id ?? "")
 
@@ -130,6 +171,19 @@ export function EmailDetailSheet({
               {email.failure_reason}
             </div>
           )}
+        </div>
+
+        <Separator />
+
+        <div className="flex flex-col gap-2 px-4 pb-2">
+          <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            Message
+          </p>
+          <EmailBody
+            bodyHtml={detail?.body_html ?? ""}
+            bodyText={detail?.body_text ?? ""}
+            isLoading={detailFetching && !detail}
+          />
         </div>
 
         <Separator />

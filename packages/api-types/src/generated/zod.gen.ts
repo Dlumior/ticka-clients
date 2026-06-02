@@ -17,7 +17,7 @@ export const zBlankEnum = z.enum([""]);
  * * `failed` - Failed
  * * `duplicate` - Duplicate
  */
-export const zInboundAttachmentListOutputStatusEnum = z.enum([
+export const zInboundAttachmentStatusEnum = z.enum([
   "stored",
   "queued",
   "processing",
@@ -43,7 +43,7 @@ export const zInboundAttachmentListOutput = z.object({
     .gte(-2147483648)
     .lte(2147483647)
     .optional(),
-  status: zInboundAttachmentListOutputStatusEnum.optional(),
+  status: zInboundAttachmentStatusEnum.optional(),
   failure_reason: z.union([z.string(), z.null()]).optional(),
   created_at: z.string().datetime().readonly(),
 });
@@ -55,13 +55,34 @@ export const zInboundAttachmentListOutput = z.object({
  * * `failed` - Failed
  * * `no_attachments_found` - No Attachments Found
  */
-export const zInboundEmailListOutputStatusEnum = z.enum([
+export const zInboundEmailStatusEnum = z.enum([
   "pending",
   "processing",
   "completed",
   "failed",
   "no_attachments_found",
 ]);
+
+export const zInboundEmailDetailOutput = z.object({
+  id: z.string().uuid().readonly(),
+  workspace_id: z.string().uuid().readonly(),
+  sender_email: z.string().email().max(254),
+  sender_name: z.string().max(255).optional(),
+  subject: z.string().optional(),
+  body_text: z.string().optional(),
+  body_html: z.string().optional(),
+  received_at: z.string().datetime(),
+  status: zInboundEmailStatusEnum.optional(),
+  failure_reason: z.union([z.string(), z.null()]).optional(),
+  nesting_depth_reached: z
+    .number()
+    .int()
+    .gte(-2147483648)
+    .lte(2147483647)
+    .optional(),
+  raw_email_stored: z.boolean().optional(),
+  created_at: z.string().datetime().readonly(),
+});
 
 export const zInboundEmailListOutput = z.object({
   id: z.string().uuid().readonly(),
@@ -70,7 +91,7 @@ export const zInboundEmailListOutput = z.object({
   sender_name: z.string().max(255).optional(),
   subject: z.string().optional(),
   received_at: z.string().datetime(),
-  status: zInboundEmailListOutputStatusEnum.optional(),
+  status: zInboundEmailStatusEnum.optional(),
   failure_reason: z.union([z.string(), z.null()]).optional(),
   nesting_depth_reached: z
     .number()
@@ -888,3 +909,16 @@ export const zV1IngestionWorkspacesEmailsListData = z.object({
 export const zV1IngestionWorkspacesEmailsListResponse = z.array(
   zInboundEmailListOutput,
 );
+
+export const zV1IngestionWorkspacesEmailsRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    email_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IngestionWorkspacesEmailsRetrieveResponse =
+  zInboundEmailDetailOutput;
