@@ -1,4 +1,4 @@
-import { queryOptions, useQuery } from "@tanstack/react-query"
+import { queryOptions, useQuery, useMutation } from "@tanstack/react-query"
 import {
   zInboundEmailListOutput,
   zInboundAttachmentListOutput,
@@ -97,4 +97,36 @@ export function useInboxEmails(workspaceId: string, params: InboxEmailsParams) {
 
 export function useInboxAttachments(workspaceId: string, emailId: string) {
   return useQuery(inboxAttachmentsQueryOptions(workspaceId, emailId))
+}
+
+export function useDownloadAttachment(workspaceId: string) {
+  return useMutation({
+    mutationFn: async (attachmentId: string) => {
+      const r = await apiClient.get<{ url: string }>(
+        `/api/v1/ingestion/workspaces/${workspaceId}/attachments/${attachmentId}/download-url/`
+      )
+      return r.data.url
+    },
+    onSuccess: (url) => {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    },
+  })
+}
+
+export function useAttachmentPreviewUrl(
+  workspaceId: string,
+  attachmentId: string | null
+) {
+  return useQuery({
+    queryKey: ['attachment-preview-url', workspaceId, attachmentId],
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<{ url: string }>(
+          `/api/v1/ingestion/workspaces/${workspaceId}/attachments/${attachmentId}/preview-url/`,
+          { signal }
+        )
+        .then((r) => r.data.url),
+    enabled: !!workspaceId && !!attachmentId,
+    staleTime: 5 * 60 * 1000,
+  })
 }
