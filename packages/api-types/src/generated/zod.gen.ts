@@ -877,6 +877,9 @@ export const zV1IngestionWorkspacesEmailsListData = z.object({
   }),
   query: z
     .object({
+      limit: z.number().int().optional(),
+      offset: z.number().int().optional(),
+      search: z.string().optional(),
       status: z.string().optional(),
     })
     .optional(),

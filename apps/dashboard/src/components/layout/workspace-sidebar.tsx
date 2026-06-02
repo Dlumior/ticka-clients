@@ -1,5 +1,5 @@
 import { Link, useMatchRoute, useParams } from '@tanstack/react-router'
-import { RiDashboardLine, RiLogoutBoxRLine, RiTeamLine } from '@remixicon/react'
+import { RiDashboardLine, RiInboxLine, RiLogoutBoxRLine, RiTeamLine } from '@remixicon/react'
 import type { ComponentType } from 'react'
 import {
   Sidebar,
@@ -36,6 +36,11 @@ const workspaceNavItems: NavItem[] = [
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug',
     icon: RiDashboardLine,
     exact: true,
+  },
+  {
+    label: 'Inbox',
+    to: '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox',
+    icon: RiInboxLine,
   },
   {
     label: 'Members',
