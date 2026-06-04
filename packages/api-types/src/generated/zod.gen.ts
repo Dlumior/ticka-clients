@@ -2,6 +2,14 @@
 
 import { z } from "zod";
 
+export const zAttachmentDownloadUrlOutput = z.object({
+  url: z.string().url(),
+});
+
+export const zAttachmentPreviewUrlOutput = z.object({
+  url: z.string().url(),
+});
+
 export const zAttachmentReprocessOutput = z.object({
   status: z.string(),
   attachment_id: z.string().uuid(),
@@ -173,6 +181,124 @@ export const zInvitationListOutput = z.object({
   status: zInvitationStatusEnum,
   created_at: z.string().datetime().readonly(),
   expires_at: z.string().datetime().readonly(),
+});
+
+/**
+ * * `received` - Received
+ * * `parsing` - Parsing
+ * * `parsed` - Parsed
+ * * `review_needed` - Review Needed
+ * * `approved` - Approved
+ * * `exported` - Exported
+ * * `failed` - Failed
+ */
+export const zInvoiceDetailOutputStatusEnum = z.enum([
+  "received",
+  "parsing",
+  "parsed",
+  "review_needed",
+  "approved",
+  "exported",
+  "failed",
+]);
+
+/**
+ * * `factura` - Factura
+ * * `boleta` - Boleta
+ * * `nota_credito` - Nota de Crédito
+ * * `nota_debito` - Nota de Débito
+ */
+export const zInvoiceTypeEnum = z.enum([
+  "factura",
+  "boleta",
+  "nota_credito",
+  "nota_debito",
+]);
+
+/**
+ * * `xml` - XML
+ * * `pdf` - PDF
+ */
+export const zSourceTypeEnum = z.enum(["xml", "pdf"]);
+
+export const zInvoiceSupplierOutput = z.object({
+  id: z.string().uuid().readonly(),
+  ruc: z.string().max(11),
+  name: z.string().max(255).optional(),
+  address: z.string().optional(),
+  email: z.string().email().max(254).optional(),
+  phone: z.string().max(30).optional(),
+});
+
+export const zInvoiceHeaderOutput = z.object({
+  supplier_ruc: z.string().max(11),
+  supplier_name: z.string().max(255).optional(),
+  buyer_ruc: z.string().max(11).optional(),
+  buyer_name: z.string().max(255).optional(),
+  series: z.string().max(8).optional(),
+  number: z.string().max(20).optional(),
+  invoice_number: z.string().max(30).optional(),
+  issue_date: z.string().date(),
+  due_date: z.union([z.string().date(), z.null()]).optional(),
+  currency: z.string().max(3).optional(),
+  subtotal: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+  igv_amount: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+  total: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+});
+
+export const zInvoiceLineItemOutput = z.object({
+  id: z.string().uuid().readonly(),
+  line_number: z.number().int().gte(0).lte(2147483647),
+  description: z.string().optional(),
+  quantity: z.string().regex(/^-?\d{0,10}(?:\.\d{0,4})?$/),
+  unit_price: z.string().regex(/^-?\d{0,10}(?:\.\d{0,4})?$/),
+  subtotal: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+  tax_amount: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+  unit_code: z.string().max(10).optional(),
+});
+
+export const zInvoiceTagOutput = z.object({
+  id: z.string().uuid().readonly(),
+  name: z.string().max(50),
+  slug: z
+    .string()
+    .max(60)
+    .regex(/^[-a-zA-Z0-9_]+$/),
+  color: z.string().max(7).optional(),
+});
+
+export const zInvoiceDetailOutput = z.object({
+  id: z.string().uuid().readonly(),
+  workspace_id: z.string().uuid().readonly(),
+  status: zInvoiceDetailOutputStatusEnum.optional(),
+  country_code: z.string().max(2).optional(),
+  invoice_type: zInvoiceTypeEnum.optional(),
+  source_type: zSourceTypeEnum,
+  sender_email: z.string().email().max(254).optional(),
+  subject: z.string().optional(),
+  received_at: z.union([z.string().datetime(), z.null()]).optional(),
+  failure_reason: z.union([z.string(), z.null()]).optional(),
+  created_at: z.string().datetime().readonly(),
+  updated_at: z.string().datetime().readonly(),
+  supplier: zInvoiceSupplierOutput,
+  header: zInvoiceHeaderOutput,
+  line_items: z.array(zInvoiceLineItemOutput).readonly(),
+  tags: z.array(zInvoiceTagOutput).readonly(),
+});
+
+export const zInvoiceListOutput = z.object({
+  id: z.string().uuid(),
+  status: z.string(),
+  invoice_type: z.string(),
+  source_type: z.string(),
+  supplier_name: z.string().readonly(),
+  supplier_ruc: z.string().readonly(),
+  invoice_number: z.string().readonly(),
+  issue_date: z.string().date().readonly(),
+  currency: z.string().readonly(),
+  total: z.string().readonly(),
+  received_at: z.union([z.string().datetime(), z.null()]),
+  created_at: z.string().datetime(),
 });
 
 export const zOrganizationCreateInputRequest = z.object({
@@ -890,6 +1016,35 @@ export const zV1IngestionWorkspacesAttachmentsListResponse = z.array(
   zInboundAttachmentListOutput,
 );
 
+export const zV1IngestionWorkspacesAttachmentsDownloadUrlRetrieveData =
+  z.object({
+    body: z.never().optional(),
+    headers: z.never().optional(),
+    path: z.object({
+      attachment_id: z.string().uuid(),
+      workspace_id: z.string().uuid(),
+    }),
+    query: z.never().optional(),
+  });
+
+export const zV1IngestionWorkspacesAttachmentsDownloadUrlRetrieveResponse =
+  zAttachmentDownloadUrlOutput;
+
+export const zV1IngestionWorkspacesAttachmentsPreviewUrlRetrieveData = z.object(
+  {
+    body: z.never().optional(),
+    headers: z.never().optional(),
+    path: z.object({
+      attachment_id: z.string().uuid(),
+      workspace_id: z.string().uuid(),
+    }),
+    query: z.never().optional(),
+  },
+);
+
+export const zV1IngestionWorkspacesAttachmentsPreviewUrlRetrieveResponse =
+  zAttachmentPreviewUrlOutput;
+
 export const zV1IngestionWorkspacesEmailsListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
@@ -922,3 +1077,34 @@ export const zV1IngestionWorkspacesEmailsRetrieveData = z.object({
 
 export const zV1IngestionWorkspacesEmailsRetrieveResponse =
   zInboundEmailDetailOutput;
+
+export const zV1WorkspacesInvoicesListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z
+    .object({
+      invoice_type: z.string().optional(),
+      limit: z.number().int().optional(),
+      offset: z.number().int().optional(),
+      search: z.string().optional(),
+      status: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const zV1WorkspacesInvoicesListResponse = z.array(zInvoiceListOutput);
+
+export const zV1WorkspacesInvoicesRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    invoice_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesInvoicesRetrieveResponse = zInvoiceDetailOutput;
