@@ -1,8 +1,9 @@
-import { queryOptions, useQuery, useMutation } from "@tanstack/react-query"
+import { queryOptions, useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   zInboundEmailListOutput,
   zInboundAttachmentListOutput,
   zInboundEmailDetailOutput,
+  zInvoiceListOutput,
 } from "@repo/api-types"
 import type { z } from "zod"
 import { apiClient } from "@/lib/api-client"
@@ -10,6 +11,7 @@ import { apiClient } from "@/lib/api-client"
 export type InboundEmail = z.infer<typeof zInboundEmailListOutput>
 export type InboundAttachment = z.infer<typeof zInboundAttachmentListOutput>
 export type InboundEmailDetail = z.infer<typeof zInboundEmailDetailOutput>
+export type InvoiceForAttachment = z.infer<typeof zInvoiceListOutput>
 
 export interface PaginatedResponse<T> {
   count: number
@@ -71,6 +73,8 @@ export function useInboxEmailDetail(workspaceId: string, emailId: string) {
   return useQuery(inboxEmailDetailQueryOptions(workspaceId, emailId))
 }
 
+const ACTIVE_ATTACHMENT_STATUSES = new Set(["queued", "processing"])
+
 export const inboxAttachmentsQueryOptions = (
   workspaceId: string,
   emailId: string
@@ -89,6 +93,13 @@ export const inboxAttachmentsQueryOptions = (
         .then((r) => r.data),
     staleTime: 30_000,
     enabled: !!workspaceId && !!emailId,
+    refetchInterval: (query) => {
+      const data = query.state.data
+      if (!data) return false
+      return data.some((a) => ACTIVE_ATTACHMENT_STATUSES.has(a.status ?? ""))
+        ? 3_000
+        : false
+    },
   })
 
 export function useInboxEmails(workspaceId: string, params: InboxEmailsParams) {
@@ -128,5 +139,38 @@ export function useAttachmentPreviewUrl(
         .then((r) => r.data.url),
     enabled: !!workspaceId && !!attachmentId,
     staleTime: 5 * 60 * 1000,
+  })
+}
+
+export function useInvoiceForAttachment(
+  workspaceId: string,
+  attachmentId: string | null
+) {
+  return useQuery({
+    queryKey: ['invoice-for-attachment', workspaceId, attachmentId],
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<{ results: InvoiceForAttachment[] }>(
+          `/api/v1/workspaces/${workspaceId}/invoices/`,
+          { signal, params: { source_attachment_id: attachmentId, limit: 1 } }
+        )
+        .then((r) => r.data.results[0] ?? null),
+    enabled: !!workspaceId && !!attachmentId,
+    staleTime: 30_000,
+  })
+}
+
+export function useReprocessAttachment(workspaceId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (attachmentId: string) =>
+      apiClient
+        .post<{ status: string; attachment_id: string }>(
+          `/api/v1/ingestion/attachments/${attachmentId}/reprocess/`
+        )
+        .then((r) => r.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inbox-attachments', workspaceId] })
+    },
   })
 }

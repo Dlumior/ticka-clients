@@ -8,6 +8,7 @@ import {
   RiCheckboxCircleLine,
   RiErrorWarningLine,
   RiLoaderLine,
+  RiRefreshLine,
 } from "@remixicon/react"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
@@ -26,8 +27,14 @@ import {
   useInboxEmailDetail,
   useAttachmentPreviewUrl,
   useDownloadAttachment,
+  useInvoiceForAttachment,
+  useReprocessAttachment,
 } from "../api/inbox.api"
 import type { InboundEmail, InboundAttachment } from "../api/inbox.api"
+import {
+  INVOICE_STATUS_LABEL,
+  INVOICE_STATUS_VARIANT,
+} from "@/features/invoices/invoices.lib"
 
 interface EmailDetailSheetProps {
   open: boolean
@@ -51,9 +58,9 @@ const ATTACHMENT_STATUS_VARIANT: Record<
 
 const ATTACHMENT_STATUS_LABEL: Record<string, string> = {
   stored: "Stored",
-  queued: "Queued",
-  processing: "Processing",
-  completed: "Completed",
+  queued: "Queued for invoice",
+  processing: "Processing as invoice",
+  completed: "Invoiced",
   failed: "Failed",
   duplicate: "Duplicate",
 }
@@ -156,6 +163,12 @@ function AttachmentRow({
   const canDownload = !!attachment.storage_path && status !== "duplicate"
 
   const download = useDownloadAttachment(workspaceId)
+  const reprocess = useReprocessAttachment(workspaceId)
+
+  const { data: invoice, isFetching: invoiceFetching } = useInvoiceForAttachment(
+    workspaceId,
+    status === "completed" ? attachment.id : null
+  )
 
   const {
     data: previewUrl,
@@ -193,7 +206,39 @@ function AttachmentRow({
             >
               {ATTACHMENT_STATUS_LABEL[status] ?? status}
             </Badge>
+            {/* Invoice status badge — visible once attachment processing is done */}
+            {status === "completed" && (
+              invoiceFetching ? (
+                <RiLoaderLine className="size-3 animate-spin text-muted-foreground" />
+              ) : invoice ? (
+                <Badge
+                  variant={INVOICE_STATUS_VARIANT[invoice.status] ?? "outline"}
+                  className="text-[10px]"
+                >
+                  {INVOICE_STATUS_LABEL[invoice.status] ?? invoice.status}
+                </Badge>
+              ) : null
+            )}
           </div>
+
+          {/* Retry button for failed attachments */}
+          {status === "failed" && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 gap-1.5 px-2.5 text-xs font-medium"
+              onClick={() => reprocess.mutate(attachment.id)}
+              disabled={reprocess.isPending}
+              aria-label="Retry processing as invoice"
+            >
+              {reprocess.isPending ? (
+                <RiLoaderLine className="size-3.5 animate-spin" />
+              ) : (
+                <RiRefreshLine className="size-3.5" />
+              )}
+              Retry
+            </Button>
+          )}
 
           {canDownload && (
             <Button
