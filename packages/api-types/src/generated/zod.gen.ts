@@ -507,6 +507,13 @@ export const zPatchedOrganizationUpdateInputRequest = z.object({
   timezone: z.string().min(1).max(64).optional(),
 });
 
+export const zPatchedSupplierUpdateInputRequest = z.object({
+  name: z.string().optional(),
+  address: z.string().optional(),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+});
+
 export const zPatchedWorkspaceMemberUpdateRoleInputRequest = z.object({
   role: zWorkspaceRoleEnum.optional(),
 });
@@ -518,6 +525,28 @@ export const zPatchedWorkspaceUpdateInputRequest = z.object({
 
 export const zRefreshTokenOutput = z.object({
   success: z.boolean(),
+});
+
+export const zSupplierDetailOutput = z.object({
+  id: z.string().uuid().readonly(),
+  ruc: z.string().max(11),
+  name: z.string().max(255).optional(),
+  address: z.string().optional(),
+  email: z.string().email().max(254).optional(),
+  phone: z.string().max(30).optional(),
+  invoice_count: z.number().int().readonly(),
+  created_at: z.string().datetime().readonly(),
+  updated_at: z.string().datetime().readonly(),
+});
+
+export const zSupplierListOutput = z.object({
+  id: z.string().uuid(),
+  ruc: z.string(),
+  name: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  invoice_count: z.number().int(),
+  created_at: z.string().datetime(),
 });
 
 export const zUserLoginInputRequest = z.object({
@@ -1133,6 +1162,7 @@ export const zV1WorkspacesInvoicesListData = z.object({
       search: z.string().optional(),
       source_attachment_id: z.string().optional(),
       status: z.string().optional(),
+      supplier_id: z.string().optional(),
     })
     .optional(),
 });
@@ -1150,3 +1180,45 @@ export const zV1WorkspacesInvoicesRetrieveData = z.object({
 });
 
 export const zV1WorkspacesInvoicesRetrieveResponse = zInvoiceDetailOutput;
+
+export const zV1WorkspacesSuppliersListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z
+    .object({
+      limit: z.number().int().optional(),
+      offset: z.number().int().optional(),
+      search: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const zV1WorkspacesSuppliersListResponse = z.array(zSupplierListOutput);
+
+export const zV1WorkspacesSuppliersRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    supplier_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesSuppliersRetrieveResponse = zSupplierDetailOutput;
+
+export const zV1WorkspacesSuppliersPartialUpdateData = z.object({
+  body: zPatchedSupplierUpdateInputRequest.optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    supplier_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesSuppliersPartialUpdateResponse =
+  zSupplierDetailOutput;

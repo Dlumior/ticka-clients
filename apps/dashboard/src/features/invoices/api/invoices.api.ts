@@ -22,6 +22,7 @@ export interface InvoicesParams {
   status?: string
   invoice_type?: string
   search?: string
+  supplier_id?: string
 }
 
 export const invoicesQueryOptions = (
@@ -42,6 +43,7 @@ export const invoicesQueryOptions = (
               status: params.status || undefined,
               invoice_type: params.invoice_type || undefined,
               search: params.search || undefined,
+              supplier_id: params.supplier_id || undefined,
             },
           },
         )

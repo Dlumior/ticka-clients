@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate, useParams } from '@tanstack/react-router'
 import {
   flexRender,
   getCoreRowModel,
@@ -7,42 +8,31 @@ import {
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { useInvoices } from '../api/invoices.api'
-import type { Invoice } from '../api/invoices.api'
-import { getInvoicesColumns } from './invoices-columns'
-import { InvoicesToolbar } from './invoices-toolbar'
-import { InvoiceDetailSheet } from './invoice-detail-sheet'
+import { useSuppliers } from '../api/suppliers.api'
+import type { Supplier } from '../api/suppliers.api'
+import { getSuppliersColumns } from './suppliers-columns'
+import { SuppliersToolbar } from './suppliers-toolbar'
 
-interface InvoicesTableProps {
+interface SuppliersTableProps {
   workspaceId: string
-  timezone: string
-  // When set, the list is scoped to a single supplier (used by the supplier
-  // detail page).
-  supplierId?: string
 }
 
-export function InvoicesTable({
-  workspaceId,
-  timezone,
-  supplierId,
-}: InvoicesTableProps) {
+export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
+  const navigate = useNavigate()
+  const params = useParams({ strict: false }) as {
+    orgSlug?: string
+    workspaceSlug?: string
+  }
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 })
-  const [statusFilter, setStatusFilter] = useState('')
-  const [typeFilter, setTypeFilter] = useState('')
   const [search, setSearch] = useState('')
-  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
-  const [sheetOpen, setSheetOpen] = useState(false)
 
-  const { data, isLoading, isFetching } = useInvoices(workspaceId, {
+  const { data, isLoading, isFetching } = useSuppliers(workspaceId, {
     limit: pagination.pageSize,
     offset: pagination.pageIndex * pagination.pageSize,
-    status: statusFilter || undefined,
-    invoice_type: typeFilter || undefined,
     search: search || undefined,
-    supplier_id: supplierId || undefined,
   })
 
-  const columns = getInvoicesColumns()
+  const columns = getSuppliersColumns()
 
   const table = useReactTable({
     data: data?.results ?? [],
@@ -59,31 +49,21 @@ export function InvoicesTable({
     setPagination((p) => ({ ...p, pageIndex: 0 }))
   }
 
-  function handleStatusChange(value: string) {
-    setStatusFilter(value)
-    setPagination((p) => ({ ...p, pageIndex: 0 }))
-  }
-
-  function handleTypeChange(value: string) {
-    setTypeFilter(value)
-    setPagination((p) => ({ ...p, pageIndex: 0 }))
-  }
-
-  function handleRowClick(invoice: Invoice) {
-    setSelectedInvoice(invoice)
-    setSheetOpen(true)
+  function handleRowClick(supplier: Supplier) {
+    if (!params.orgSlug || !params.workspaceSlug) return
+    navigate({
+      to: '/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/$supplierId',
+      params: {
+        orgSlug: params.orgSlug,
+        workspaceSlug: params.workspaceSlug,
+        supplierId: supplier.id,
+      },
+    })
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <InvoicesToolbar
-        search={search}
-        onSearchChange={handleSearchChange}
-        status={statusFilter}
-        onStatusChange={handleStatusChange}
-        invoiceType={typeFilter}
-        onInvoiceTypeChange={handleTypeChange}
-      />
+      <SuppliersToolbar search={search} onSearchChange={handleSearchChange} />
 
       <div className="overflow-hidden rounded-md border">
         <table className="w-full text-sm">
@@ -126,7 +106,7 @@ export function InvoicesTable({
                   colSpan={columns.length}
                   className="px-3 py-12 text-center text-sm text-muted-foreground"
                 >
-                  No invoices found.
+                  No suppliers found.
                 </td>
               </tr>
             ) : (
@@ -180,17 +160,6 @@ export function InvoicesTable({
           </Button>
         </div>
       </div>
-
-      <InvoiceDetailSheet
-        open={sheetOpen}
-        onOpenChange={(open) => {
-          setSheetOpen(open)
-          if (!open) setSelectedInvoice(null)
-        }}
-        invoice={selectedInvoice}
-        workspaceId={workspaceId}
-        timezone={timezone}
-      />
     </div>
   )
 }
