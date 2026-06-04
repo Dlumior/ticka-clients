@@ -102,12 +102,56 @@ export const inboxAttachmentsQueryOptions = (
     },
   })
 
+export const manualAttachmentsQueryOptions = (workspaceId: string) =>
+  queryOptions({
+    queryKey: ['manual-attachments', workspaceId],
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<InboundAttachment[]>(
+          `/api/v1/ingestion/workspaces/${workspaceId}/attachments/`,
+          { signal, params: { source: 'manual_upload' } }
+        )
+        .then((r) => r.data),
+    staleTime: 30_000,
+    enabled: !!workspaceId,
+    refetchInterval: (query) => {
+      const data = query.state.data
+      if (!data) return false
+      return data.some((a) => ACTIVE_ATTACHMENT_STATUSES.has(a.status ?? ''))
+        ? 3_000
+        : false
+    },
+  })
+
 export function useInboxEmails(workspaceId: string, params: InboxEmailsParams) {
   return useQuery(inboxEmailsQueryOptions(workspaceId, params))
 }
 
 export function useInboxAttachments(workspaceId: string, emailId: string) {
   return useQuery(inboxAttachmentsQueryOptions(workspaceId, emailId))
+}
+
+export function useManualAttachments(workspaceId: string) {
+  return useQuery(manualAttachmentsQueryOptions(workspaceId))
+}
+
+export function useUploadInvoiceFile(workspaceId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData()
+      formData.append('file', file)
+      const r = await apiClient.post<InboundAttachment>(
+        `/api/v1/ingestion/workspaces/${workspaceId}/attachments/upload/`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      )
+      return r.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['manual-attachments', workspaceId] })
+    },
+  })
 }
 
 export function useDownloadAttachment(workspaceId: string) {

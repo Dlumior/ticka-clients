@@ -18,6 +18,12 @@ export const zAttachmentReprocessOutput = z.object({
 export const zBlankEnum = z.enum([""]);
 
 /**
+ * * `email` - Email
+ * * `manual_upload` - Manual Upload
+ */
+export const zSourceEnum = z.enum(["email", "manual_upload"]);
+
+/**
  * * `stored` - Stored
  * * `queued` - Queued
  * * `processing` - Processing
@@ -36,7 +42,9 @@ export const zInboundAttachmentStatusEnum = z.enum([
 
 export const zInboundAttachmentListOutput = z.object({
   id: z.string().uuid().readonly(),
-  inbound_email_id: z.string().uuid().readonly(),
+  inbound_email_id: z
+    .union([z.string().uuid().readonly(), z.null()])
+    .readonly(),
   workspace_id: z.string().uuid().readonly(),
   original_filename: z.string().max(512),
   content_type: z.string().max(255),
@@ -51,6 +59,7 @@ export const zInboundAttachmentListOutput = z.object({
     .gte(-2147483648)
     .lte(2147483647)
     .optional(),
+  source: zSourceEnum.optional(),
   status: zInboundAttachmentStatusEnum.optional(),
   failure_reason: z.union([z.string(), z.null()]).optional(),
   created_at: z.string().datetime().readonly(),
@@ -299,6 +308,21 @@ export const zInvoiceListOutput = z.object({
   total: z.string().readonly(),
   received_at: z.union([z.string().datetime(), z.null()]),
   created_at: z.string().datetime(),
+});
+
+export const zManualUploadOutput = z.object({
+  id: z.string().uuid().readonly(),
+  workspace_id: z.string().uuid().readonly(),
+  original_filename: z.string().max(512),
+  content_type: z.string().max(255),
+  file_size_bytes: z.coerce
+    .bigint()
+    .gte(BigInt(0))
+    .lte(BigInt(9223372036854776000)),
+  source: zSourceEnum.optional(),
+  status: zInboundAttachmentStatusEnum.optional(),
+  failure_reason: z.union([z.string(), z.null()]).optional(),
+  created_at: z.string().datetime().readonly(),
 });
 
 export const zOrganizationCreateInputRequest = z.object({
@@ -1007,6 +1031,7 @@ export const zV1IngestionWorkspacesAttachmentsListData = z.object({
   query: z
     .object({
       inbound_email_id: z.string().optional(),
+      source: z.string().optional(),
       status: z.string().optional(),
     })
     .optional(),
@@ -1044,6 +1069,22 @@ export const zV1IngestionWorkspacesAttachmentsPreviewUrlRetrieveData = z.object(
 
 export const zV1IngestionWorkspacesAttachmentsPreviewUrlRetrieveResponse =
   zAttachmentPreviewUrlOutput;
+
+export const zV1IngestionWorkspacesAttachmentsUploadCreateData = z.object({
+  body: z
+    .object({
+      file: z.string().optional(),
+    })
+    .optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1IngestionWorkspacesAttachmentsUploadCreateResponse =
+  zManualUploadOutput;
 
 export const zV1IngestionWorkspacesEmailsListData = z.object({
   body: z.never().optional(),
@@ -1090,6 +1131,7 @@ export const zV1WorkspacesInvoicesListData = z.object({
       limit: z.number().int().optional(),
       offset: z.number().int().optional(),
       search: z.string().optional(),
+      source_attachment_id: z.string().optional(),
       status: z.string().optional(),
     })
     .optional(),
