@@ -7,7 +7,7 @@ import {
   RiRefreshLine,
   RiUploadCloud2Line,
 } from '@remixicon/react'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatDatetimeInTz } from '@/lib/date'
@@ -63,10 +63,12 @@ function UploadedFileRow({
   attachment,
   workspaceId,
   timezone,
+  highlighted,
 }: {
   attachment: InboundAttachment
   workspaceId: string
   timezone: string
+  highlighted?: boolean
 }) {
   const status = attachment.status ?? 'stored'
   const canDownload = !!attachment.storage_path && status !== 'duplicate'
@@ -78,8 +80,24 @@ function UploadedFileRow({
     status === 'completed' ? attachment.id : null,
   )
 
+  // When deep-linked from an invoice, scroll this row into view and pulse a
+  // highlight so the file the invoice came from is easy to spot.
+  const rowRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (highlighted) {
+      rowRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    }
+  }, [highlighted])
+
   return (
-    <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-muted/30 transition-colors">
+    <div
+      ref={rowRef}
+      className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${
+        highlighted
+          ? 'bg-primary/5 ring-2 ring-primary/60'
+          : 'hover:bg-muted/30'
+      }`}
+    >
       <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
         <RiAttachmentLine className="size-4 text-muted-foreground" />
       </div>
@@ -161,9 +179,15 @@ interface UploadState {
 interface ManualUploadTabProps {
   workspaceId: string
   timezone: string
+  // When set (via the ?attachmentId deep-link), highlights that uploaded file.
+  highlightAttachmentId?: string
 }
 
-export function ManualUploadTab({ workspaceId, timezone }: ManualUploadTabProps) {
+export function ManualUploadTab({
+  workspaceId,
+  timezone,
+  highlightAttachmentId,
+}: ManualUploadTabProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragOver, setIsDragOver] = useState(false)
   const [uploadStates, setUploadStates] = useState<UploadState[]>([])
@@ -349,6 +373,7 @@ export function ManualUploadTab({ workspaceId, timezone }: ManualUploadTabProps)
                 attachment={a}
                 workspaceId={workspaceId}
                 timezone={timezone}
+                highlighted={a.id === highlightAttachmentId}
               />
             ))}
           </div>

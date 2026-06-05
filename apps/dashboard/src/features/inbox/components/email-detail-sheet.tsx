@@ -30,7 +30,7 @@ import {
   useInvoiceForAttachment,
   useReprocessAttachment,
 } from "../api/inbox.api"
-import type { InboundEmail, InboundAttachment } from "../api/inbox.api"
+import type { InboundAttachment } from "../api/inbox.api"
 import {
   INVOICE_STATUS_LABEL,
   INVOICE_STATUS_VARIANT,
@@ -39,7 +39,7 @@ import {
 interface EmailDetailSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  email: InboundEmail | null
+  emailId: string | null
   workspaceId: string
   timezone: string
 }
@@ -367,18 +367,21 @@ function AttachmentsPanel({
 export function EmailDetailSheet({
   open,
   onOpenChange,
-  email,
+  emailId,
   workspaceId,
   timezone,
 }: EmailDetailSheetProps) {
+  // The detail query carries every header field (subject, sender, status,
+  // failure_reason, received_at) the strip needs, so the sheet can open from an
+  // id alone — no list-row object required. This is what makes deep-linking work.
   const { data: detail, isFetching: detailFetching } = useInboxEmailDetail(
     workspaceId,
-    email?.id ?? ""
+    emailId ?? ""
   )
   const { data: attachments, isFetching: attachmentsFetching } =
-    useInboxAttachments(workspaceId, email?.id ?? "")
+    useInboxAttachments(workspaceId, emailId ?? "")
 
-  const emailStatus = email?.status
+  const emailStatus = detail?.status
   const statusVariant =
     emailStatus === "completed"
       ? "default"
@@ -403,28 +406,28 @@ export function EmailDetailSheet({
           <div className="flex items-start justify-between gap-4 px-6 py-4">
             <SheetHeader className="gap-0.5 text-left">
               <SheetTitle className="text-base leading-snug">
-                {email?.subject || "(no subject)"}
+                {detail?.subject || "(no subject)"}
               </SheetTitle>
               <SheetDescription className="text-sm">
-                {email?.sender_email}
+                {detail?.sender_email}
               </SheetDescription>
             </SheetHeader>
           </div>
 
           {/* Metadata row */}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t px-6 py-3">
-            {email?.sender_name && (
+            {detail?.sender_name && (
               <div className="flex items-center gap-1.5">
                 <RiMailLine className="size-3.5 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">From</span>
-                <span className="text-xs font-medium">{email.sender_name}</span>
+                <span className="text-xs font-medium">{detail.sender_name}</span>
               </div>
             )}
             <div className="flex items-center gap-1.5">
               <RiTimeLine className="size-3.5 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Received</span>
               <span className="text-xs tabular-nums">
-                {email ? formatDatetimeInTz(email.received_at, timezone) : "—"}
+                {detail ? formatDatetimeInTz(detail.received_at, timezone) : "—"}
               </span>
             </div>
             {emailStatus && (
@@ -432,11 +435,11 @@ export function EmailDetailSheet({
                 {emailStatus.replace(/_/g, " ")}
               </Badge>
             )}
-            {email?.failure_reason && (
+            {detail?.failure_reason && (
               <div className="flex w-full items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2">
                 <RiErrorWarningLine className="mt-0.5 size-4 shrink-0 text-destructive" />
                 <p className="text-xs leading-relaxed text-destructive">
-                  {email.failure_reason}
+                  {detail.failure_reason}
                 </p>
               </div>
             )}

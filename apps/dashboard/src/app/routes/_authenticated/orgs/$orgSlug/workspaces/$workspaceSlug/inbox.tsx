@@ -18,16 +18,19 @@ export const Route = createFileRoute(
 )({
   validateSearch: z.object({
     tab: z.enum(TAB_VALUES).default('email'),
+    emailId: z.string().optional(),
+    attachmentId: z.string().optional(),
   }),
   component: InboxPage,
 })
 
 function InboxPage() {
   const { workspace, organizationDetail } = Route.useRouteContext()
-  const { tab } = Route.useSearch()
+  const { tab, emailId, attachmentId } = Route.useSearch()
   const navigate = Route.useNavigate()
 
   function onTabChange(value: string) {
+    // Switching tabs clears any deep-link target so a stale sheet doesn't reopen.
     navigate({ search: { tab: value as TabValue }, replace: true })
   }
 
@@ -72,7 +75,11 @@ function InboxPage() {
               Emails received at{' '}
               <span className="font-mono text-foreground">{workspace.inbox_email}</span>.
             </p>
-            <InboxTable workspaceId={workspace.id} timezone={organizationDetail.timezone} />
+            <InboxTable
+              workspaceId={workspace.id}
+              timezone={organizationDetail.timezone}
+              initialEmailId={emailId}
+            />
           </div>
         </TabsContent>
 
@@ -80,6 +87,7 @@ function InboxPage() {
           <ManualUploadTab
             workspaceId={workspace.id}
             timezone={organizationDetail.timezone}
+            highlightAttachmentId={attachmentId}
           />
         </TabsContent>
 

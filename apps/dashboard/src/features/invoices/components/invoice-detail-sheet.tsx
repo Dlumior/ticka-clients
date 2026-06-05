@@ -1,8 +1,12 @@
 import {
+  RiArrowRightUpLine,
   RiBuilding2Line,
   RiErrorWarningLine,
   RiFileTextLine,
+  RiMailLine,
+  RiUploadCloud2Line,
 } from '@remixicon/react'
+import { Link, useParams } from '@tanstack/react-router'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -163,6 +167,58 @@ function LineItemsTable({ detail }: { detail: InvoiceDetail }) {
   )
 }
 
+// Links the invoice back to the email or manual upload it came from, so a
+// failure can be traced to its origin. Falls back to a dash when the source
+// attachment is no longer available.
+function SourceField({ detail }: { detail: InvoiceDetail }) {
+  const params = useParams({ strict: false })
+  const orgSlug = params.orgSlug
+  const workspaceSlug = params.workspaceSlug
+
+  const linkClass =
+    'inline-flex items-center gap-1 text-sm text-primary hover:underline'
+
+  if (orgSlug && workspaceSlug && detail.source_attachment_id) {
+    if (detail.source_origin === 'email' && detail.inbound_email_id) {
+      return (
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[11px] text-muted-foreground">Source</span>
+          <Link
+            to="/orgs/$orgSlug/workspaces/$workspaceSlug/inbox"
+            params={{ orgSlug, workspaceSlug }}
+            search={{ tab: 'email', emailId: detail.inbound_email_id }}
+            className={linkClass}
+          >
+            <RiMailLine className="size-3.5 shrink-0" />
+            Source email
+            <RiArrowRightUpLine className="size-3.5 shrink-0" />
+          </Link>
+        </div>
+      )
+    }
+
+    if (detail.source_origin === 'manual_upload') {
+      return (
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[11px] text-muted-foreground">Source</span>
+          <Link
+            to="/orgs/$orgSlug/workspaces/$workspaceSlug/inbox"
+            params={{ orgSlug, workspaceSlug }}
+            search={{ tab: 'upload', attachmentId: detail.source_attachment_id }}
+            className={linkClass}
+          >
+            <RiUploadCloud2Line className="size-3.5 shrink-0" />
+            Uploaded file
+            <RiArrowRightUpLine className="size-3.5 shrink-0" />
+          </Link>
+        </div>
+      )
+    }
+  }
+
+  return <Field label="Source" value="—" />
+}
+
 export function InvoiceDetailSheet({
   open,
   onOpenChange,
@@ -266,8 +322,9 @@ export function InvoiceDetailSheet({
                         : null
                     }
                   />
-                  <Field label="Source" value={detail.source_type?.toUpperCase()} />
+                  <Field label="Format" value={detail.source_type?.toUpperCase()} />
                   <Field label="Sender" value={detail.sender_email} />
+                  <SourceField detail={detail} />
                 </div>
                 {detail.tags && detail.tags.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">

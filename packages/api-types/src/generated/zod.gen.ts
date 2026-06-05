@@ -30,6 +30,7 @@ export const zSourceEnum = z.enum(["email", "manual_upload"]);
  * * `completed` - Completed
  * * `failed` - Failed
  * * `duplicate` - Duplicate
+ * * `held` - Held
  */
 export const zInboundAttachmentStatusEnum = z.enum([
   "stored",
@@ -38,6 +39,7 @@ export const zInboundAttachmentStatusEnum = z.enum([
   "completed",
   "failed",
   "duplicate",
+  "held",
 ]);
 
 export const zInboundAttachmentListOutput = z.object({
@@ -283,6 +285,13 @@ export const zInvoiceDetailOutput = z.object({
   country_code: z.string().max(2).optional(),
   invoice_type: zInvoiceTypeEnum.optional(),
   source_type: zSourceTypeEnum,
+  source_origin: z.union([z.string().readonly(), z.null()]).readonly(),
+  source_attachment_id: z
+    .union([z.string().uuid().readonly(), z.null()])
+    .readonly(),
+  inbound_email_id: z
+    .union([z.string().uuid().readonly(), z.null()])
+    .readonly(),
   sender_email: z.string().email().max(254).optional(),
   subject: z.string().optional(),
   received_at: z.union([z.string().datetime(), z.null()]).optional(),

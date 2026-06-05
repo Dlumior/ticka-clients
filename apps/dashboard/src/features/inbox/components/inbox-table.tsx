@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   flexRender,
   getCoreRowModel,
@@ -16,14 +16,28 @@ import { EmailDetailSheet } from './email-detail-sheet'
 interface InboxTableProps {
   workspaceId: string
   timezone: string
+  // When set (via the ?emailId deep-link), opens that email's detail on mount.
+  initialEmailId?: string
 }
 
-export function InboxTable({ workspaceId, timezone }: InboxTableProps) {
+export function InboxTable({
+  workspaceId,
+  timezone,
+  initialEmailId,
+}: InboxTableProps) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 })
   const [statusFilter, setStatusFilter] = useState('')
   const [search, setSearch] = useState('')
-  const [selectedEmail, setSelectedEmail] = useState<InboundEmail | null>(null)
+  const [selectedEmailId, setSelectedEmailId] = useState<string | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
+
+  // Open the deep-linked email sheet when arriving with an ?emailId param.
+  useEffect(() => {
+    if (initialEmailId) {
+      setSelectedEmailId(initialEmailId)
+      setSheetOpen(true)
+    }
+  }, [initialEmailId])
 
   const { data, isLoading, isFetching } = useInboxEmails(workspaceId, {
     limit: pagination.pageSize,
@@ -55,7 +69,7 @@ export function InboxTable({ workspaceId, timezone }: InboxTableProps) {
   }
 
   function handleRowClick(email: InboundEmail) {
-    setSelectedEmail(email)
+    setSelectedEmailId(email.id)
     setSheetOpen(true)
   }
 
@@ -160,9 +174,9 @@ export function InboxTable({ workspaceId, timezone }: InboxTableProps) {
         open={sheetOpen}
         onOpenChange={(open) => {
           setSheetOpen(open)
-          if (!open) setSelectedEmail(null)
+          if (!open) setSelectedEmailId(null)
         }}
-        email={selectedEmail}
+        emailId={selectedEmailId}
         workspaceId={workspaceId}
         timezone={timezone}
       />
