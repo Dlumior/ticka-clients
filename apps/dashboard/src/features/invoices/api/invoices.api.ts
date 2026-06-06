@@ -1,4 +1,9 @@
-import { queryOptions, useQuery } from '@tanstack/react-query'
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { zInvoiceListOutput, zInvoiceDetailOutput } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
@@ -75,4 +80,17 @@ export function useInvoices(workspaceId: string, params: InvoicesParams) {
 
 export function useInvoiceDetail(workspaceId: string, invoiceId: string) {
   return useQuery(invoiceDetailQueryOptions(workspaceId, invoiceId))
+}
+
+export function useDeleteInvoice(workspaceId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (invoiceId: string) =>
+      apiClient
+        .delete(`/api/v1/workspaces/${workspaceId}/invoices/${invoiceId}/`)
+        .then((r) => r.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices', workspaceId] })
+    },
+  })
 }

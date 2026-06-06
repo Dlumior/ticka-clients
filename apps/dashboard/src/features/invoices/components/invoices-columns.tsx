@@ -1,4 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table'
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate } from '@/lib/date'
 import type { Invoice } from '../api/invoices.api'
@@ -8,11 +8,18 @@ import {
   statusVariant,
   typeLabel,
 } from '../invoices.lib'
+import { InvoiceRowActions } from './invoice-row-actions'
 
 const columnHelper = createColumnHelper<Invoice>()
 
-export function getInvoicesColumns() {
-  return [
+interface InvoicesColumnActions {
+  // Hide the actions column entirely for read-only members.
+  canManage: boolean
+}
+
+export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const columns: ColumnDef<Invoice, any>[] = [
     columnHelper.accessor('invoice_number', {
       header: 'Invoice',
       cell: (info) => (
@@ -74,4 +81,16 @@ export function getInvoicesColumns() {
       },
     }),
   ]
+
+  if (canManage) {
+    columns.push(
+      columnHelper.display({
+        id: 'actions',
+        header: () => <span className="sr-only">Actions</span>,
+        cell: (info) => <InvoiceRowActions invoice={info.row.original} />,
+      }),
+    )
+  }
+
+  return columns
 }

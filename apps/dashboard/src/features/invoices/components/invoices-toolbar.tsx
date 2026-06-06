@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { zInvoiceDetailOutputStatusEnum, zInvoiceTypeEnum } from '@repo/api-types'
 import { Input } from '@/components/ui/input'
 import {
@@ -8,26 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useInvoicesContext } from '../context/invoices.context'
 import { INVOICE_STATUS_LABEL, INVOICE_TYPE_LABEL } from '../invoices.lib'
 
-interface InvoicesToolbarProps {
-  search: string
-  onSearchChange: (value: string) => void
-  status: string
-  onStatusChange: (value: string) => void
-  invoiceType: string
-  onInvoiceTypeChange: (value: string) => void
-}
-
-export function InvoicesToolbar({
-  search,
-  onSearchChange,
-  status,
-  onStatusChange,
-  invoiceType,
-  onInvoiceTypeChange,
-}: InvoicesToolbarProps) {
-  const [localSearch, setLocalSearch] = useState(search)
+export function InvoicesToolbar() {
+  const { filters } = useInvoicesContext()
+  const { onSearchChange } = filters
+  const [localSearch, setLocalSearch] = useState(filters.search)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,7 +32,7 @@ export function InvoicesToolbar({
         onChange={(e) => setLocalSearch(e.target.value)}
         className="h-8 w-64"
       />
-      <Select value={status} onValueChange={onStatusChange}>
+      <Select value={filters.statusFilter} onValueChange={filters.onStatusChange}>
         <SelectTrigger size="sm" className="w-40">
           <SelectValue placeholder="All statuses" />
         </SelectTrigger>
@@ -57,7 +45,7 @@ export function InvoicesToolbar({
           ))}
         </SelectContent>
       </Select>
-      <Select value={invoiceType} onValueChange={onInvoiceTypeChange}>
+      <Select value={filters.typeFilter} onValueChange={filters.onTypeChange}>
         <SelectTrigger size="sm" className="w-44">
           <SelectValue placeholder="All types" />
         </SelectTrigger>
