@@ -8,7 +8,7 @@ import {
 } from '@remixicon/react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { InboxTable } from '@/features/inbox/components/inbox-table'
-import { ManualUploadTab } from '@/features/inbox/components/manual-upload-tab'
+import { ManualUploadTab } from '@/features/inbox/components/manual-upload'
 
 const TAB_VALUES = ['email', 'upload', 'whatsapp', 'telegram'] as const
 type TabValue = (typeof TAB_VALUES)[number]

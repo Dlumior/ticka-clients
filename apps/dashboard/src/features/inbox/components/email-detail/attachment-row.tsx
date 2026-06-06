@@ -1,0 +1,186 @@
+import {
+  RiAttachmentLine,
+  RiDownloadLine,
+  RiErrorWarningLine,
+  RiEyeLine,
+  RiEyeOffLine,
+  RiLoaderLine,
+  RiRefreshLine,
+} from '@remixicon/react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  ATTACHMENT_STATUS_LABEL,
+  ATTACHMENT_STATUS_VARIANT,
+  StatusIcon,
+  formatBytes,
+} from '../../inbox.lib'
+import {
+  INVOICE_STATUS_LABEL,
+  INVOICE_STATUS_VARIANT,
+} from '@/features/invoices/invoices.lib'
+import {
+  useAttachmentPreviewUrl,
+  useDownloadAttachment,
+  useInvoiceForAttachment,
+  useReprocessAttachment,
+} from '../../api/inbox.api'
+import type { InboundAttachment } from '../../api/inbox.api'
+
+interface AttachmentRowProps {
+  attachment: InboundAttachment
+  workspaceId: string
+  isSelected: boolean
+  onSelect: () => void
+}
+
+export function AttachmentRow({
+  attachment,
+  workspaceId,
+  isSelected,
+  onSelect,
+}: AttachmentRowProps) {
+  const status = attachment.status ?? 'stored'
+  const isPdf = attachment.content_type === 'application/pdf'
+  const canDownload = !!attachment.storage_path && status !== 'duplicate'
+
+  const download = useDownloadAttachment(workspaceId)
+  const reprocess = useReprocessAttachment(workspaceId)
+
+  const { data: invoice, isFetching: invoiceFetching } = useInvoiceForAttachment(
+    workspaceId,
+    status === 'completed' ? attachment.id : null,
+  )
+
+  const {
+    data: previewUrl,
+    isFetching: urlFetching,
+    isError: urlError,
+  } = useAttachmentPreviewUrl(workspaceId, isSelected ? attachment.id : null)
+
+  return (
+    <div className="flex flex-col gap-0">
+      <div
+        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors ${
+          isSelected ? 'bg-muted/60' : 'hover:bg-muted/30'
+        }`}
+      >
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
+          <RiAttachmentLine className="size-4 text-muted-foreground" />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm leading-tight font-medium">
+            {attachment.original_filename}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {formatBytes(attachment.file_size_bytes)}
+          </p>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <StatusIcon status={status} />
+            <Badge variant={ATTACHMENT_STATUS_VARIANT[status] ?? 'outline'} className="text-[10px]">
+              {ATTACHMENT_STATUS_LABEL[status] ?? status}
+            </Badge>
+            {status === 'completed' && (
+              invoiceFetching ? (
+                <RiLoaderLine className="size-3 animate-spin text-muted-foreground" />
+              ) : invoice ? (
+                <Badge
+                  variant={INVOICE_STATUS_VARIANT[invoice.status] ?? 'outline'}
+                  className="text-[10px]"
+                >
+                  {INVOICE_STATUS_LABEL[invoice.status] ?? invoice.status}
+                </Badge>
+              ) : null
+            )}
+          </div>
+
+          {status === 'failed' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 gap-1.5 px-2.5 text-xs font-medium"
+              onClick={() => reprocess.mutate(attachment.id)}
+              disabled={reprocess.isPending}
+              aria-label="Retry processing as invoice"
+            >
+              {reprocess.isPending ? (
+                <RiLoaderLine className="size-3.5 animate-spin" />
+              ) : (
+                <RiRefreshLine className="size-3.5" />
+              )}
+              Retry
+            </Button>
+          )}
+
+          {canDownload && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 gap-1.5 px-2.5 text-xs font-medium"
+              onClick={() => download.mutate(attachment.id)}
+              disabled={download.isPending}
+              aria-label="Download attachment"
+            >
+              {download.isPending ? (
+                <RiLoaderLine className="size-3.5 animate-spin" />
+              ) : (
+                <RiDownloadLine className="size-3.5" />
+              )}
+            </Button>
+          )}
+
+          {isPdf && (
+            <Button
+              variant={isSelected ? 'secondary' : 'ghost'}
+              size="sm"
+              className="h-7 gap-1.5 px-2.5 text-xs font-medium"
+              onClick={onSelect}
+              aria-label={isSelected ? 'Hide PDF preview' : 'Show PDF preview'}
+            >
+              {isSelected ? (
+                <RiEyeOffLine className="size-3.5" />
+              ) : (
+                <RiEyeLine className="size-3.5" />
+              )}
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {isSelected && (
+        <div className="flex flex-1 flex-col overflow-hidden rounded-lg border bg-background shadow-sm">
+          {urlFetching && !previewUrl ? (
+            <Skeleton className="h-full w-full rounded-none" />
+          ) : urlError ? (
+            <div className="flex items-center gap-2 px-4 py-3">
+              <RiErrorWarningLine className="size-4 shrink-0 text-destructive" />
+              <p className="text-sm text-destructive">Failed to load preview.</p>
+            </div>
+          ) : previewUrl ? (
+            <>
+              <div className="flex items-center justify-between border-b bg-muted/30 px-3 py-2">
+                <span className="truncate text-xs font-medium text-muted-foreground">
+                  {attachment.original_filename}
+                </span>
+                <span className="ml-3 shrink-0 text-xs text-muted-foreground">
+                  {formatBytes(attachment.file_size_bytes)}
+                </span>
+              </div>
+              <iframe
+                src={previewUrl}
+                title={attachment.original_filename}
+                className="w-full flex-1"
+                style={{ minHeight: '520px' }}
+              />
+            </>
+          ) : null}
+        </div>
+      )}
+    </div>
+  )
+}

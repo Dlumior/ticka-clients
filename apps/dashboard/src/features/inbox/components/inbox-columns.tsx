@@ -2,24 +2,9 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { formatDatetimeInTz } from '@/lib/date'
 import type { InboundEmail } from '../api/inbox.api'
+import { EMAIL_STATUS_LABEL, EMAIL_STATUS_VARIANT } from '../inbox.lib'
 
 const columnHelper = createColumnHelper<InboundEmail>()
-
-const STATUS_VARIANT = {
-  completed: 'default',
-  failed: 'destructive',
-  pending: 'secondary',
-  processing: 'outline',
-  no_attachments_found: 'secondary',
-} as const satisfies Record<string, 'default' | 'destructive' | 'secondary' | 'outline'>
-
-const STATUS_LABEL: Record<string, string> = {
-  completed: 'Completed',
-  failed: 'Failed',
-  pending: 'Pending',
-  processing: 'Processing',
-  no_attachments_found: 'No attachments',
-}
 
 export function getInboxColumns(timezone: string) {
   return [
@@ -56,8 +41,8 @@ export function getInboxColumns(timezone: string) {
       cell: (info) => {
         const status = info.getValue() ?? 'pending'
         return (
-          <Badge variant={STATUS_VARIANT[status] ?? 'outline'}>
-            {STATUS_LABEL[status] ?? status}
+          <Badge variant={EMAIL_STATUS_VARIANT[status] ?? 'outline'}>
+            {EMAIL_STATUS_LABEL[status] ?? status}
           </Badge>
         )
       },
