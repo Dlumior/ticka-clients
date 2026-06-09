@@ -17,6 +17,78 @@ export const zAttachmentReprocessOutput = z.object({
 
 export const zBlankEnum = z.enum([""]);
 
+export const zExportColumn = z.object({
+  field: z.string(),
+  label: z.string(),
+});
+
+export const zExportColumnRequest = z.object({
+  field: z.string().min(1),
+  label: z.string().min(1),
+});
+
+export const zExportFieldOutput = z.object({
+  key: z.string(),
+  label: z.string(),
+  group: z.string(),
+  grain: z.string(),
+});
+
+export const zExportFiltersInputRequest = z.object({
+  supplier_ids: z.array(z.string().uuid()).optional(),
+  date_from: z.union([z.string().date(), z.null()]).optional(),
+  date_to: z.union([z.string().date(), z.null()]).optional(),
+  status: z.string().optional(),
+});
+
+/**
+ * * `csv` - CSV
+ */
+export const zExportFormatEnum = z.enum(["csv"]);
+
+export const zExportPeriodInputRequest = z.object({
+  name: z.string().min(1).max(120),
+  start_date: z.string().date(),
+  end_date: z.string().date(),
+});
+
+export const zExportPeriodOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  start_date: z.string().date(),
+  end_date: z.string().date(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
+/**
+ * * `pending` - Pending
+ * * `processing` - Processing
+ * * `completed` - Completed
+ * * `failed` - Failed
+ */
+export const zExportStatusEnum = z.enum([
+  "pending",
+  "processing",
+  "completed",
+  "failed",
+]);
+
+export const zExportTemplateInputRequest = z.object({
+  name: z.string().min(1).max(120),
+  format: zExportFormatEnum.optional(),
+  columns: z.array(zExportColumnRequest),
+});
+
+export const zExportTemplateOutput = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  format: zExportFormatEnum,
+  columns: z.array(zExportColumn),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
 /**
  * * `email` - Email
  * * `manual_upload` - Manual Upload
@@ -304,6 +376,42 @@ export const zInvoiceDetailOutput = z.object({
   tags: z.array(zInvoiceTagOutput).readonly(),
 });
 
+/**
+ * * `filter` - filter
+ * * `explicit` - explicit
+ */
+export const zModeEnum = z.enum(["filter", "explicit"]);
+
+export const zInvoiceExportCreateInputRequest = z.object({
+  template_id: z.string().uuid(),
+  period_id: z.union([z.string().uuid(), z.null()]).optional(),
+  mode: zModeEnum,
+  filters: zExportFiltersInputRequest.optional(),
+  invoice_ids: z.array(z.string().uuid()).optional(),
+  line_item_ids: z.array(z.string().uuid()).optional(),
+});
+
+export const zInvoiceExportDownloadUrlOutput = z.object({
+  url: z.string().url(),
+});
+
+export const zInvoiceExportOutput = z.object({
+  id: z.string().uuid(),
+  status: zExportStatusEnum,
+  format: zExportFormatEnum,
+  template_id: z.union([z.string().uuid(), z.null()]),
+  template_name: z.string().readonly(),
+  period_id: z.union([z.string().uuid(), z.null()]),
+  start_date: z.union([z.string().date(), z.null()]),
+  end_date: z.union([z.string().date(), z.null()]),
+  row_count: z.number().int(),
+  invoice_count: z.number().int(),
+  file_size_bytes: z.number().int(),
+  file_name: z.string(),
+  failure_reason: z.union([z.string(), z.null()]),
+  created_at: z.string().datetime(),
+});
+
 export const zInvoiceListOutput = z.object({
   id: z.string().uuid(),
   status: z.string(),
@@ -498,6 +606,18 @@ export const zOrganizationWorkspaceListOutput = z.object({
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   is_active: z.boolean(),
+});
+
+export const zPatchedExportPeriodInputRequest = z.object({
+  name: z.string().min(1).max(120).optional(),
+  start_date: z.string().date().optional(),
+  end_date: z.string().date().optional(),
+});
+
+export const zPatchedExportTemplateInputRequest = z.object({
+  name: z.string().min(1).max(120).optional(),
+  format: zExportFormatEnum.optional(),
+  columns: z.array(zExportColumnRequest).optional(),
 });
 
 export const zPatchedOrganizationMemberUpdateRoleInputRequest = z.object({
@@ -1157,6 +1277,198 @@ export const zV1IngestionWorkspacesEmailsRetrieveData = z.object({
 export const zV1IngestionWorkspacesEmailsRetrieveResponse =
   zInboundEmailDetailOutput;
 
+export const zV1WorkspacesExportFieldsListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportFieldsListResponse =
+  z.array(zExportFieldOutput);
+
+export const zV1WorkspacesExportPeriodsListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportPeriodsListResponse =
+  z.array(zExportPeriodOutput);
+
+export const zV1WorkspacesExportPeriodsCreateData = z.object({
+  body: zExportPeriodInputRequest,
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportPeriodsCreateResponse = zExportPeriodOutput;
+
+export const zV1WorkspacesExportPeriodsDestroyData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    period_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+/**
+ * No response body
+ */
+export const zV1WorkspacesExportPeriodsDestroyResponse = z.void();
+
+export const zV1WorkspacesExportPeriodsRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    period_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportPeriodsRetrieveResponse = zExportPeriodOutput;
+
+export const zV1WorkspacesExportPeriodsPartialUpdateData = z.object({
+  body: zPatchedExportPeriodInputRequest.optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    period_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportPeriodsPartialUpdateResponse =
+  zExportPeriodOutput;
+
+export const zV1WorkspacesExportTemplatesListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportTemplatesListResponse = z.array(
+  zExportTemplateOutput,
+);
+
+export const zV1WorkspacesExportTemplatesCreateData = z.object({
+  body: zExportTemplateInputRequest,
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportTemplatesCreateResponse = zExportTemplateOutput;
+
+export const zV1WorkspacesExportTemplatesDestroyData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    template_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+/**
+ * No response body
+ */
+export const zV1WorkspacesExportTemplatesDestroyResponse = z.void();
+
+export const zV1WorkspacesExportTemplatesRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    template_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportTemplatesRetrieveResponse =
+  zExportTemplateOutput;
+
+export const zV1WorkspacesExportTemplatesPartialUpdateData = z.object({
+  body: zPatchedExportTemplateInputRequest.optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    template_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportTemplatesPartialUpdateResponse =
+  zExportTemplateOutput;
+
+export const zV1WorkspacesExportsListData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z
+    .object({
+      limit: z.number().int().optional(),
+      offset: z.number().int().optional(),
+    })
+    .optional(),
+});
+
+export const zV1WorkspacesExportsListResponse = z.array(zInvoiceExportOutput);
+
+export const zV1WorkspacesExportsCreateData = z.object({
+  body: zInvoiceExportCreateInputRequest,
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportsCreateResponse = zInvoiceExportOutput;
+
+export const zV1WorkspacesExportsRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    export_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportsRetrieveResponse = zInvoiceExportOutput;
+
+export const zV1WorkspacesExportsDownloadUrlRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    export_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesExportsDownloadUrlRetrieveResponse =
+  zInvoiceExportDownloadUrlOutput;
+
 export const zV1WorkspacesInvoicesListData = z.object({
   body: z.never().optional(),
   headers: z.never().optional(),
@@ -1165,6 +1477,8 @@ export const zV1WorkspacesInvoicesListData = z.object({
   }),
   query: z
     .object({
+      date_from: z.string().optional(),
+      date_to: z.string().optional(),
       invoice_type: z.string().optional(),
       limit: z.number().int().optional(),
       offset: z.number().int().optional(),
@@ -1172,11 +1486,27 @@ export const zV1WorkspacesInvoicesListData = z.object({
       source_attachment_id: z.string().optional(),
       status: z.string().optional(),
       supplier_id: z.string().optional(),
+      supplier_ids: z.array(z.string()).optional(),
     })
     .optional(),
 });
 
 export const zV1WorkspacesInvoicesListResponse = z.array(zInvoiceListOutput);
+
+export const zV1WorkspacesInvoicesDestroyData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    invoice_id: z.string().uuid(),
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+/**
+ * No response body
+ */
+export const zV1WorkspacesInvoicesDestroyResponse = z.void();
 
 export const zV1WorkspacesInvoicesRetrieveData = z.object({
   body: z.never().optional(),
