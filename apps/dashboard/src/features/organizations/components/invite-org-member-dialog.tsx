@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { zodValidator } from '@tanstack/zod-form-adapter'
 import { z } from 'zod'
@@ -45,6 +46,7 @@ export function InviteOrgMemberDialog({
   open: externalOpen,
   onOpenChange,
 }: InviteOrgMemberDialogProps) {
+  const { t } = useTranslation('common')
   const [internalOpen, setInternalOpen] = useState(false)
   const invite = useInviteOrgMember(orgId)
 
@@ -101,7 +103,7 @@ export function InviteOrgMemberDialog({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Email address</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t('emailAddress')}</FieldLabel>
                     <Input
                       id={field.name}
                       type="email"
@@ -109,7 +111,7 @@ export function InviteOrgMemberDialog({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="colleague@company.com"
+                      placeholder={t('inviteEmailPlaceholder')}
                       autoComplete="off"
                       autoFocus
                     />
@@ -122,13 +124,13 @@ export function InviteOrgMemberDialog({
             <form.Field name="role">
               {(field) => (
                 <Field>
-                  <FieldLabel>Role</FieldLabel>
+                  <FieldLabel>{t('role')}</FieldLabel>
                   <Select
                     value={field.state.value}
                     onValueChange={(v) => field.handleChange(v as OrgRole)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a role" />
+                      <SelectValue placeholder={t('selectRole')} />
                     </SelectTrigger>
                     <SelectContent>
                       {ORG_ROLES.filter((r) => r !== 'owner').map((role) => (
@@ -144,11 +146,11 @@ export function InviteOrgMemberDialog({
           </FieldGroup>
 
           <DialogFooter className="mt-6">
-            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="outline" />}>{t('cancel')}</DialogClose>
             <form.Subscribe selector={(s) => s.isSubmitting}>
               {(isSubmitting) => (
                 <Button type="submit" disabled={isSubmitting || invite.isPending}>
-                  {isSubmitting || invite.isPending ? 'Sending…' : 'Send invitation'}
+                  {isSubmitting || invite.isPending ? t('sending') : t('sendInvitation')}
                 </Button>
               )}
             </form.Subscribe>

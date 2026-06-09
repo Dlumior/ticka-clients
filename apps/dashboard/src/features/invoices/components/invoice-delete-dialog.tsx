@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiErrorWarningLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,6 +13,7 @@ import { useInvoicesContext } from '../context/invoices.context'
 import { useDeleteInvoice } from '../api/invoices.api'
 
 export function InvoiceDeleteDialog() {
+  const { t } = useTranslation('common')
   const {
     workspaceId,
     deletion: { deleteInvoice, setDeleteInvoice },
@@ -58,7 +60,7 @@ export function InvoiceDeleteDialog() {
             onClick={() => setDeleteInvoice(null)}
             disabled={deleteMutation.isPending}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             type="button"
@@ -66,7 +68,7 @@ export function InvoiceDeleteDialog() {
             onClick={handleConfirm}
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? 'Deleting…' : 'Delete invoice'}
+            {deleteMutation.isPending ? t('deleting') : 'Delete invoice'}
           </Button>
         </DialogFooter>
       </DialogContent>

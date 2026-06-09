@@ -1,1 +1,16 @@
-{}
+{
+  "cancel": "Cancel",
+  "saveChanges": "Save changes",
+  "name": "Name",
+  "email": "Email",
+  "emailAddress": "Email address",
+  "role": "Role",
+  "selectRole": "Select a role",
+  "inviteEmailPlaceholder": "colleague@company.com",
+  "sendInvitation": "Send invitation",
+  "creating": "Creating…",
+  "saving": "Saving…",
+  "sending": "Sending…",
+  "deleting": "Deleting…",
+  "generating": "Generating…"
+}

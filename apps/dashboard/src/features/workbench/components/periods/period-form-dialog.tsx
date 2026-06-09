@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,7 @@ export function PeriodFormDialog({
   onOpenChange,
   workspaceId,
 }: PeriodFormDialogProps) {
+  const { t } = useTranslation('common')
   const createPeriod = useCreatePeriod(workspaceId)
   const [name, setName] = useState('')
   const [startDate, setStartDate] = useState('')
@@ -61,7 +63,7 @@ export function PeriodFormDialog({
 
         <div className="flex flex-col gap-4">
           <Field>
-            <FieldLabel htmlFor="period-name">Name</FieldLabel>
+            <FieldLabel htmlFor="period-name">{t('name')}</FieldLabel>
             <Input
               id="period-name"
               value={name}
@@ -99,10 +101,10 @@ export function PeriodFormDialog({
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button type="button" disabled={createPeriod.isPending} onClick={handleSubmit}>
-            {createPeriod.isPending ? 'Creating…' : 'Create period'}
+            {createPeriod.isPending ? t('creating') : 'Create period'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RiArrowDownLine, RiArrowUpLine, RiCloseLine } from '@remixicon/react'
 import {
   Dialog,
@@ -35,6 +36,7 @@ export function TemplateBuilderDialog({
   workspaceId,
   template,
 }: TemplateBuilderDialogProps) {
+  const { t } = useTranslation('common')
   const { data: fields } = useExportFields(workspaceId)
   const createTemplate = useCreateTemplate(workspaceId)
   const updateTemplate = useUpdateTemplate(workspaceId, template?.id ?? '')
@@ -197,10 +199,10 @@ export function TemplateBuilderDialog({
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button type="button" disabled={isPending} onClick={handleSubmit}>
-            {isPending ? 'Saving…' : template ? 'Save changes' : 'Create template'}
+            {isPending ? t('saving') : template ? t('saveChanges') : 'Create template'}
           </Button>
         </DialogFooter>
       </DialogContent>

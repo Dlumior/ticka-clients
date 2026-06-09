@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useForm } from "@tanstack/react-form"
 import { useRouter } from "@tanstack/react-router"
 import { RiBriefcaseLine } from "@remixicon/react"
@@ -39,6 +40,7 @@ export function CreateWorkspaceDialog({
   open: externalOpen,
   onOpenChange,
 }: CreateWorkspaceDialogProps) {
+  const { t } = useTranslation("common")
   const [internalOpen, setInternalOpen] = useState(false)
   const router = useRouter()
   const createWorkspace = useCreateWorkspace(organizationId)
@@ -106,7 +108,7 @@ export function CreateWorkspaceDialog({
                   field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t("name")}</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -129,7 +131,7 @@ export function CreateWorkspaceDialog({
 
           <DialogFooter className="mt-6">
             <DialogClose render={<Button variant="outline" />}>
-              Cancel
+              {t("cancel")}
             </DialogClose>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -138,7 +140,7 @@ export function CreateWorkspaceDialog({
                   disabled={isSubmitting || createWorkspace.isPending}
                 >
                   {isSubmitting || createWorkspace.isPending
-                    ? "Creating…"
+                    ? t("creating")
                     : "Create workspace"}
                 </Button>
               )}

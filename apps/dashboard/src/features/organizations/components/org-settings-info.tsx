@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { zodValidator } from '@tanstack/zod-form-adapter'
 import { z } from 'zod'
@@ -35,6 +36,7 @@ interface OrgSettingsInfoProps {
 }
 
 export function OrgSettingsInfo({ organization, perms }: OrgSettingsInfoProps) {
+  const { t } = useTranslation('common')
   const updateOrg = useUpdateOrganization(organization.id)
   const [copied, setCopied] = useState(false)
 
@@ -79,7 +81,7 @@ export function OrgSettingsInfo({ organization, perms }: OrgSettingsInfoProps) {
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t('name')}</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -140,7 +142,7 @@ export function OrgSettingsInfo({ organization, perms }: OrgSettingsInfoProps) {
                       type="submit"
                       disabled={isSubmitting || updateOrg.isPending || !isDirty}
                     >
-                      {isSubmitting || updateOrg.isPending ? 'Saving…' : 'Save changes'}
+                      {isSubmitting || updateOrg.isPending ? t('saving') : t('saveChanges')}
                     </Button>
                     <Button
                       type="button"
@@ -148,7 +150,7 @@ export function OrgSettingsInfo({ organization, perms }: OrgSettingsInfoProps) {
                       onClick={() => form.reset()}
                       disabled={isSubmitting || !isDirty}
                     >
-                      Cancel
+                      {t('cancel')}
                     </Button>
                   </>
                 )

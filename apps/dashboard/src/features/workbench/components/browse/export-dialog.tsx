@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,7 @@ import {
 import { useWorkbenchContext } from '../../context/workbench.context'
 
 export function ExportDialog() {
+  const { t } = useTranslation('common')
   const {
     workspaceId,
     filters,
@@ -125,14 +127,14 @@ export function ExportDialog() {
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={closeExportDialog}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             type="button"
             disabled={!templateId || createExport.isPending}
             onClick={handleGenerate}
           >
-            {createExport.isPending ? 'Generating…' : 'Generate CSV'}
+            {createExport.isPending ? t('generating') : 'Generate CSV'}
           </Button>
         </DialogFooter>
       </DialogContent>

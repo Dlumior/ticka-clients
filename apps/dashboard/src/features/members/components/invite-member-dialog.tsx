@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { RiUserAddLine } from '@remixicon/react'
 import {
@@ -39,6 +40,7 @@ export function InviteMemberDialog({
   open: externalOpen,
   onOpenChange,
 }: InviteMemberDialogProps) {
+  const { t } = useTranslation('common')
   const [internalOpen, setInternalOpen] = useState(false)
   const invite = useInviteWorkspaceMember(workspaceId, orgId)
 
@@ -94,7 +96,7 @@ export function InviteMemberDialog({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Email address</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t('emailAddress')}</FieldLabel>
                     <Input
                       id={field.name}
                       type="email"
@@ -102,7 +104,7 @@ export function InviteMemberDialog({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="colleague@company.com"
+                      placeholder={t('inviteEmailPlaceholder')}
                       autoComplete="off"
                       autoFocus
                     />
@@ -115,7 +117,7 @@ export function InviteMemberDialog({
             <form.Field name="role">
               {(field) => (
                 <Field>
-                  <FieldLabel>Role</FieldLabel>
+                  <FieldLabel>{t('role')}</FieldLabel>
                   <Select
                     value={field.state.value}
                     onValueChange={(v) =>
@@ -123,7 +125,7 @@ export function InviteMemberDialog({
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a role" />
+                      <SelectValue placeholder={t('selectRole')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
@@ -137,11 +139,11 @@ export function InviteMemberDialog({
           </FieldGroup>
 
           <DialogFooter className="mt-6">
-            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+            <DialogClose render={<Button variant="outline" />}>{t('cancel')}</DialogClose>
             <form.Subscribe selector={(s) => s.isSubmitting}>
               {(isSubmitting) => (
                 <Button type="submit" disabled={isSubmitting || invite.isPending}>
-                  {isSubmitting || invite.isPending ? 'Sending…' : 'Send invitation'}
+                  {isSubmitting || invite.isPending ? t('sending') : t('sendInvitation')}
                 </Button>
               )}
             </form.Subscribe>

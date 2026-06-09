@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useForm } from "@tanstack/react-form"
 
 import {
@@ -50,6 +51,7 @@ export function CreateOrganizationDialog({
   open: externalOpen,
   onOpenChange,
 }: CreateOrganizationDialogProps) {
+  const { t } = useTranslation("common")
   const [internalOpen, setInternalOpen] = useState(false)
   const fieldRef = useRef<HTMLInputElement>(null)
   const createOrg = useCreateOrganization()
@@ -110,7 +112,7 @@ export function CreateOrganizationDialog({
                   field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t("name")}</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -219,7 +221,7 @@ export function CreateOrganizationDialog({
 
           <DialogFooter className="mt-6">
             <DialogClose render={<Button variant="outline" />}>
-              Cancel
+              {t("cancel")}
             </DialogClose>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -227,7 +229,7 @@ export function CreateOrganizationDialog({
                   type="submit"
                   disabled={isSubmitting || createOrg.isPending}
                 >
-                  {isSubmitting || createOrg.isPending ? "Creating…" : "Create"}
+                  {isSubmitting || createOrg.isPending ? t("creating") : "Create"}
                 </Button>
               )}
             </form.Subscribe>

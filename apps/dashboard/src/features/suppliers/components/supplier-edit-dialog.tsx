@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
 import { zodValidator } from '@tanstack/zod-form-adapter'
 import { Button } from '@/components/ui/button'
@@ -28,6 +29,7 @@ export function SupplierEditDialog({
   workspaceId,
   supplier,
 }: SupplierEditDialogProps) {
+  const { t } = useTranslation('common')
   const updateSupplier = useUpdateSupplier(workspaceId, supplier.id)
 
   const form = useForm({
@@ -73,7 +75,7 @@ export function SupplierEditDialog({
                   field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t('name')}</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -94,7 +96,7 @@ export function SupplierEditDialog({
                   field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>{t('email')}</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -157,7 +159,7 @@ export function SupplierEditDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <form.Subscribe selector={(s) => s.isSubmitting}>
               {(isSubmitting) => (
@@ -166,8 +168,8 @@ export function SupplierEditDialog({
                   disabled={isSubmitting || updateSupplier.isPending}
                 >
                   {isSubmitting || updateSupplier.isPending
-                    ? 'Saving…'
-                    : 'Save changes'}
+                    ? t('saving')
+                    : t('saveChanges')}
                 </Button>
               )}
             </form.Subscribe>
