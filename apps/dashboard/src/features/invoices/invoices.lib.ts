@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { Badge } from '@/components/ui/badge'
+import { getActiveLocale } from '@/lib/locale-ref'
 
 type BadgeVariant = NonNullable<ComponentProps<typeof Badge>['variant']>
 
@@ -14,12 +15,12 @@ export function formatMoney(
   if (Number.isNaN(value)) return amount
   const code = (currency || '').toUpperCase()
   try {
-    return new Intl.NumberFormat('es-PE', {
+    return new Intl.NumberFormat(getActiveLocale(), {
       style: 'currency',
       currency: code || 'PEN',
     }).format(value)
   } catch {
-    return `${value.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${code ? ` ${code}` : ''}`
+    return `${value.toLocaleString(getActiveLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${code ? ` ${code}` : ''}`
   }
 }
 
@@ -28,7 +29,7 @@ export function formatNumber(value: string | null | undefined): string {
   if (value == null || value === '') return '—'
   const n = Number(value)
   if (Number.isNaN(n)) return value
-  return n.toLocaleString('es-PE', { maximumFractionDigits: 4 })
+  return n.toLocaleString(getActiveLocale(), { maximumFractionDigits: 4 })
 }
 
 export const INVOICE_STATUS_VARIANT: Record<string, BadgeVariant> = {
