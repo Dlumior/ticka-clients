@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { VariantProps } from 'class-variance-authority'
 import type { badgeVariants } from '@/components/ui/badge'
 import type { OrgRole, WorkspaceRole } from './roles'
@@ -78,4 +79,23 @@ export const WORKSPACE_ROLE_LABEL: Record<WorkspaceRole, string> = {
   admin:  'Admin',
   member: 'Member',
   viewer: 'Viewer',
+}
+
+export function useOrgRoleLabel(): Record<OrgRole, string> {
+  const { t } = useTranslation('permissions')
+  return {
+    owner: t('orgRole.owner'),
+    admin: t('orgRole.admin'),
+    member: t('orgRole.member'),
+    viewer: t('orgRole.viewer'),
+  } satisfies Record<OrgRole, string>
+}
+
+export function useWorkspaceRoleLabel(): Record<WorkspaceRole, string> {
+  const { t } = useTranslation('permissions')
+  return {
+    admin: t('wsRole.admin'),
+    member: t('wsRole.member'),
+    viewer: t('wsRole.viewer'),
+  } satisfies Record<WorkspaceRole, string>
 }

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   RiDeleteBin6Line,
   RiMailSendLine,
@@ -18,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
-import { IfCan, ORG_ROLE_BADGE_VARIANT, ORG_ROLE_LABEL, ORG_ROLES } from '@/features/permissions'
+import { IfCan, ORG_ROLE_BADGE_VARIANT, ORG_ROLES, useOrgRoleLabel } from '@/features/permissions'
 import type { OrgPermissions, OrgRole } from '@/features/permissions'
 import { useAuth } from '@/features/auth/auth.context'
 import { useWorkspaceMembers } from '@/features/members/api/members.api'
@@ -34,6 +35,7 @@ interface OrgSettingsMembersProps {
 }
 
 export function OrgSettingsMembers({ orgId, orgDetail, perms }: OrgSettingsMembersProps) {
+  const { t } = useTranslation('organizations')
   const [search, setSearch] = useState('')
   const [workspaceFilter, setWorkspaceFilter] = useState<string | null>(null)
   const [inviteOpen, setInviteOpen] = useState(false)
@@ -67,7 +69,7 @@ export function OrgSettingsMembers({ orgId, orgDetail, perms }: OrgSettingsMembe
         <div className="relative flex-1 min-w-48">
           <RiSearchLine className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <Input
-            placeholder="Search members…"
+            placeholder={t('members.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9"
@@ -79,10 +81,10 @@ export function OrgSettingsMembers({ orgId, orgDetail, perms }: OrgSettingsMembe
           onValueChange={(v) => setWorkspaceFilter(v === 'all' ? null : v)}
         >
           <SelectTrigger className="w-44">
-            <SelectValue placeholder="All workspaces" />
+            <SelectValue placeholder={t('members.allWorkspaces')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All workspaces</SelectItem>
+            <SelectItem value="all">{t('members.allWorkspaces')}</SelectItem>
             {orgDetail.workspaces.map((ws) => (
               <SelectItem key={ws.id} value={ws.id}>
                 {ws.name}
@@ -99,7 +101,7 @@ export function OrgSettingsMembers({ orgId, orgDetail, perms }: OrgSettingsMembe
             trigger={
               <Button size="sm">
                 <RiUserAddLine className="size-4" />
-                Invite member
+                {t('members.inviteMember')}
               </Button>
             }
           />
@@ -144,6 +146,8 @@ function OrgMemberRow({
   orgId: string
   perms: OrgPermissions
 }) {
+  const { t } = useTranslation('organizations')
+  const orgRoleLabel = useOrgRoleLabel()
   const { user: currentUser } = useAuth()
   const [pendingRemove, setPendingRemove] = useState(false)
   const updateRole = useUpdateOrgMemberRole(orgId)
@@ -202,7 +206,7 @@ function OrgMemberRow({
             <SelectContent>
               {ORG_ROLES.filter((r) => r !== 'owner').map((r) => (
                 <SelectItem key={r} value={r} className="text-xs">
-                  {ORG_ROLE_LABEL[r]}
+                  {orgRoleLabel[r]}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -212,7 +216,7 @@ function OrgMemberRow({
             variant={ORG_ROLE_BADGE_VARIANT[role]}
             className="text-[10px] shrink-0"
           >
-            {ORG_ROLE_LABEL[role]}
+            {orgRoleLabel[role]}
           </Badge>
         )}
 
@@ -220,7 +224,7 @@ function OrgMemberRow({
           <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
             {pendingRemove ? (
               <>
-                <span className="text-xs text-muted-foreground">Remove?</span>
+                <span className="text-xs text-muted-foreground">{t('members.removeConfirm')}</span>
                 <Button
                   size="sm"
                   variant="destructive"
@@ -228,7 +232,7 @@ function OrgMemberRow({
                   onClick={handleRemoveConfirm}
                   disabled={removeOrgMember.isPending}
                 >
-                  Yes
+                  {t('members.yes')}
                 </Button>
                 <Button
                   size="sm"
@@ -236,7 +240,7 @@ function OrgMemberRow({
                   className="h-7 px-2 text-xs"
                   onClick={() => setPendingRemove(false)}
                 >
-                  No
+                  {t('members.no')}
                 </Button>
               </>
             ) : (
@@ -268,15 +272,17 @@ function EmptyState({
   perms: OrgPermissions
   orgId: string
 }) {
+  const { t } = useTranslation('organizations')
+
   if (search || hasMembers) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-muted/50 text-muted-foreground ring-1 ring-border/40">
           <RiSearchLine className="size-6" />
         </div>
-        <p className="text-sm font-medium">No results</p>
+        <p className="text-sm font-medium">{t('members.noResults')}</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Try adjusting your search or workspace filter.
+          {t('members.noResultsDesc')}
         </p>
       </div>
     )
@@ -287,9 +293,9 @@ function EmptyState({
       <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-muted/50 text-muted-foreground ring-1 ring-border/40">
         <RiTeamLine className="size-6" />
       </div>
-      <p className="text-sm font-medium">No members yet</p>
+      <p className="text-sm font-medium">{t('members.noMembers')}</p>
       <p className="mt-1 text-xs text-muted-foreground">
-        Invite people to collaborate in this organization.
+        {t('members.noMembersDesc')}
       </p>
       {perms.canManageMembers && (
         <div className="mt-4">
@@ -298,7 +304,7 @@ function EmptyState({
             trigger={
               <Button size="sm" variant="outline">
                 <RiMailSendLine className="size-4" />
-                Invite first member
+                {t('members.inviteFirstMember')}
               </Button>
             }
           />

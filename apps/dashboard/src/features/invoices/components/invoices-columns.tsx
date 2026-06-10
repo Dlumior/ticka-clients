@@ -1,27 +1,26 @@
+import type { TFunction } from 'i18next'
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate } from '@/lib/date'
 import type { Invoice } from '../api/invoices.api'
 import {
   formatMoney,
-  statusLabel,
   statusVariant,
-  typeLabel,
 } from '../invoices.lib'
 import { InvoiceRowActions } from './invoice-row-actions'
 
 const columnHelper = createColumnHelper<Invoice>()
 
 interface InvoicesColumnActions {
-  // Hide the actions column entirely for read-only members.
   canManage: boolean
+  t: TFunction<'invoices'>
 }
 
-export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
+export function getInvoicesColumns({ canManage, t }: InvoicesColumnActions) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns: ColumnDef<Invoice, any>[] = [
     columnHelper.accessor('invoice_number', {
-      header: 'Invoice',
+      header: t('col.invoice'),
       cell: (info) => (
         <span className="font-mono text-sm font-medium">
           {info.getValue() || '—'}
@@ -29,7 +28,7 @@ export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
       ),
     }),
     columnHelper.accessor('supplier_name', {
-      header: 'Supplier',
+      header: t('col.supplier'),
       cell: (info) => {
         const ruc = info.row.original.supplier_ruc
         return (
@@ -47,13 +46,15 @@ export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
       },
     }),
     columnHelper.accessor('invoice_type', {
-      header: 'Type',
-      cell: (info) => (
-        <span className="text-sm">{typeLabel(info.getValue())}</span>
-      ),
+      header: t('col.type'),
+      cell: (info) => {
+        const val = info.getValue()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return <span className="text-sm">{val ? t(`type.${val}` as any, { defaultValue: val }) : '—'}</span>
+      },
     }),
     columnHelper.accessor('issue_date', {
-      header: 'Issue date',
+      header: t('col.issueDate'),
       cell: (info) => {
         const value = info.getValue()
         return (
@@ -64,7 +65,7 @@ export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
       },
     }),
     columnHelper.accessor('total', {
-      header: () => <div className="text-right">Total</div>,
+      header: () => <div className="text-right">{t('col.total')}</div>,
       cell: (info) => (
         <div className="text-right text-sm font-medium tabular-nums">
           {formatMoney(info.getValue(), info.row.original.currency)}
@@ -72,11 +73,13 @@ export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
       ),
     }),
     columnHelper.accessor('status', {
-      header: 'Status',
+      header: t('col.status'),
       cell: (info) => {
         const status = info.getValue()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const label = status ? t(`status.${status}` as any, { defaultValue: status }) : '—'
         return (
-          <Badge variant={statusVariant(status)}>{statusLabel(status)}</Badge>
+          <Badge variant={statusVariant(status)}>{label}</Badge>
         )
       },
     }),
@@ -86,7 +89,7 @@ export function getInvoicesColumns({ canManage }: InvoicesColumnActions) {
     columns.push(
       columnHelper.display({
         id: 'actions',
-        header: () => <span className="sr-only">Actions</span>,
+        header: () => <span className="sr-only">{t('col.actions')}</span>,
         cell: (info) => <InvoiceRowActions invoice={info.row.original} />,
       }),
     )

@@ -1,1 +1,38 @@
-{}
+{
+  "email": "Email",
+  "emailPlaceholder": "tu@empresa.com",
+  "password": "Contraseña",
+  "login": {
+    "tagline": "Inicia sesión en tu cuenta",
+    "submitting": "Iniciando sesión…",
+    "submit": "Iniciar sesión",
+    "footer": "De tu correo a tus cuentas en segundos. ⚡"
+  },
+  "register": {
+    "title": "Crear una cuenta nueva",
+    "titleInvite": "Crea tu cuenta para unirte",
+    "inviteBanner": "Has sido invitado a un workspace. Crea tu cuenta para aceptar la invitación.",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "confirmPassword": "Confirmar contraseña",
+    "submitting": "Creando cuenta…",
+    "submit": "Crear cuenta",
+    "submitInvite": "Crear cuenta y unirse al workspace",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "legalIntro": "Al crear una cuenta aceptas nuestros",
+    "terms": "Términos",
+    "privacy": "Política de Privacidad"
+  },
+  "passwordStrength": {
+    "minLength": "Al menos 8 caracteres",
+    "uppercase": "Una letra mayúscula",
+    "number": "Un número",
+    "special": "Un carácter especial",
+    "weak": "Débil",
+    "fair": "Regular",
+    "good": "Buena",
+    "strong": "Fuerte"
+  },
+  "passwordsDoNotMatch": "Las contraseñas no coinciden"
+}

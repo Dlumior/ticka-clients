@@ -1,4 +1,5 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 import type { InboxTableContextValue } from '../context/inbox-table.context'
 import { getInboxColumns } from '../components/inbox-columns'
 import { useInboxFilters } from './use-inbox-filters'
@@ -15,10 +16,11 @@ export function useInboxTable({
   timezone,
   initialEmailId,
 }: UseInboxTableOptions): InboxTableContextValue {
+  const { t } = useTranslation('inbox')
   const filtersState = useInboxFilters({ workspaceId })
   const detail = useInboxDetail({ initialEmailId })
 
-  const columns = getInboxColumns(timezone)
+  const columns = getInboxColumns(timezone, t)
 
   const tableInstance = useReactTable({
     data: filtersState.data?.results ?? [],

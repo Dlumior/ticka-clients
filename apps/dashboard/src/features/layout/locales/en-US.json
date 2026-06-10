@@ -1,1 +1,17 @@
-{}
+{
+  "nav": {
+    "overview": "Overview",
+    "inbox": "Inbox",
+    "invoices": "Invoices",
+    "suppliers": "Suppliers",
+    "workbench": "Workbench",
+    "members": "Members",
+    "workspace": "Workspace"
+  },
+  "org": {
+    "create": "Create organization",
+    "settings": "Organization settings",
+    "signOut": "Sign out",
+    "home": "Ticka home"
+  }
+}

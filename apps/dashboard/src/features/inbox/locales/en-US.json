@@ -1,1 +1,28 @@
-{}
+{
+  "emailStatus": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "failed": "Failed",
+    "no_attachments_found": "No attachments"
+  },
+  "attachmentStatus": {
+    "stored": "Stored",
+    "queued": "Queued for invoice",
+    "processing": "Processing as invoice",
+    "completed": "Invoiced",
+    "failed": "Failed",
+    "duplicate": "Duplicate"
+  },
+  "col": {
+    "from": "From",
+    "subject": "Subject",
+    "received": "Received",
+    "status": "Status",
+    "attachments": "Attachments"
+  },
+  "toolbar": {
+    "search": "Search by sender or subject...",
+    "allStatuses": "All statuses"
+  }
+}

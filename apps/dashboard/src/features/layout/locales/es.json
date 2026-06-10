@@ -1,1 +1,17 @@
-{}
+{
+  "nav": {
+    "overview": "Resumen",
+    "inbox": "Bandeja",
+    "invoices": "Facturas",
+    "suppliers": "Proveedores",
+    "workbench": "Workbench",
+    "members": "Miembros",
+    "workspace": "Workspace"
+  },
+  "org": {
+    "create": "Crear organización",
+    "settings": "Configuración de organización",
+    "signOut": "Cerrar sesión",
+    "home": "Inicio de Ticka"
+  }
+}

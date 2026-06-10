@@ -1,4 +1,5 @@
 import { Link, useMatchRoute, useParams } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { RiDashboardLine, RiFileList3Line, RiInboxLine, RiLogoutBoxRLine, RiStore2Line, RiTeamLine, RiToolsLine } from '@remixicon/react'
 import type { ComponentType } from 'react'
 import {
@@ -24,7 +25,7 @@ import { useLogout } from '@/features/auth/api/auth.api'
 import { WorkspaceSwitcher } from './workspace-switcher'
 
 interface NavItem {
-  label: string
+  key: string
   to: string
   icon: ComponentType<{ className?: string }>
   exact?: boolean
@@ -32,39 +33,40 @@ interface NavItem {
 
 const workspaceNavItems: NavItem[] = [
   {
-    label: 'Overview',
+    key: 'overview',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug',
     icon: RiDashboardLine,
     exact: true,
   },
   {
-    label: 'Inbox',
+    key: 'inbox',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox',
     icon: RiInboxLine,
   },
   {
-    label: 'Invoices',
+    key: 'invoices',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices',
     icon: RiFileList3Line,
   },
   {
-    label: 'Suppliers',
+    key: 'suppliers',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers',
     icon: RiStore2Line,
   },
   {
-    label: 'Workbench',
+    key: 'workbench',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug/workbench',
     icon: RiToolsLine,
   },
   {
-    label: 'Members',
+    key: 'members',
     to: '/orgs/$orgSlug/workspaces/$workspaceSlug/members',
     icon: RiTeamLine,
   },
 ]
 
 export function WorkspaceSidebar() {
+  const { t } = useTranslation('layout')
   const params = useParams({ strict: false }) as {
     orgSlug?: string
     workspaceSlug?: string
@@ -121,7 +123,7 @@ export function WorkspaceSidebar() {
       <SidebarContent className="px-1 pt-3">
         <SidebarGroup>
           <SidebarGroupLabel className="px-2 text-[10px] font-semibold tracking-[0.18em] uppercase text-sidebar-foreground/50">
-            Workspace
+            {t('nav.workspace')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -131,11 +133,13 @@ export function WorkspaceSidebar() {
                   params: navParams,
                   fuzzy: !item.exact,
                 })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const label = t(`nav.${item.key}` as any)
                 return (
-                  <SidebarMenuItem key={item.label}>
+                  <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       isActive={isActive}
-                      tooltip={item.label}
+                      tooltip={label}
                       render={
                         activeWorkspace
                           ? (
@@ -148,7 +152,7 @@ export function WorkspaceSidebar() {
                       }
                     >
                       <item.icon />
-                      <span>{item.label}</span>
+                      <span>{label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )
@@ -165,6 +169,7 @@ export function WorkspaceSidebar() {
 }
 
 function SidebarUserFooter() {
+  const { t } = useTranslation('layout')
   const { user } = useAuth()
   const logout = useLogout()
   const { state } = useSidebar()
@@ -202,7 +207,7 @@ function SidebarUserFooter() {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Sign out"
+        aria-label={t('org.signOut')}
         className="text-muted-foreground hover:text-foreground"
         onClick={() => logout.mutate()}
       >

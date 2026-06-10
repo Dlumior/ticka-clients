@@ -1,1 +1,15 @@
-{}
+{
+  "col": {
+    "supplier": "Supplier",
+    "ruc": "RUC",
+    "email": "Email",
+    "phone": "Phone",
+    "invoices": "Invoices"
+  },
+  "toolbar": {
+    "search": "Search by name or RUC..."
+  },
+  "table": {
+    "noResults": "No suppliers found."
+  }
+}

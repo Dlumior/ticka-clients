@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   RiCheckLine,
   RiFileCopyLine,
@@ -23,21 +24,19 @@ import {
 import type { Workspace } from '@/features/organizations/api/organizations.api'
 import { useClipboard } from '@/hooks/use-clipboard'
 import { cn } from '@/lib/utils'
-import { asWorkspaceRole, WORKSPACE_ROLE_BADGE_VARIANT } from '@/features/permissions'
+import { asWorkspaceRole, WORKSPACE_ROLE_BADGE_VARIANT, useWorkspaceRoleLabel } from '@/features/permissions'
 import { useWorkspaceMembership, useWorkspaceMembers } from '@/features/members/api/members.api'
 
 interface WorkspaceOverviewCardsProps {
   workspace: Workspace
 }
 
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
 export function WorkspaceOverviewCards({
   workspace,
 }: WorkspaceOverviewCardsProps) {
+  const { t } = useTranslation('workspaces')
   const { copied, copy } = useClipboard()
+  const wsRoleLabel = useWorkspaceRoleLabel()
 
   const { data: membership } = useWorkspaceMembership(workspace.id)
   const wsRole = membership?.workspace_role ? asWorkspaceRole(membership.workspace_role) : undefined
@@ -54,7 +53,7 @@ export function WorkspaceOverviewCards({
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <RiInboxLine className="size-3.5 shrink-0" />
             <span className="text-xs font-medium tracking-wider uppercase">
-              Workspace
+              {t('overview.workspace')}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -63,7 +62,7 @@ export function WorkspaceOverviewCards({
               variant={workspace.is_active ? 'default' : 'secondary'}
               className="translate-y-px"
             >
-              {workspace.is_active ? 'Active' : 'Inactive'}
+              {workspace.is_active ? t('overview.active') : t('overview.inactive')}
             </Badge>
           </div>
           <CardDescription className="font-mono text-xs">
@@ -77,7 +76,7 @@ export function WorkspaceOverviewCards({
           {/* Inbox email — hero element */}
           <div className="flex flex-col gap-2">
             <p className="text-xs font-medium tracking-wider uppercase text-muted-foreground">
-              Inbox Email
+              {t('overview.inboxEmail')}
             </p>
             <div
               className={cn(
@@ -122,16 +121,14 @@ export function WorkspaceOverviewCards({
                   )}
                 </TooltipTrigger>
                 <TooltipContent>
-                  {copied ? 'Copied!' : 'Copy to clipboard'}
+                  {copied ? t('overview.copied') : t('overview.copy')}
                 </TooltipContent>
               </Tooltip>
             </div>
             <div className="flex gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2.5">
               <RiInformationLine className="mt-0.5 size-3.5 shrink-0 text-primary/70" />
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Forward your vendor invoices and receipts to this address. Ticka
-                will automatically extract the details and create tickets in this
-                workspace.
+                {t('overview.inboxDesc')}
               </p>
             </div>
           </div>
@@ -144,7 +141,7 @@ export function WorkspaceOverviewCards({
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <RiTeamLine className="size-3.5 shrink-0" />
             <span className="text-xs font-medium tracking-wider uppercase">
-              Team
+              {t('overview.team')}
             </span>
           </div>
         </CardHeader>
@@ -154,7 +151,7 @@ export function WorkspaceOverviewCards({
               {memberCount}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {memberCount === 1 ? 'Member' : 'Members'} in workspace
+              {memberCount === 1 ? t('overview.member') : t('overview.members')} {t('overview.inWorkspace')}
             </p>
           </div>
 
@@ -162,9 +159,9 @@ export function WorkspaceOverviewCards({
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Your role</span>
+              <span className="text-muted-foreground">{t('overview.yourRole')}</span>
               {wsRole ? (
-                <Badge variant={wsRoleVariant}>{capitalize(wsRole)}</Badge>
+                <Badge variant={wsRoleVariant}>{wsRoleLabel[wsRole]}</Badge>
               ) : (
                 <span className="text-xs text-muted-foreground">—</span>
               )}

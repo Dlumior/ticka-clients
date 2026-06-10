@@ -1,1 +1,28 @@
-{}
+{
+  "emailStatus": {
+    "pending": "Pendiente",
+    "processing": "Procesando",
+    "completed": "Completado",
+    "failed": "Fallido",
+    "no_attachments_found": "Sin adjuntos"
+  },
+  "attachmentStatus": {
+    "stored": "Almacenado",
+    "queued": "En cola para factura",
+    "processing": "Procesando como factura",
+    "completed": "Facturado",
+    "failed": "Fallido",
+    "duplicate": "Duplicado"
+  },
+  "col": {
+    "from": "Remitente",
+    "subject": "Asunto",
+    "received": "Recibido",
+    "status": "Estado",
+    "attachments": "Adjuntos"
+  },
+  "toolbar": {
+    "search": "Buscar por remitente o asunto...",
+    "allStatuses": "Todos los estados"
+  }
+}

@@ -1,1 +1,38 @@
-{}
+{
+  "email": "Email",
+  "emailPlaceholder": "you@company.com",
+  "password": "Password",
+  "login": {
+    "tagline": "Sign in to your account",
+    "submitting": "Signing in…",
+    "submit": "Sign in",
+    "footer": "From your inbox to your books in seconds. ⚡"
+  },
+  "register": {
+    "title": "Create a new account",
+    "titleInvite": "Create your account to join",
+    "inviteBanner": "You've been invited to join a workspace. Create your account to accept the invitation.",
+    "firstName": "First",
+    "lastName": "Last",
+    "confirmPassword": "Confirm password",
+    "submitting": "Creating account…",
+    "submit": "Create account",
+    "submitInvite": "Create account & join workspace",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "legalIntro": "By creating an account you agree to our",
+    "terms": "Terms",
+    "privacy": "Privacy Policy"
+  },
+  "passwordStrength": {
+    "minLength": "At least 8 characters",
+    "uppercase": "One uppercase letter",
+    "number": "One number",
+    "special": "One special character",
+    "weak": "Weak",
+    "fair": "Fair",
+    "good": "Good",
+    "strong": "Strong"
+  },
+  "passwordsDoNotMatch": "Passwords do not match"
+}

@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ORG_ROLES, ORG_ROLE_LABEL } from '@/features/permissions'
+import { ORG_ROLES, useOrgRoleLabel } from '@/features/permissions'
 import type { OrgRole } from '@/features/permissions'
 import { useInviteOrgMember } from '../api/org-members.api'
 
@@ -47,6 +47,7 @@ export function InviteOrgMemberDialog({
   onOpenChange,
 }: InviteOrgMemberDialogProps) {
   const { t } = useTranslation('common')
+  const orgRoleLabel = useOrgRoleLabel()
   const [internalOpen, setInternalOpen] = useState(false)
   const invite = useInviteOrgMember(orgId)
 
@@ -135,7 +136,7 @@ export function InviteOrgMemberDialog({
                     <SelectContent>
                       {ORG_ROLES.filter((r) => r !== 'owner').map((role) => (
                         <SelectItem key={role} value={role}>
-                          {ORG_ROLE_LABEL[role]}
+                          {orgRoleLabel[role]}
                         </SelectItem>
                       ))}
                     </SelectContent>

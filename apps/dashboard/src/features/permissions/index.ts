@@ -15,6 +15,8 @@ export {
   ORG_ROLE_LABEL,
   WORKSPACE_ROLE_BADGE_VARIANT,
   WORKSPACE_ROLE_LABEL,
+  useOrgRoleLabel,
+  useWorkspaceRoleLabel,
 } from './permissions'
 
 export type { OrgPermissions, WorkspacePermissions } from './hooks'

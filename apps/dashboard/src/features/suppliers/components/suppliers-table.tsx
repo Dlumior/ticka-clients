@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import {
   flexRender,
   getCoreRowModel,
@@ -18,6 +19,7 @@ interface SuppliersTableProps {
 }
 
 export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
+  const { t } = useTranslation('suppliers')
   const navigate = useNavigate()
   const params = useParams({ strict: false }) as {
     orgSlug?: string
@@ -32,7 +34,7 @@ export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
     search: search || undefined,
   })
 
-  const columns = getSuppliersColumns()
+  const columns = getSuppliersColumns(t)
 
   const table = useReactTable({
     data: data?.results ?? [],
@@ -106,7 +108,7 @@ export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
                   colSpan={columns.length}
                   className="px-3 py-12 text-center text-sm text-muted-foreground"
                 >
-                  No suppliers found.
+                  {t('table.noResults')}
                 </td>
               </tr>
             ) : (

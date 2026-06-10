@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link, useMatchRoute, useParams } from "@tanstack/react-router"
+import { useTranslation } from "react-i18next"
 import { RiAddLine, RiInboxLine, RiSettings3Line } from "@remixicon/react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -19,6 +20,7 @@ import { CreateOrganizationDialog } from "@/features/organizations/components/cr
 export const ORG_RAIL_WIDTH = "4rem"
 
 export function OrgRail() {
+  const { t } = useTranslation('layout')
   const [createOpen, setCreateOpen] = useState(false)
   const { data: organizations, isLoading } = useOrganizations()
   const params = useParams({ strict: false }) as { orgSlug?: string }
@@ -40,7 +42,7 @@ export function OrgRail() {
     >
       <Link
         to="/"
-        aria-label="Ticka home"
+        aria-label={t('org.home')}
         className="mb-3 flex size-10 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30 transition-colors ring-inset hover:bg-primary/25"
       >
         <RiInboxLine className="size-5" />
@@ -67,7 +69,7 @@ export function OrgRail() {
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label="Create organization"
+                aria-label={t('org.create')}
                 onClick={() => setCreateOpen(true)}
                 className="size-10 rounded-xl border border-dashed border-sidebar-border text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
               >
@@ -75,7 +77,7 @@ export function OrgRail() {
               </Button>
             }
           />
-          <TooltipContent side="right">Create organization</TooltipContent>
+          <TooltipContent side="right">{t('org.create')}</TooltipContent>
         </Tooltip>
 
         <CreateOrganizationDialog
@@ -94,7 +96,7 @@ export function OrgRail() {
                   <Link
                     to="/orgs/$orgSlug/settings"
                     params={{ orgSlug: activeOrgSlug }}
-                    aria-label="Organization settings"
+                    aria-label={t('org.settings')}
                     className={cn(
                       "flex size-10 items-center justify-center rounded-xl transition-colors",
                       isOnSettings
@@ -106,7 +108,7 @@ export function OrgRail() {
                   </Link>
                 }
               />
-              <TooltipContent side="right">Organization settings</TooltipContent>
+              <TooltipContent side="right">{t('org.settings')}</TooltipContent>
             </Tooltip>
           </div>
         </>

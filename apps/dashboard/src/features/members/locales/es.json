@@ -1,1 +1,11 @@
-{}
+{
+  "inviteMember": "Invitar miembro",
+  "inviteFirstMember": "Invitar primer miembro",
+  "members": "Miembros",
+  "invitations": "Invitaciones",
+  "noMembers": "Sin miembros aún",
+  "noMembersDesc": "Invita personas para colaborar en este workspace.",
+  "noInvitations": "Sin invitaciones",
+  "noInvitationsDesc": "Las invitaciones que envíes aparecerán aquí.",
+  "joined": "Unido el {{date}}"
+}

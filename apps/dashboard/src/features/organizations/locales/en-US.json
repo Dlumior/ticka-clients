@@ -1,1 +1,15 @@
-{}
+{
+  "members": {
+    "searchPlaceholder": "Search members…",
+    "allWorkspaces": "All workspaces",
+    "inviteMember": "Invite member",
+    "inviteFirstMember": "Invite first member",
+    "noResults": "No results",
+    "noResultsDesc": "Try adjusting your search or workspace filter.",
+    "noMembers": "No members yet",
+    "noMembersDesc": "Invite people to collaborate in this organization.",
+    "removeConfirm": "Remove?",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

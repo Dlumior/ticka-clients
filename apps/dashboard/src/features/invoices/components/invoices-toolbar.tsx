@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { zInvoiceDetailOutputStatusEnum, zInvoiceTypeEnum } from '@repo/api-types'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,9 +11,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useInvoicesContext } from '../context/invoices.context'
-import { INVOICE_STATUS_LABEL, INVOICE_TYPE_LABEL } from '../invoices.lib'
 
 export function InvoicesToolbar() {
+  const { t } = useTranslation('invoices')
   const { filters } = useInvoicesContext()
   const { onSearchChange } = filters
   const [localSearch, setLocalSearch] = useState(filters.search)
@@ -27,33 +28,35 @@ export function InvoicesToolbar() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Input
-        placeholder="Search by number or supplier..."
+        placeholder={t('toolbar.search')}
         value={localSearch}
         onChange={(e) => setLocalSearch(e.target.value)}
         className="h-8 w-64"
       />
       <Select value={filters.statusFilter} onValueChange={filters.onStatusChange}>
         <SelectTrigger size="sm" className="w-40">
-          <SelectValue placeholder="All statuses" />
+          <SelectValue placeholder={t('toolbar.allStatuses')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All statuses</SelectItem>
+          <SelectItem value="">{t('toolbar.allStatuses')}</SelectItem>
           {zInvoiceDetailOutputStatusEnum.options.map((s) => (
             <SelectItem key={s} value={s}>
-              {INVOICE_STATUS_LABEL[s] ?? s}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {t(`status.${s}` as any, { defaultValue: s })}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <Select value={filters.typeFilter} onValueChange={filters.onTypeChange}>
         <SelectTrigger size="sm" className="w-44">
-          <SelectValue placeholder="All types" />
+          <SelectValue placeholder={t('toolbar.allTypes')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All types</SelectItem>
-          {zInvoiceTypeEnum.options.map((t) => (
-            <SelectItem key={t} value={t}>
-              {INVOICE_TYPE_LABEL[t] ?? t}
+          <SelectItem value="">{t('toolbar.allTypes')}</SelectItem>
+          {zInvoiceTypeEnum.options.map((typeVal) => (
+            <SelectItem key={typeVal} value={typeVal}>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {t(`type.${typeVal}` as any, { defaultValue: typeVal })}
             </SelectItem>
           ))}
         </SelectContent>

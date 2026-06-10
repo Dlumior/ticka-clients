@@ -1,8 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import type { WorkspaceMember } from '../api/members.api'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { WORKSPACE_ROLE_BADGE_VARIANT, WORKSPACE_ROLE_LABEL } from '@/features/permissions'
+import { WORKSPACE_ROLE_BADGE_VARIANT, useWorkspaceRoleLabel } from '@/features/permissions'
 import type { WorkspaceRole } from '@/features/permissions'
 import { formatDateInTz } from '@/lib/date'
 
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export function MemberCard({ member, timezone }: Props) {
+  const { t } = useTranslation('members')
+  const wsRoleLabel = useWorkspaceRoleLabel()
   const initials = getInitials(member.user_first_name, member.user_last_name, member.user_email)
   const fullName = [member.user_first_name, member.user_last_name].filter(Boolean).join(' ')
   const role = member.role as WorkspaceRole
@@ -34,14 +37,14 @@ export function MemberCard({ member, timezone }: Props) {
               {fullName || member.user_email}
             </p>
             <Badge variant={WORKSPACE_ROLE_BADGE_VARIANT[role]} className="shrink-0 text-[10px]">
-              {WORKSPACE_ROLE_LABEL[role]}
+              {wsRoleLabel[role]}
             </Badge>
           </div>
           {fullName && (
             <p className="mt-0.5 truncate text-xs text-muted-foreground">{member.user_email}</p>
           )}
           <p className="mt-2 text-[11px] text-muted-foreground/70">
-            Joined {formatDateInTz(member.joined_at, timezone)}
+            {t('joined', { date: formatDateInTz(member.joined_at, timezone) })}
           </p>
         </div>
       </CardContent>

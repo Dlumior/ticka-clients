@@ -1,1 +1,16 @@
-{}
+{
+  "overview": {
+    "workspace": "Workspace",
+    "inboxEmail": "Inbox Email",
+    "copy": "Copy to clipboard",
+    "copied": "Copied!",
+    "team": "Team",
+    "member": "Member",
+    "members": "Members",
+    "inWorkspace": "in workspace",
+    "yourRole": "Your role",
+    "active": "Active",
+    "inactive": "Inactive",
+    "inboxDesc": "Forward your vendor invoices and receipts to this address. Ticka will automatically extract the details and create tickets in this workspace."
+  }
+}

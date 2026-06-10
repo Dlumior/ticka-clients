@@ -1,1 +1,31 @@
-{}
+{
+  "status": {
+    "received": "Recibido",
+    "parsing": "Procesando",
+    "parsed": "Procesado",
+    "review_needed": "Requiere revisión",
+    "approved": "Aprobado",
+    "exported": "Exportado",
+    "failed": "Fallido"
+  },
+  "type": {
+    "factura": "Factura",
+    "boleta": "Boleta",
+    "nota_credito": "Nota de Crédito",
+    "nota_debito": "Nota de Débito"
+  },
+  "col": {
+    "invoice": "Comprobante",
+    "supplier": "Proveedor",
+    "type": "Tipo",
+    "issueDate": "Fecha de emisión",
+    "total": "Total",
+    "status": "Estado",
+    "actions": "Acciones"
+  },
+  "toolbar": {
+    "search": "Buscar por número o proveedor...",
+    "allStatuses": "Todos los estados",
+    "allTypes": "Todos los tipos"
+  }
+}

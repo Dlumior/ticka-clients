@@ -1,1 +1,13 @@
-{}
+{
+  "orgRole": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "member": "Member",
+    "viewer": "Viewer"
+  },
+  "wsRole": {
+    "admin": "Admin",
+    "member": "Member",
+    "viewer": "Viewer"
+  }
+}

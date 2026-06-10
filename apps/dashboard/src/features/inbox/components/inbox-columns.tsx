@@ -1,16 +1,17 @@
+import type { TFunction } from 'i18next'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { formatDatetimeInTz } from '@/lib/date'
 import type { InboundEmail } from '../api/inbox.api'
-import { EMAIL_STATUS_LABEL, EMAIL_STATUS_VARIANT } from '../inbox.lib'
+import { EMAIL_STATUS_VARIANT } from '../inbox.lib'
 
 const columnHelper = createColumnHelper<InboundEmail>()
 
-export function getInboxColumns(timezone: string) {
+export function getInboxColumns(timezone: string, t: TFunction<'inbox'>) {
   return [
     columnHelper.accessor('sender_email', {
       id: 'from',
-      header: 'From',
+      header: t('col.from'),
       cell: (info) => (
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{info.getValue()}</p>
@@ -23,13 +24,13 @@ export function getInboxColumns(timezone: string) {
       ),
     }),
     columnHelper.accessor('subject', {
-      header: 'Subject',
+      header: t('col.subject'),
       cell: (info) => (
         <span className="line-clamp-1 text-sm">{info.getValue() || '(no subject)'}</span>
       ),
     }),
     columnHelper.accessor('received_at', {
-      header: 'Received',
+      header: t('col.received'),
       cell: (info) => (
         <span className="whitespace-nowrap text-sm text-muted-foreground">
           {formatDatetimeInTz(info.getValue(), timezone)}
@@ -37,18 +38,20 @@ export function getInboxColumns(timezone: string) {
       ),
     }),
     columnHelper.accessor('status', {
-      header: 'Status',
+      header: t('col.status'),
       cell: (info) => {
         const status = info.getValue() ?? 'pending'
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const label = t(`emailStatus.${status}` as any, { defaultValue: status })
         return (
           <Badge variant={EMAIL_STATUS_VARIANT[status] ?? 'outline'}>
-            {EMAIL_STATUS_LABEL[status] ?? status}
+            {label}
           </Badge>
         )
       },
     }),
     columnHelper.accessor('attachment_count', {
-      header: 'Attachments',
+      header: t('col.attachments'),
       cell: (info) => (
         <span className="text-sm tabular-nums">{info.getValue()}</span>
       ),

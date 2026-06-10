@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useWorkspaceRoleLabel } from '@/features/permissions'
 import { useInviteWorkspaceMember } from '../api/members.api'
 import { zInviteMemberFormValues } from '../api/members.schema'
 
@@ -41,6 +42,7 @@ export function InviteMemberDialog({
   onOpenChange,
 }: InviteMemberDialogProps) {
   const { t } = useTranslation('common')
+  const wsRoleLabel = useWorkspaceRoleLabel()
   const [internalOpen, setInternalOpen] = useState(false)
   const invite = useInviteWorkspaceMember(workspaceId, orgId)
 
@@ -128,9 +130,9 @@ export function InviteMemberDialog({
                       <SelectValue placeholder={t('selectRole')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="member">Member</SelectItem>
-                      <SelectItem value="viewer">Viewer</SelectItem>
+                      <SelectItem value="admin">{wsRoleLabel.admin}</SelectItem>
+                      <SelectItem value="member">{wsRoleLabel.member}</SelectItem>
+                      <SelectItem value="viewer">{wsRoleLabel.viewer}</SelectItem>
                     </SelectContent>
                   </Select>
                 </Field>

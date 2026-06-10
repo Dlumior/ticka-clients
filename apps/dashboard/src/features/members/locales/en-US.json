@@ -1,1 +1,11 @@
-{}
+{
+  "inviteMember": "Invite member",
+  "inviteFirstMember": "Invite first member",
+  "members": "Members",
+  "invitations": "Invitations",
+  "noMembers": "No members yet",
+  "noMembersDesc": "Invite people to collaborate in this workspace.",
+  "noInvitations": "No invitations",
+  "noInvitationsDesc": "Invitations you send will appear here.",
+  "joined": "Joined {{date}}"
+}

@@ -1,4 +1,5 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 import type { InvoicesContextValue } from '../context/invoices.context'
 import { getInvoicesColumns } from '../components/invoices-columns'
 import { useInvoicesPermissions } from './use-invoices-permissions'
@@ -17,12 +18,13 @@ export function useInvoicesTable({
   timezone,
   supplierId,
 }: UseInvoicesTableOptions): InvoicesContextValue {
+  const { t } = useTranslation('invoices')
   const permissions = useInvoicesPermissions(workspaceId)
   const filtersState = useInvoicesFilters({ workspaceId, supplierId })
   const detail = useInvoicesDetail()
   const deletion = useInvoicesDeletion()
 
-  const columns = getInvoicesColumns({ canManage: permissions.canManage })
+  const columns = getInvoicesColumns({ canManage: permissions.canManage, t })
 
   const tableInstance = useReactTable({
     data: filtersState.data?.results ?? [],

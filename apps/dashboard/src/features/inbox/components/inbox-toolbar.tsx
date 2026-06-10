@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { zInboundEmailStatusEnum } from '@repo/api-types'
 import { Input } from '@/components/ui/input'
 import {
@@ -9,9 +10,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useInboxTableContext } from '../context/inbox-table.context'
-import { EMAIL_STATUS_LABEL } from '../inbox.lib'
 
 export function InboxToolbar() {
+  const { t } = useTranslation('inbox')
   const { filters } = useInboxTableContext()
   const { onSearchChange } = filters
   const [localSearch, setLocalSearch] = useState(filters.search)
@@ -26,20 +27,21 @@ export function InboxToolbar() {
   return (
     <div className="flex items-center gap-2">
       <Input
-        placeholder="Search by sender or subject..."
+        placeholder={t('toolbar.search')}
         value={localSearch}
         onChange={(e) => setLocalSearch(e.target.value)}
         className="h-8 w-64"
       />
       <Select value={filters.statusFilter} onValueChange={filters.onStatusChange}>
         <SelectTrigger size="sm" className="w-40">
-          <SelectValue placeholder="All statuses" />
+          <SelectValue placeholder={t('toolbar.allStatuses')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All statuses</SelectItem>
+          <SelectItem value="">{t('toolbar.allStatuses')}</SelectItem>
           {zInboundEmailStatusEnum.options.map((s) => (
             <SelectItem key={s} value={s}>
-              {EMAIL_STATUS_LABEL[s] ?? s}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {t(`emailStatus.${s}` as any, { defaultValue: s })}
             </SelectItem>
           ))}
         </SelectContent>

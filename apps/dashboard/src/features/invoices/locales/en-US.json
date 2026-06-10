@@ -1,1 +1,31 @@
-{}
+{
+  "status": {
+    "received": "Received",
+    "parsing": "Parsing",
+    "parsed": "Parsed",
+    "review_needed": "Review needed",
+    "approved": "Approved",
+    "exported": "Exported",
+    "failed": "Failed"
+  },
+  "type": {
+    "factura": "Factura",
+    "boleta": "Boleta",
+    "nota_credito": "Nota de Crédito",
+    "nota_debito": "Nota de Débito"
+  },
+  "col": {
+    "invoice": "Invoice",
+    "supplier": "Supplier",
+    "type": "Type",
+    "issueDate": "Issue date",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "toolbar": {
+    "search": "Search by number or supplier...",
+    "allStatuses": "All statuses",
+    "allTypes": "All types"
+  }
+}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useForm } from "@tanstack/react-form"
 import { Link, useRouter } from "@tanstack/react-router"
 import { useRegister, useAcceptInvitation } from "@/features/auth/api/auth.api"
@@ -43,14 +44,11 @@ function ParticlesCanvas() {
   )
 }
 
-const PASSWORD_REQUIREMENTS = [
-  { label: "At least 8 characters", test: (v: string) => v.length >= 8 },
-  { label: "One uppercase letter", test: (v: string) => /[A-Z]/.test(v) },
-  { label: "One number", test: (v: string) => /[0-9]/.test(v) },
-  {
-    label: "One special character",
-    test: (v: string) => /[^A-Za-z0-9]/.test(v),
-  },
+const PASSWORD_REQUIREMENT_TESTS: { key: string; test: (v: string) => boolean }[] = [
+  { key: "minLength", test: (v: string) => v.length >= 8 },
+  { key: "uppercase", test: (v: string) => /[A-Z]/.test(v) },
+  { key: "number", test: (v: string) => /[0-9]/.test(v) },
+  { key: "special", test: (v: string) => /[^A-Za-z0-9]/.test(v) },
 ]
 
 function getErrorMessage(error: unknown): string {
@@ -62,7 +60,8 @@ function getErrorMessage(error: unknown): string {
 }
 
 function PasswordStrengthIndicator({ password }: { password: string }) {
-  const met = PASSWORD_REQUIREMENTS.filter((r) => r.test(password)).length
+  const { t } = useTranslation("auth")
+  const met = PASSWORD_REQUIREMENT_TESTS.filter((r) => r.test(password)).length
   if (!password) return null
 
   const strengthColor =
@@ -74,8 +73,8 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
           ? "bg-yellow-500"
           : "bg-emerald-500"
 
-  const strengthLabel =
-    met <= 1 ? "Weak" : met === 2 ? "Fair" : met === 3 ? "Good" : "Strong"
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const strengthLabel = met <= 1 ? t("passwordStrength.weak") : met === 2 ? t("passwordStrength.fair") : met === 3 ? t("passwordStrength.good") : t("passwordStrength.strong")
 
   return (
     <div className="mt-2 space-y-2">
@@ -94,10 +93,12 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
 
       {/* Requirements grid */}
       <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-        {PASSWORD_REQUIREMENTS.map((req) => {
+        {PASSWORD_REQUIREMENT_TESTS.map((req) => {
           const passed = req.test(password)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const label = t(`passwordStrength.${req.key}` as any)
           return (
-            <div key={req.label} className="flex items-center gap-1.5">
+            <div key={req.key} className="flex items-center gap-1.5">
               <span
                 className={`flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full text-[9px] transition-all duration-300 ${
                   passed
@@ -112,7 +113,7 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
                   passed ? "text-emerald-500" : "text-muted-foreground/60"
                 }`}
               >
-                {req.label}
+                {label}
               </span>
             </div>
           )
@@ -139,6 +140,7 @@ export function RegisterForm({
   invitationToken,
   prefillEmail,
 }: RegisterFormProps) {
+  const { t } = useTranslation("auth")
   const register = useRegister()
   const acceptInvitation = useAcceptInvitation()
   const router = useRouter()
@@ -256,8 +258,8 @@ export function RegisterForm({
 
               <p className="text-xs text-muted-foreground/70">
                 {invitationToken
-                  ? "Create your account to join"
-                  : "Create a new account"}
+                  ? t("register.titleInvite")
+                  : t("register.title")}
               </p>
             </div>
 
@@ -280,8 +282,7 @@ export function RegisterForm({
                   />
                 </svg>
                 <p className="text-[11px] leading-relaxed text-primary/80">
-                  You've been invited to join a workspace. Create your account
-                  to accept the invitation.
+                  {t("register.inviteBanner")}
                 </p>
               </div>
             )}
@@ -347,7 +348,7 @@ export function RegisterForm({
                   {(field) => (
                     <div className="flex flex-col gap-1">
                       <label htmlFor={field.name} className={labelCls}>
-                        First
+                        {t("register.firstName")}
                       </label>
                       <input
                         id={field.name}
@@ -372,7 +373,7 @@ export function RegisterForm({
                   {(field) => (
                     <div className="flex flex-col gap-1">
                       <label htmlFor={field.name} className={labelCls}>
-                        Last
+                        {t("register.lastName")}
                       </label>
                       <input
                         id={field.name}
@@ -399,13 +400,13 @@ export function RegisterForm({
                 {(field) => (
                   <div className="flex flex-col gap-1">
                     <label htmlFor={field.name} className={labelCls}>
-                      Email
+                      {t("email")}
                     </label>
                     <input
                       id={field.name}
                       type="email"
                       autoComplete="email"
-                      placeholder="you@company.com"
+                      placeholder={t("emailPlaceholder")}
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -426,7 +427,7 @@ export function RegisterForm({
                 {(field) => (
                   <div className="flex flex-col gap-1">
                     <label htmlFor={field.name} className={labelCls}>
-                      Password
+                      {t("password")}
                     </label>
                     <input
                       id={field.name}
@@ -459,14 +460,14 @@ export function RegisterForm({
                   onChangeListenTo: ["password"],
                   onChange: ({ value, fieldApi }) =>
                     value !== fieldApi.form.getFieldValue("password")
-                      ? "Passwords do not match"
+                      ? t("passwordsDoNotMatch")
                       : undefined,
                 }}
               >
                 {(field) => (
                   <div className="flex flex-col gap-1">
                     <label htmlFor={field.name} className={labelCls}>
-                      Confirm password
+                      {t("register.confirmPassword")}
                     </label>
                     <div className="relative">
                       <input
@@ -539,12 +540,12 @@ export function RegisterForm({
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                             />
                           </svg>
-                          Creating account…
+                          {t("register.submitting")}
                         </>
                       ) : invitationToken ? (
-                        "Create account & join workspace"
+                        t("register.submitInvite")
                       ) : (
-                        "Create account"
+                        t("register.submit")
                       )}
                     </span>
                   </button>
@@ -554,31 +555,31 @@ export function RegisterForm({
 
             {/* Footer */}
             <p className="mt-5 text-center text-[11px] text-muted-foreground/50">
-              Already have an account?{" "}
+              {t("register.alreadyHaveAccount")}{" "}
               <Link
                 to="/login"
                 className="font-medium text-primary/70 underline-offset-2 transition-colors hover:text-primary hover:underline"
               >
-                Sign in
+                {t("register.signIn")}
               </Link>
             </p>
           </div>
 
           {/* Legal fine print */}
           <p className="mt-3 text-center text-[10px] text-muted-foreground/30">
-            By creating an account you agree to our{" "}
+            {t("register.legalIntro")}{" "}
             <a
               href="/terms"
               className="underline underline-offset-2 hover:text-muted-foreground/50"
             >
-              Terms
+              {t("register.terms")}
             </a>{" "}
             &{" "}
             <a
               href="/privacy"
               className="underline underline-offset-2 hover:text-muted-foreground/50"
             >
-              Privacy Policy
+              {t("register.privacy")}
             </a>
           </p>
         </div>

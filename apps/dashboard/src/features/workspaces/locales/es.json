@@ -1,1 +1,16 @@
-{}
+{
+  "overview": {
+    "workspace": "Workspace",
+    "inboxEmail": "Email de Bandeja",
+    "copy": "Copiar al portapapeles",
+    "copied": "¡Copiado!",
+    "team": "Equipo",
+    "member": "Miembro",
+    "members": "Miembros",
+    "inWorkspace": "en el workspace",
+    "yourRole": "Tu rol",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "inboxDesc": "Reenvía tus facturas de proveedores a esta dirección. Ticka extraerá automáticamente los detalles y creará tickets en este workspace."
+  }
+}

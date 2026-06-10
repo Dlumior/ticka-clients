@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { RiTeamLine, RiMailSendLine, RiUserAddLine } from "@remixicon/react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -31,6 +32,7 @@ export function WorkspaceMembersList({
   orgRole,
   timezone,
 }: WorkspaceMembersListProps) {
+  const { t } = useTranslation("members")
   const [inviteOpen, setInviteOpen] = useState(false)
   const { data: members, isLoading: membersLoading } =
     useWorkspaceMembers(workspaceId)
@@ -55,7 +57,7 @@ export function WorkspaceMembersList({
             trigger={
               <Button size="sm">
                 <RiUserAddLine className="size-4" />
-                Invite member
+                {t("inviteMember")}
               </Button>
             }
           />
@@ -65,7 +67,7 @@ export function WorkspaceMembersList({
       <Tabs defaultValue="members">
         <TabsList>
           <TabsTrigger value="members" className="gap-1.5">
-            Members
+            {t("members")}
             {members && members.length > 0 && (
               <Badge
                 variant="secondary"
@@ -76,7 +78,7 @@ export function WorkspaceMembersList({
             )}
           </TabsTrigger>
           <TabsTrigger value="invitations" className="gap-1.5">
-            Invitations
+            {t("invitations")}
             {invitations.length > 0 && (
               <Badge
                 variant="secondary"
@@ -104,8 +106,8 @@ export function WorkspaceMembersList({
           ) : (
             <EmptyState
               icon={<RiTeamLine className="size-6" />}
-              title="No members yet"
-              description="Invite people to collaborate in this workspace."
+              title={t("noMembers")}
+              description={t("noMembersDesc")}
             />
           )}
         </TabsContent>
@@ -132,8 +134,8 @@ export function WorkspaceMembersList({
           ) : (
             <EmptyState
               icon={<RiMailSendLine className="size-6" />}
-              title="No invitations"
-              description="Invitations you send will appear here."
+              title={t("noInvitations")}
+              description={t("noInvitationsDesc")}
             />
           )}
         </TabsContent>

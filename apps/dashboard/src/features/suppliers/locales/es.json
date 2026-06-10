@@ -1,1 +1,15 @@
-{}
+{
+  "col": {
+    "supplier": "Proveedor",
+    "ruc": "RUC",
+    "email": "Email",
+    "phone": "Teléfono",
+    "invoices": "Facturas"
+  },
+  "toolbar": {
+    "search": "Buscar por nombre o RUC..."
+  },
+  "table": {
+    "noResults": "No se encontraron proveedores."
+  }
+}

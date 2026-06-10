@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { useForm } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import { useLogin } from "@/features/auth/api/auth.api"
@@ -48,6 +49,7 @@ function ParticlesCanvas() {
 }
 
 export function LoginForm() {
+  const { t } = useTranslation('auth')
   const login = useLogin()
   const form = useForm({
     defaultValues: { email: "", password: "" },
@@ -159,7 +161,7 @@ export function LoginForm() {
             </div>
 
             <p className="mb-6 text-center text-sm text-muted-foreground">
-              Inicia sesión en tu cuenta
+              {t('login.tagline')}
             </p>
 
             <form
@@ -184,13 +186,13 @@ export function LoginForm() {
                       htmlFor={field.name}
                       className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                     >
-                      Email
+                      {t('email')}
                     </label>
                     <input
                       id={field.name}
                       type="email"
                       autoComplete="email"
-                      placeholder="tu@empresa.com"
+                      placeholder={t('emailPlaceholder')}
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -212,7 +214,7 @@ export function LoginForm() {
                       htmlFor={field.name}
                       className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                     >
-                      Contraseña
+                      {t('password')}
                     </label>
                     <input
                       id={field.name}
@@ -246,8 +248,8 @@ export function LoginForm() {
                   >
                     <span className="relative z-10">
                       {isSubmitting || login.isPending
-                        ? "Iniciando sesión…"
-                        : "Iniciar sesión"}
+                        ? t('login.submitting')
+                        : t('login.submit')}
                     </span>
                     <div className="absolute inset-0 origin-left scale-x-0 bg-white/20 transition-transform duration-300 group-hover:scale-x-100" />
                   </button>
@@ -257,7 +259,7 @@ export function LoginForm() {
 
             {/* Footer note */}
             <p className="mt-6 text-center text-xs text-muted-foreground/60">
-              De tu correo a tus cuentas en segundos. ⚡
+              {t('login.footer')}
             </p>
           </div>
         </div>
