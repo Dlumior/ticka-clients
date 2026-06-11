@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiDeleteBinLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { useInvoicesContext } from '../context/invoices.context'
@@ -8,6 +9,7 @@ interface InvoiceRowActionsProps {
 }
 
 export function InvoiceRowActions({ invoice }: InvoiceRowActionsProps) {
+  const { t } = useTranslation('invoices')
   const { deletion: { setDeleteInvoice } } = useInvoicesContext()
   return (
     // Stop clicks from bubbling to the row, which would open the detail sheet.
@@ -15,7 +17,7 @@ export function InvoiceRowActions({ invoice }: InvoiceRowActionsProps) {
       <Button
         variant="ghost"
         size="icon-xs"
-        aria-label="Delete invoice"
+        aria-label={t('deleteDialog.ariaLabel')}
         onClick={() => setDeleteInvoice(invoice)}
       >
         <RiDeleteBinLine className="size-4 text-muted-foreground" />

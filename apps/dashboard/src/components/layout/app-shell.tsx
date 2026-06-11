@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { ThemeSwitcher } from '@/components/theme-switcher'
 import { OrgRail, ORG_RAIL_WIDTH } from './org-rail'
 import { WorkspaceSidebar } from './workspace-sidebar'
@@ -24,7 +25,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="text-sm font-semibold tracking-tight text-foreground">
             Ticka
           </span>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <LocaleSwitcher />
             <ThemeSwitcher />
           </div>
         </header>

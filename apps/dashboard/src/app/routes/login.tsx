@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { z } from 'zod'
 import { LoginForm } from '@/features/auth/components/login-form'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { currentUserQueryOptions } from '@/features/auth/api/auth.api'
 
 export const Route = createFileRoute('/login')({
@@ -17,5 +18,12 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginPage() {
-  return <LoginForm />
+  return (
+    <>
+      <div className="fixed top-4 right-4 z-20">
+        <LocaleSwitcher />
+      </div>
+      <LoginForm />
+    </>
+  )
 }

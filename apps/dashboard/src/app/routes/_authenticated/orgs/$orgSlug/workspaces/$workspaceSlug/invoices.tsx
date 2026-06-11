@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
 import { InvoicesTable } from '@/features/invoices/components/invoices-table'
 
@@ -9,13 +10,14 @@ export const Route = createFileRoute(
 
 function InvoicesPage() {
   const { workspace, organizationDetail } = Route.useRouteContext()
+  const { t } = useTranslation('invoices')
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold">Invoices</h1>
+        <h1 className="text-xl font-semibold">{t('page.title')}</h1>
         <p className="text-sm text-muted-foreground">
-          Invoices processed for this workspace.
+          {t('page.subtitle')}
         </p>
       </div>
 

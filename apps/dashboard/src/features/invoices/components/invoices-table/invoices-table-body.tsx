@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { flexRender } from '@tanstack/react-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { useInvoicesContext } from '../../context/invoices.context'
 
 export function InvoicesTableBody() {
+  const { t } = useTranslation('invoices')
   const {
     table: { instance, columns, isLoading, isFetching },
     detail: { openDetail },
@@ -32,7 +34,7 @@ export function InvoicesTableBody() {
             colSpan={columns.length}
             className="px-3 py-12 text-center text-sm text-muted-foreground"
           >
-            No invoices found.
+            {t('table.noInvoices')}
           </td>
         </tr>
       ) : (

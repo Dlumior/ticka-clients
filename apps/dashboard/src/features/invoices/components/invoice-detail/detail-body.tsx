@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate, formatDatetimeInTz } from '@/lib/date'
 import { useInvoicesContext } from '../../context/invoices.context'
@@ -14,6 +15,7 @@ interface DetailBodyProps {
 }
 
 export function DetailBody({ detail }: DetailBodyProps) {
+  const { t } = useTranslation('invoices')
   const { timezone } = useInvoicesContext()
   const header = detail.header
 
@@ -21,27 +23,27 @@ export function DetailBody({ detail }: DetailBodyProps) {
     <>
       {/* Details */}
       <div className="flex flex-col gap-3">
-        <SectionLabel>Details</SectionLabel>
+        <SectionLabel>{t('detail.sectionDetails')}</SectionLabel>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Field
-            label="Issue date"
+            label={t('detail.fieldIssueDate')}
             value={header?.issue_date ? formatCalendarDate(header.issue_date) : null}
           />
           <Field
-            label="Due date"
+            label={t('detail.fieldDueDate')}
             value={header?.due_date ? formatCalendarDate(header.due_date) : null}
           />
-          <Field label="Currency" value={header?.currency} />
+          <Field label={t('detail.fieldCurrency')} value={header?.currency} />
           <Field
-            label="Received"
+            label={t('detail.fieldReceived')}
             value={
               detail.received_at
                 ? formatDatetimeInTz(detail.received_at, timezone)
                 : null
             }
           />
-          <Field label="Format" value={detail.source_type?.toUpperCase()} />
-          <Field label="Sender" value={detail.sender_email} />
+          <Field label={t('detail.fieldFormat')} value={detail.source_type?.toUpperCase()} />
+          <Field label={t('detail.fieldSender')} value={detail.sender_email} />
           <SourceField detail={detail} />
         </div>
         {detail.tags && detail.tags.length > 0 && (
@@ -62,24 +64,24 @@ export function DetailBody({ detail }: DetailBodyProps) {
       {/* Amounts + Supplier */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-3">
-          <SectionLabel>Amounts</SectionLabel>
+          <SectionLabel>{t('detail.sectionAmounts')}</SectionLabel>
           {header ? (
             <AmountsCard detail={detail} />
           ) : (
             <div className="flex items-center justify-center rounded-lg border border-dashed bg-muted/10 py-8">
-              <p className="text-sm text-muted-foreground">Not parsed yet.</p>
+              <p className="text-sm text-muted-foreground">{t('detail.notParsed')}</p>
             </div>
           )}
         </div>
         <div className="flex flex-col gap-3">
-          <SectionLabel>Supplier</SectionLabel>
+          <SectionLabel>{t('detail.sectionSupplier')}</SectionLabel>
           <SupplierCard detail={detail} />
         </div>
       </div>
 
       {/* Line items */}
       <div className="flex flex-col gap-3">
-        <SectionLabel>Line items</SectionLabel>
+        <SectionLabel>{t('detail.sectionLineItems')}</SectionLabel>
         <LineItemsTable detail={detail} />
       </div>
     </>

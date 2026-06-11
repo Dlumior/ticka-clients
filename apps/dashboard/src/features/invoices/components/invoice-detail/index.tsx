@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { useInvoicesContext } from '../../context/invoices.context'
@@ -6,6 +7,7 @@ import { DetailBody } from './detail-body'
 import { DetailHeader } from './detail-header'
 
 export function InvoiceDetailSheet() {
+  const { t } = useTranslation('invoices')
   const { workspaceId, detail: { selectedInvoice, sheetOpen, closeDetail } } = useInvoicesContext()
 
   const { data: invoiceDetail, isFetching } = useInvoiceDetail(
@@ -15,7 +17,7 @@ export function InvoiceDetailSheet() {
 
   const header = invoiceDetail?.header
   const invoiceNumber =
-    header?.invoice_number || selectedInvoice?.invoice_number || '(unparsed)'
+    header?.invoice_number || selectedInvoice?.invoice_number || t('detail.unparsed')
   const loading = isFetching && !invoiceDetail
 
   return (
@@ -40,7 +42,7 @@ export function InvoiceDetailSheet() {
             </div>
           ) : !invoiceDetail ? (
             <p className="text-sm text-muted-foreground">
-              Unable to load invoice details.
+              {t('detail.loadError')}
             </p>
           ) : (
             <DetailBody detail={invoiceDetail} />

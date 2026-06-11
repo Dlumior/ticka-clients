@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiDeleteBinLine, RiErrorWarningLine, RiFileTextLine } from '@remixicon/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,7 @@ import {
 } from '@/components/ui/sheet'
 import { useInvoicesContext } from '../../context/invoices.context'
 import type { Invoice, InvoiceDetail } from '../../api/invoices.api'
-import { statusLabel, statusVariant, typeLabel } from '../../invoices.lib'
+import { statusVariant } from '../../invoices.lib'
 
 interface DetailHeaderProps {
   invoice: Invoice | null
@@ -17,6 +18,7 @@ interface DetailHeaderProps {
 }
 
 export function DetailHeader({ invoice, detail, invoiceNumber }: DetailHeaderProps) {
+  const { t } = useTranslation('invoices')
   const { permissions: { canManage }, deletion: { setDeleteInvoice } } = useInvoicesContext()
 
   const status = detail?.status ?? invoice?.status
@@ -34,13 +36,19 @@ export function DetailHeader({ invoice, detail, invoiceNumber }: DetailHeaderPro
             {detail?.header?.supplier_name ||
               detail?.supplier?.name ||
               invoice?.supplier_name ||
-              'Supplier not identified'}
+              t('detail.supplierNotIdentified')}
           </SheetDescription>
         </SheetHeader>
         <div className="flex shrink-0 flex-col items-end gap-2">
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <Badge variant={statusVariant(status)}>{statusLabel(status)}</Badge>
-            <Badge variant="outline">{typeLabel(invoiceType)}</Badge>
+            <Badge variant={statusVariant(status)}>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {status ? t(`status.${status}` as any, { defaultValue: status }) : '—'}
+            </Badge>
+            <Badge variant="outline">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {invoiceType ? t(`type.${invoiceType}` as any, { defaultValue: invoiceType }) : '—'}
+            </Badge>
           </div>
           {invoice && canManage && (
             <Button
@@ -49,7 +57,7 @@ export function DetailHeader({ invoice, detail, invoiceNumber }: DetailHeaderPro
               onClick={() => setDeleteInvoice(invoice)}
             >
               <RiDeleteBinLine />
-              Delete
+              {t('detail.deleteBtn')}
             </Button>
           )}
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { InvoiceDetail } from '../../api/invoices.api'
 import { formatMoney, formatNumber } from '../../invoices.lib'
 
@@ -6,13 +7,14 @@ interface LineItemsTableProps {
 }
 
 export function LineItemsTable({ detail }: LineItemsTableProps) {
+  const { t } = useTranslation('invoices')
   const items = detail.line_items ?? []
   const currency = detail.header?.currency
 
   if (items.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-lg border border-dashed bg-muted/10 py-8">
-        <p className="text-sm text-muted-foreground">No line items.</p>
+        <p className="text-sm text-muted-foreground">{t('lineItems.noItems')}</p>
       </div>
     )
   }
@@ -22,11 +24,11 @@ export function LineItemsTable({ detail }: LineItemsTableProps) {
       <table className="w-full text-sm">
         <thead className="bg-muted/40">
           <tr className="border-b text-left text-[11px] uppercase tracking-wider text-muted-foreground">
-            <th className="px-3 py-2 font-semibold">#</th>
-            <th className="px-3 py-2 font-semibold">Description</th>
-            <th className="px-3 py-2 text-right font-semibold">Qty</th>
-            <th className="px-3 py-2 text-right font-semibold">Unit price</th>
-            <th className="px-3 py-2 text-right font-semibold">Subtotal</th>
+            <th className="px-3 py-2 font-semibold">{t('lineItems.colNum')}</th>
+            <th className="px-3 py-2 font-semibold">{t('lineItems.colDescription')}</th>
+            <th className="px-3 py-2 text-right font-semibold">{t('lineItems.colQty')}</th>
+            <th className="px-3 py-2 text-right font-semibold">{t('lineItems.colUnitPrice')}</th>
+            <th className="px-3 py-2 text-right font-semibold">{t('lineItems.colSubtotal')}</th>
           </tr>
         </thead>
         <tbody className="divide-y">

@@ -27,5 +27,60 @@
     "search": "Buscar por número o proveedor...",
     "allStatuses": "Todos los estados",
     "allTypes": "Todos los tipos"
+  },
+  "page": {
+    "title": "Facturas",
+    "subtitle": "Comprobantes procesados para este workspace."
+  },
+  "detail": {
+    "unparsed": "(sin procesar)",
+    "supplierNotIdentified": "Proveedor no identificado",
+    "deleteBtn": "Eliminar",
+    "loadError": "No se pudieron cargar los detalles del comprobante.",
+    "notParsed": "Aún no procesado.",
+    "sectionDetails": "Detalles",
+    "sectionAmounts": "Importes",
+    "sectionSupplier": "Proveedor",
+    "sectionLineItems": "Líneas de detalle",
+    "fieldIssueDate": "Fecha de emisión",
+    "fieldDueDate": "Fecha de vencimiento",
+    "fieldCurrency": "Moneda",
+    "fieldReceived": "Recibido",
+    "fieldFormat": "Formato",
+    "fieldSender": "Remitente",
+    "fieldSource": "Origen",
+    "fieldSourceEmail": "Correo de origen",
+    "fieldUploadedFile": "Archivo subido",
+    "fieldSubtotal": "Subtotal",
+    "fieldIgv": "IGV",
+    "fieldTotal": "Total",
+    "fieldRuc": "RUC",
+    "fieldPhone": "Teléfono",
+    "fieldEmail": "Email",
+    "fieldAddress": "Dirección"
+  },
+  "lineItems": {
+    "noItems": "Sin líneas de detalle.",
+    "colNum": "#",
+    "colDescription": "Descripción",
+    "colQty": "Cant.",
+    "colUnitPrice": "Precio unitario",
+    "colSubtotal": "Subtotal"
+  },
+  "deleteDialog": {
+    "title": "Eliminar comprobante",
+    "descBefore": "Esto elimina permanentemente el comprobante",
+    "descAfter": "y sus datos procesados. Esta acción no se puede deshacer.",
+    "confirm": "Eliminar comprobante",
+    "ariaLabel": "Eliminar comprobante"
+  },
+  "table": {
+    "noInvoices": "No se encontraron comprobantes."
+  },
+  "pagination": {
+    "total": "{{count}} en total",
+    "page": "Página {{current}} de {{total}}",
+    "previous": "Anterior",
+    "next": "Siguiente"
   }
 }

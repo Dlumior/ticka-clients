@@ -13,7 +13,8 @@ import { useInvoicesContext } from '../context/invoices.context'
 import { useDeleteInvoice } from '../api/invoices.api'
 
 export function InvoiceDeleteDialog() {
-  const { t } = useTranslation('common')
+  const { t: tc } = useTranslation('common')
+  const { t } = useTranslation('invoices')
   const {
     workspaceId,
     deletion: { deleteInvoice, setDeleteInvoice },
@@ -34,13 +35,13 @@ export function InvoiceDeleteDialog() {
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) setDeleteInvoice(null) }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Delete invoice</DialogTitle>
+          <DialogTitle>{t('deleteDialog.title')}</DialogTitle>
           <DialogDescription>
-            This permanently deletes invoice{' '}
+            {t('deleteDialog.descBefore')}{' '}
             <span className="font-mono font-medium text-foreground">
-              {deleteInvoice?.invoice_number || '(unparsed)'}
+              {deleteInvoice?.invoice_number || t('detail.unparsed')}
             </span>{' '}
-            and its parsed data. This action cannot be undone.
+            {t('deleteDialog.descAfter')}
           </DialogDescription>
         </DialogHeader>
 
@@ -60,7 +61,7 @@ export function InvoiceDeleteDialog() {
             onClick={() => setDeleteInvoice(null)}
             disabled={deleteMutation.isPending}
           >
-            {t('cancel')}
+            {tc('cancel')}
           </Button>
           <Button
             type="button"
@@ -68,7 +69,7 @@ export function InvoiceDeleteDialog() {
             onClick={handleConfirm}
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? t('deleting') : 'Delete invoice'}
+            {deleteMutation.isPending ? tc('deleting') : t('deleteDialog.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>

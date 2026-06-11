@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiBuilding2Line } from '@remixicon/react'
 import type { InvoiceDetail } from '../../api/invoices.api'
 import { Field } from './field'
@@ -7,6 +8,7 @@ interface SupplierCardProps {
 }
 
 export function SupplierCard({ detail }: SupplierCardProps) {
+  const { t } = useTranslation('invoices')
   const supplier = detail.supplier
   const header = detail.header
   const name = supplier?.name || header?.supplier_name
@@ -21,10 +23,10 @@ export function SupplierCard({ detail }: SupplierCardProps) {
         <span className="text-sm font-medium">{name || '—'}</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="RUC" value={ruc} mono />
-        {supplier?.phone && <Field label="Phone" value={supplier.phone} />}
-        {supplier?.email && <Field label="Email" value={supplier.email} />}
-        {supplier?.address && <Field label="Address" value={supplier.address} />}
+        <Field label={t('detail.fieldRuc')} value={ruc} mono />
+        {supplier?.phone && <Field label={t('detail.fieldPhone')} value={supplier.phone} />}
+        {supplier?.email && <Field label={t('detail.fieldEmail')} value={supplier.email} />}
+        {supplier?.address && <Field label={t('detail.fieldAddress')} value={supplier.address} />}
       </div>
     </div>
   )

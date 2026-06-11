@@ -27,5 +27,60 @@
     "search": "Search by number or supplier...",
     "allStatuses": "All statuses",
     "allTypes": "All types"
+  },
+  "page": {
+    "title": "Invoices",
+    "subtitle": "Invoices processed for this workspace."
+  },
+  "detail": {
+    "unparsed": "(unparsed)",
+    "supplierNotIdentified": "Supplier not identified",
+    "deleteBtn": "Delete",
+    "loadError": "Unable to load invoice details.",
+    "notParsed": "Not parsed yet.",
+    "sectionDetails": "Details",
+    "sectionAmounts": "Amounts",
+    "sectionSupplier": "Supplier",
+    "sectionLineItems": "Line items",
+    "fieldIssueDate": "Issue date",
+    "fieldDueDate": "Due date",
+    "fieldCurrency": "Currency",
+    "fieldReceived": "Received",
+    "fieldFormat": "Format",
+    "fieldSender": "Sender",
+    "fieldSource": "Source",
+    "fieldSourceEmail": "Source email",
+    "fieldUploadedFile": "Uploaded file",
+    "fieldSubtotal": "Subtotal",
+    "fieldIgv": "IGV",
+    "fieldTotal": "Total",
+    "fieldRuc": "RUC",
+    "fieldPhone": "Phone",
+    "fieldEmail": "Email",
+    "fieldAddress": "Address"
+  },
+  "lineItems": {
+    "noItems": "No line items.",
+    "colNum": "#",
+    "colDescription": "Description",
+    "colQty": "Qty",
+    "colUnitPrice": "Unit price",
+    "colSubtotal": "Subtotal"
+  },
+  "deleteDialog": {
+    "title": "Delete invoice",
+    "descBefore": "This permanently deletes invoice",
+    "descAfter": "and its parsed data. This action cannot be undone.",
+    "confirm": "Delete invoice",
+    "ariaLabel": "Delete invoice"
+  },
+  "table": {
+    "noInvoices": "No invoices found."
+  },
+  "pagination": {
+    "total": "{{count}} total",
+    "page": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next"
   }
 }
