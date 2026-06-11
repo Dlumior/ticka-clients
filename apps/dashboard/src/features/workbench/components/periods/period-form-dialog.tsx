@@ -25,7 +25,8 @@ export function PeriodFormDialog({
   onOpenChange,
   workspaceId,
 }: PeriodFormDialogProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('workbench')
+  const { t: tc } = useTranslation('common')
   const createPeriod = useCreatePeriod(workspaceId)
   const [name, setName] = useState('')
   const [startDate, setStartDate] = useState('')
@@ -55,25 +56,27 @@ export function PeriodFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>New period</DialogTitle>
+          <DialogTitle>{t('periodForm.title')}</DialogTitle>
           <DialogDescription>
-            A named date range you can reuse as a quick filter preset.
+            {t('periodForm.description')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
           <Field>
-            <FieldLabel htmlFor="period-name">{t('name')}</FieldLabel>
+            <FieldLabel htmlFor="period-name">{tc('name')}</FieldLabel>
             <Input
               id="period-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. June 2026"
+              placeholder={t('periodForm.placeholder')}
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field>
-              <FieldLabel htmlFor="period-start">Start date</FieldLabel>
+              <FieldLabel htmlFor="period-start">
+                {t('periodForm.startDate')}
+              </FieldLabel>
               <Input
                 id="period-start"
                 type="date"
@@ -82,7 +85,9 @@ export function PeriodFormDialog({
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="period-end">End date</FieldLabel>
+              <FieldLabel htmlFor="period-end">
+                {t('periodForm.endDate')}
+              </FieldLabel>
               <Input
                 id="period-end"
                 type="date"
@@ -101,10 +106,10 @@ export function PeriodFormDialog({
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            {t('cancel')}
+            {tc('cancel')}
           </Button>
           <Button type="button" disabled={createPeriod.isPending} onClick={handleSubmit}>
-            {createPeriod.isPending ? t('creating') : 'Create period'}
+            {createPeriod.isPending ? tc('creating') : t('periodForm.createPeriod')}
           </Button>
         </DialogFooter>
       </DialogContent>

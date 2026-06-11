@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Sheet,
   SheetContent,
@@ -11,6 +12,7 @@ import { formatMoney, formatNumber } from '@/features/invoices/invoices.lib'
 import { useWorkbenchContext } from '../../context/workbench.context'
 
 export function InvoiceLinesDrawer() {
+  const { t } = useTranslation('workbench')
   const { workspaceId, lines, selection } = useWorkbenchContext()
   const open = lines.invoiceId !== null
   const { data: invoice, isLoading } = useInvoiceDetail(
@@ -23,11 +25,10 @@ export function InvoiceLinesDrawer() {
       <SheetContent side="right" className="w-full sm:max-w-lg">
         <SheetHeader>
           <SheetTitle>
-            {invoice?.header?.invoice_number || 'Invoice line items'}
+            {invoice?.header?.invoice_number || t('invoiceLines.title')}
           </SheetTitle>
           <SheetDescription>
-            Pick individual line items to export. Selecting line items here adds
-            them to your export alongside any whole invoices you ticked.
+            {t('invoiceLines.description')}
           </SheetDescription>
         </SheetHeader>
 
@@ -40,7 +41,7 @@ export function InvoiceLinesDrawer() {
             </div>
           ) : !invoice || invoice.line_items.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              No line items on this invoice.
+              {t('invoiceLines.empty')}
             </p>
           ) : (
             <ul className="flex flex-col divide-y">
@@ -52,15 +53,16 @@ export function InvoiceLinesDrawer() {
                       type="checkbox"
                       className="mt-1 size-4 cursor-pointer accent-primary"
                       checked={checked}
-                      aria-label="Select line item"
+                      aria-label={t('invoiceLines.selectLineItem')}
                       onChange={() => selection.toggleLineItem(line.id)}
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium">
-                        {line.description || `Line ${line.line_number}`}
+                        {line.description ||
+                          t('invoiceLines.line', { number: line.line_number })}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Qty {formatNumber(line.quantity)} ·{' '}
+                        {t('invoiceLines.qty')} {formatNumber(line.quantity)} ·{' '}
                         {formatMoney(line.subtotal, invoice.header?.currency)}
                       </p>
                     </div>

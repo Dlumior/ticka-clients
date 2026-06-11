@@ -11,6 +11,7 @@ import type workspacesEn from '@/features/workspaces/locales/en-US.json'
 import type suppliersEn from '@/features/suppliers/locales/en-US.json'
 import type permissionsEn from '@/features/permissions/locales/en-US.json'
 import type layoutEn from '@/features/layout/locales/en-US.json'
+import type workbenchEn from '@/features/workbench/locales/en-US.json'
 
 declare module 'i18next' {
   interface CustomTypeOptions {
@@ -26,6 +27,7 @@ declare module 'i18next' {
       suppliers: typeof suppliersEn
       permissions: typeof permissionsEn
       layout: typeof layoutEn
+      workbench: typeof workbenchEn
     }
   }
 }

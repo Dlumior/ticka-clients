@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiArrowDownSLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,12 +18,13 @@ import {
 import { useWorkbenchContext } from '../../context/workbench.context'
 
 export function WorkbenchToolbar() {
+  const { t } = useTranslation('workbench')
   const { filters, selection, table } = useWorkbenchContext()
 
   const supplierLabel =
     filters.supplierIds.length > 0
-      ? `Suppliers (${filters.supplierIds.length})`
-      : 'All suppliers'
+      ? t('toolbar.suppliers', { count: filters.supplierIds.length })
+      : t('toolbar.allSuppliers')
 
   function toggleSupplier(id: string) {
     const next = filters.supplierIds.includes(id)
@@ -45,7 +47,7 @@ export function WorkbenchToolbar() {
         <DropdownMenuContent className="max-h-72 w-64">
           {filters.suppliers.length === 0 ? (
             <p className="px-2 py-1.5 text-xs text-muted-foreground">
-              No suppliers yet.
+              {t('toolbar.noSuppliersYet')}
             </p>
           ) : (
             filters.suppliers.map((supplier) => (
@@ -77,14 +79,15 @@ export function WorkbenchToolbar() {
         }}
       >
         <SelectTrigger size="sm" className="w-44">
-          <SelectValue placeholder="No period">
+          <SelectValue placeholder={t('toolbar.noPeriod')}>
             {(value: string) =>
-              filters.periods.find((p) => p.id === value)?.name ?? 'No period'
+              filters.periods.find((p) => p.id === value)?.name ??
+              t('toolbar.noPeriod')
             }
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">No period</SelectItem>
+          <SelectItem value="">{t('toolbar.noPeriod')}</SelectItem>
           {filters.periods.map((period) => (
             <SelectItem key={period.id} value={period.id}>
               {period.name}
@@ -95,7 +98,7 @@ export function WorkbenchToolbar() {
 
       <div className="flex flex-col gap-1">
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-          From
+          {t('toolbar.from')}
         </span>
         <Input
           type="date"
@@ -106,7 +109,7 @@ export function WorkbenchToolbar() {
       </div>
       <div className="flex flex-col gap-1">
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-          To
+          {t('toolbar.to')}
         </span>
         <Input
           type="date"
@@ -118,27 +121,27 @@ export function WorkbenchToolbar() {
 
       <Select value={filters.status} onValueChange={filters.onStatusChange}>
         <SelectTrigger size="sm" className="w-36">
-          <SelectValue placeholder="All eligible">
+          <SelectValue placeholder={t('toolbar.allEligible')}>
             {(value: string) =>
               value === 'approved'
-                ? 'Approved'
+                ? t('toolbar.approved')
                 : value === 'exported'
-                  ? 'Exported'
-                  : 'All eligible'
+                  ? t('toolbar.exported')
+                  : t('toolbar.allEligible')
             }
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">All eligible</SelectItem>
-          <SelectItem value="approved">Approved</SelectItem>
-          <SelectItem value="exported">Exported</SelectItem>
+          <SelectItem value="">{t('toolbar.allEligible')}</SelectItem>
+          <SelectItem value="approved">{t('toolbar.approved')}</SelectItem>
+          <SelectItem value="exported">{t('toolbar.exported')}</SelectItem>
         </SelectContent>
       </Select>
 
       <div className="ml-auto">
         {selection.selectAllMatching ? (
           <Button variant="outline" size="sm" onClick={selection.clear}>
-            Clear selection
+            {t('toolbar.clearSelection')}
           </Button>
         ) : (
           <Button
@@ -147,7 +150,7 @@ export function WorkbenchToolbar() {
             disabled={table.totalCount === 0}
             onClick={selection.enableSelectAllMatching}
           >
-            Select all {table.totalCount} matching
+            {t('toolbar.selectAllMatching', { count: table.totalCount })}
           </Button>
         )}
       </div>

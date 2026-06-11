@@ -1,0 +1,135 @@
+{
+  "page": {
+    "title": "Workbench",
+    "subtitle": "Browse approved invoices, pick what to export, and generate CSV files from your templates."
+  },
+  "tabs": {
+    "workbench": "Workbench",
+    "templates": "Templates",
+    "exports": "Exports"
+  },
+  "toolbar": {
+    "allSuppliers": "All suppliers",
+    "suppliers": "Suppliers ({{count}})",
+    "noSuppliersYet": "No suppliers yet.",
+    "noPeriod": "No period",
+    "from": "From",
+    "to": "To",
+    "allEligible": "All eligible",
+    "approved": "Approved",
+    "exported": "Exported",
+    "clearSelection": "Clear selection",
+    "selectAllMatching": "Select all {{count}} matching"
+  },
+  "col": {
+    "select": "Select",
+    "selectInvoice": "Select invoice",
+    "invoice": "Invoice",
+    "supplier": "Supplier",
+    "issueDate": "Issue date",
+    "total": "Total",
+    "status": "Status"
+  },
+  "table": {
+    "noResults": "No approved invoices match these filters.",
+    "clickToPickLines": "Click to pick individual line items"
+  },
+  "pagination": {
+    "total": "{{count}} total",
+    "page": "Page {{current}} of {{pageCount}}",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "selection": {
+    "allMatchingSelected": "All {{count}} matching invoices selected",
+    "invoiceCount_one": "{{count}} invoice",
+    "invoiceCount_other": "{{count}} invoices",
+    "lineItemCount_one": "{{count}} line item",
+    "lineItemCount_other": "{{count}} line items",
+    "selected": "{{summary}} selected",
+    "clear": "Clear",
+    "export": "Export…"
+  },
+  "invoiceLines": {
+    "title": "Invoice line items",
+    "description": "Pick individual line items to export. Selecting line items here adds them to your export alongside any whole invoices you ticked.",
+    "empty": "No line items on this invoice.",
+    "selectLineItem": "Select line item",
+    "line": "Line {{number}}",
+    "qty": "Qty"
+  },
+  "exportDialog": {
+    "title": "Export selection",
+    "description": "Choose the template that defines which columns the CSV will contain.",
+    "noTemplatesYet": "No templates yet. Create one in the Templates tab first.",
+    "selectTemplate": "Select a template",
+    "lineGrainHint": "This template includes line-item fields → one row per line item.",
+    "invoiceGrainHint": "One row per invoice.",
+    "generateCsv": "Generate CSV"
+  },
+  "templates": {
+    "title": "Templates",
+    "subtitle": "Reusable column layouts for your exports.",
+    "newTemplate": "New template",
+    "noTemplatesYet": "No templates yet. Create one to start exporting.",
+    "columnCount_one": "{{count}} column",
+    "columnCount_other": "{{count}} columns",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Delete template \"{{name}}\"?"
+  },
+  "templateBuilder": {
+    "titleEdit": "Edit template",
+    "titleNew": "New template",
+    "description": "Pick the fields to export and rename their column headers. Including any line-item field expands the export to one row per line item.",
+    "templateName": "Template name",
+    "templateNamePlaceholder": "e.g. Monthly ERP feed",
+    "availableFields": "Available fields",
+    "loadingFields": "Loading fields…",
+    "columns": "Columns ({{count}})",
+    "emptyColumns": "Select fields on the left to build your columns.",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "removeColumn": "Remove column",
+    "createTemplate": "Create template"
+  },
+  "exports": {
+    "colTemplate": "Template",
+    "colRange": "Range",
+    "colStatus": "Status",
+    "colRows": "Rows",
+    "colInvoices": "Invoices",
+    "colSize": "Size",
+    "colCreated": "Created",
+    "noExports": "No exports yet.",
+    "preparing": "Preparing…",
+    "download": "Download",
+    "exportStatus": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed"
+    }
+  },
+  "periods": {
+    "title": "Periods",
+    "subtitle": "Named date ranges to reuse when exporting.",
+    "newPeriod": "New period",
+    "noPeriods": "No periods yet.",
+    "deleteConfirm": "Delete period \"{{name}}\"?",
+    "delete": "Delete"
+  },
+  "periodForm": {
+    "title": "New period",
+    "description": "A named date range you can reuse as a quick filter preset.",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "placeholder": "e.g. June 2026",
+    "createPeriod": "Create period"
+  },
+  "range": {
+    "allDates": "All dates",
+    "from": "from {{date}}",
+    "until": "until {{date}}"
+  }
+}

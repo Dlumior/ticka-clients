@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiDownloadLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { useDownloadExport, type InvoiceExport } from '../../api/workbench.api'
@@ -11,6 +12,7 @@ export function ExportRowActions({
   workspaceId,
   export: exportRow,
 }: ExportRowActionsProps) {
+  const { t } = useTranslation('workbench')
   const download = useDownloadExport(workspaceId)
 
   if (exportRow.status !== 'completed') {
@@ -30,7 +32,7 @@ export function ExportRowActions({
       onClick={handleDownload}
     >
       <RiDownloadLine />
-      {download.isPending ? 'Preparing…' : 'Download'}
+      {download.isPending ? t('exports.preparing') : t('exports.download')}
     </Button>
   )
 }

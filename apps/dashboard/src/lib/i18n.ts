@@ -47,6 +47,7 @@ void i18next.use(initReactI18next).init({
     'suppliers',
     'permissions',
     'layout',
+    'workbench',
   ],
   defaultNS: 'common',
   resources: buildResources(),

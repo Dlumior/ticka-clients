@@ -1,0 +1,135 @@
+{
+  "page": {
+    "title": "Mesa de trabajo",
+    "subtitle": "Revisa comprobantes aprobados, selecciona los que exportar y genera archivos CSV desde tus plantillas."
+  },
+  "tabs": {
+    "workbench": "Mesa de trabajo",
+    "templates": "Plantillas",
+    "exports": "Exportaciones"
+  },
+  "toolbar": {
+    "allSuppliers": "Todos los proveedores",
+    "suppliers": "Proveedores ({{count}})",
+    "noSuppliersYet": "Aún no hay proveedores.",
+    "noPeriod": "Sin periodo",
+    "from": "Desde",
+    "to": "Hasta",
+    "allEligible": "Todos los elegibles",
+    "approved": "Aprobado",
+    "exported": "Exportado",
+    "clearSelection": "Limpiar selección",
+    "selectAllMatching": "Seleccionar los {{count}} coincidentes"
+  },
+  "col": {
+    "select": "Seleccionar",
+    "selectInvoice": "Seleccionar comprobante",
+    "invoice": "Comprobante",
+    "supplier": "Proveedor",
+    "issueDate": "Fecha de emisión",
+    "total": "Total",
+    "status": "Estado"
+  },
+  "table": {
+    "noResults": "No hay comprobantes aprobados que coincidan con estos filtros.",
+    "clickToPickLines": "Clic para seleccionar líneas individuales"
+  },
+  "pagination": {
+    "total": "{{count}} en total",
+    "page": "Página {{current}} de {{pageCount}}",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "selection": {
+    "allMatchingSelected": "Todos los {{count}} comprobantes coincidentes seleccionados",
+    "invoiceCount_one": "{{count}} comprobante",
+    "invoiceCount_other": "{{count}} comprobantes",
+    "lineItemCount_one": "{{count}} línea de detalle",
+    "lineItemCount_other": "{{count}} líneas de detalle",
+    "selected": "{{summary}} seleccionado(s)",
+    "clear": "Limpiar",
+    "export": "Exportar…"
+  },
+  "invoiceLines": {
+    "title": "Líneas de detalle",
+    "description": "Selecciona líneas individuales para exportar. Las líneas seleccionadas aquí se agregan a tu exportación junto a los comprobantes completos marcados.",
+    "empty": "Este comprobante no tiene líneas de detalle.",
+    "selectLineItem": "Seleccionar línea",
+    "line": "Línea {{number}}",
+    "qty": "Cant."
+  },
+  "exportDialog": {
+    "title": "Exportar selección",
+    "description": "Elige la plantilla que define qué columnas tendrá el CSV.",
+    "noTemplatesYet": "Aún no hay plantillas. Crea una en la pestaña Plantillas primero.",
+    "selectTemplate": "Selecciona una plantilla",
+    "lineGrainHint": "Esta plantilla incluye campos de líneas → una fila por línea de detalle.",
+    "invoiceGrainHint": "Una fila por comprobante.",
+    "generateCsv": "Generar CSV"
+  },
+  "templates": {
+    "title": "Plantillas",
+    "subtitle": "Diseños de columnas reutilizables para tus exportaciones.",
+    "newTemplate": "Nueva plantilla",
+    "noTemplatesYet": "Aún no hay plantillas. Crea una para comenzar a exportar.",
+    "columnCount_one": "{{count}} columna",
+    "columnCount_other": "{{count}} columnas",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar plantilla \"{{name}}\"?"
+  },
+  "templateBuilder": {
+    "titleEdit": "Editar plantilla",
+    "titleNew": "Nueva plantilla",
+    "description": "Elige los campos a exportar y renombra sus encabezados de columna. Incluir cualquier campo de línea expande la exportación a una fila por línea de detalle.",
+    "templateName": "Nombre de la plantilla",
+    "templateNamePlaceholder": "Ej. Alimentación ERP mensual",
+    "availableFields": "Campos disponibles",
+    "loadingFields": "Cargando campos…",
+    "columns": "Columnas ({{count}})",
+    "emptyColumns": "Selecciona campos a la izquierda para construir tus columnas.",
+    "moveUp": "Subir",
+    "moveDown": "Bajar",
+    "removeColumn": "Eliminar columna",
+    "createTemplate": "Crear plantilla"
+  },
+  "exports": {
+    "colTemplate": "Plantilla",
+    "colRange": "Rango",
+    "colStatus": "Estado",
+    "colRows": "Filas",
+    "colInvoices": "Comprobantes",
+    "colSize": "Tamaño",
+    "colCreated": "Creado",
+    "noExports": "Aún no hay exportaciones.",
+    "preparing": "Preparando…",
+    "download": "Descargar",
+    "exportStatus": {
+      "pending": "Pendiente",
+      "processing": "Procesando",
+      "completed": "Completado",
+      "failed": "Fallido"
+    }
+  },
+  "periods": {
+    "title": "Periodos",
+    "subtitle": "Rangos de fechas con nombre para reutilizar al exportar.",
+    "newPeriod": "Nuevo periodo",
+    "noPeriods": "Aún no hay periodos.",
+    "deleteConfirm": "¿Eliminar periodo \"{{name}}\"?",
+    "delete": "Eliminar"
+  },
+  "periodForm": {
+    "title": "Nuevo periodo",
+    "description": "Un rango de fechas con nombre que puedes reutilizar como filtro rápido.",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "placeholder": "Ej. Junio 2026",
+    "createPeriod": "Crear periodo"
+  },
+  "range": {
+    "allDates": "Todas las fechas",
+    "from": "desde {{date}}",
+    "until": "hasta {{date}}"
+  }
+}

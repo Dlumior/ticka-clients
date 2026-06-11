@@ -1,4 +1,5 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
+import type { TFunction } from 'i18next'
 import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate } from '@/lib/date'
 import type { Invoice } from '@/features/invoices/api/invoices.api'
@@ -13,14 +14,15 @@ const columnHelper = createColumnHelper<Invoice>()
 
 interface WorkbenchColumnsOptions {
   selection: WorkbenchSelection
+  t: TFunction<'workbench'>
 }
 
-export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
+export function getWorkbenchColumns({ selection, t }: WorkbenchColumnsOptions) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns: ColumnDef<Invoice, any>[] = [
     columnHelper.display({
       id: 'select',
-      header: () => <span className="sr-only">Select</span>,
+      header: () => <span className="sr-only">{t('col.select')}</span>,
       cell: (info) => {
         const id = info.row.original.id
         const checked = selection.selectAllMatching || selection.isInvoiceSelected(id)
@@ -30,7 +32,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
             className="size-4 cursor-pointer accent-primary"
             checked={checked}
             disabled={selection.selectAllMatching}
-            aria-label="Select invoice"
+            aria-label={t('col.selectInvoice')}
             onClick={(e) => e.stopPropagation()}
             onChange={() => selection.toggleInvoice(id)}
           />
@@ -38,7 +40,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
       },
     }),
     columnHelper.accessor('invoice_number', {
-      header: 'Invoice',
+      header: t('col.invoice'),
       cell: (info) => (
         <span className="font-mono text-sm font-medium">
           {info.getValue() || '—'}
@@ -46,7 +48,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
       ),
     }),
     columnHelper.accessor('supplier_name', {
-      header: 'Supplier',
+      header: t('col.supplier'),
       cell: (info) => {
         const ruc = info.row.original.supplier_ruc
         return (
@@ -62,7 +64,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
       },
     }),
     columnHelper.accessor('issue_date', {
-      header: 'Issue date',
+      header: t('col.issueDate'),
       cell: (info) => {
         const value = info.getValue()
         return (
@@ -73,7 +75,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
       },
     }),
     columnHelper.accessor('total', {
-      header: () => <div className="text-right">Total</div>,
+      header: () => <div className="text-right">{t('col.total')}</div>,
       cell: (info) => (
         <div className="text-right text-sm font-medium tabular-nums">
           {formatMoney(info.getValue(), info.row.original.currency)}
@@ -81,7 +83,7 @@ export function getWorkbenchColumns({ selection }: WorkbenchColumnsOptions) {
       ),
     }),
     columnHelper.accessor('status', {
-      header: 'Status',
+      header: t('col.status'),
       cell: (info) => {
         const status = info.getValue()
         return <Badge variant={statusVariant(status)}>{statusLabel(status)}</Badge>

@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { flexRender } from '@tanstack/react-table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { useWorkbenchContext } from '../../../context/workbench.context'
 
 export function WorkbenchTableBody() {
+  const { t } = useTranslation('workbench')
   const {
     table: { instance, columns, isLoading, isFetching },
     lines,
@@ -32,7 +34,7 @@ export function WorkbenchTableBody() {
             colSpan={columns.length}
             className="px-3 py-12 text-center text-sm text-muted-foreground"
           >
-            No approved invoices match these filters.
+            {t('table.noResults')}
           </td>
         </tr>
       ) : (
@@ -41,7 +43,7 @@ export function WorkbenchTableBody() {
             key={row.id}
             className="cursor-pointer transition-colors hover:bg-muted/30"
             onClick={() => lines.open(row.original.id)}
-            title="Click to pick individual line items"
+            title={t('table.clickToPickLines')}
           >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id} className="px-3 py-3">

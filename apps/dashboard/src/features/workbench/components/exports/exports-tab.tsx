@@ -1,15 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatDatetimeInTz } from '@/lib/date'
 import { useExports } from '../../api/workbench.api'
-import {
-  exportStatusLabel,
-  exportStatusVariant,
-  formatBytes,
-  formatRange,
-} from '../../workbench.lib'
+import { exportStatusVariant, formatBytes } from '../../workbench.lib'
 import { ExportRowActions } from './export-row-actions'
 
 interface ExportsTabProps {
@@ -20,6 +16,7 @@ interface ExportsTabProps {
 const PAGE_SIZE = 20
 
 export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
+  const { t } = useTranslation('workbench')
   const [pageIndex, setPageIndex] = useState(0)
   const { data, isLoading } = useExports(workspaceId, {
     limit: PAGE_SIZE,
@@ -30,19 +27,36 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
   const pageCount = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const rows = data?.results ?? []
 
+  const exportStatusLabels: Record<string, string> = {
+    pending: t('exports.exportStatus.pending'),
+    processing: t('exports.exportStatus.processing'),
+    completed: t('exports.exportStatus.completed'),
+    failed: t('exports.exportStatus.failed'),
+  }
+
+  function formatRange(
+    start: string | null | undefined,
+    end: string | null | undefined,
+  ): string {
+    if (start && end) return `${start} → ${end}`
+    if (start) return t('range.from', { date: start })
+    if (end) return t('range.until', { date: end })
+    return t('range.allDates')
+  }
+
   return (
     <div className="flex flex-col gap-3">
       <div className="overflow-hidden rounded-md border">
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-left text-xs uppercase text-muted-foreground">
             <tr>
-              <th className="px-3 py-2 font-medium">Template</th>
-              <th className="px-3 py-2 font-medium">Range</th>
-              <th className="px-3 py-2 font-medium">Status</th>
-              <th className="px-3 py-2 font-medium text-right">Rows</th>
-              <th className="px-3 py-2 font-medium text-right">Invoices</th>
-              <th className="px-3 py-2 font-medium text-right">Size</th>
-              <th className="px-3 py-2 font-medium">Created</th>
+              <th className="px-3 py-2 font-medium">{t('exports.colTemplate')}</th>
+              <th className="px-3 py-2 font-medium">{t('exports.colRange')}</th>
+              <th className="px-3 py-2 font-medium">{t('exports.colStatus')}</th>
+              <th className="px-3 py-2 font-medium text-right">{t('exports.colRows')}</th>
+              <th className="px-3 py-2 font-medium text-right">{t('exports.colInvoices')}</th>
+              <th className="px-3 py-2 font-medium text-right">{t('exports.colSize')}</th>
+              <th className="px-3 py-2 font-medium">{t('exports.colCreated')}</th>
               <th className="px-3 py-2 font-medium" />
             </tr>
           </thead>
@@ -63,7 +77,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
                   colSpan={8}
                   className="px-3 py-12 text-center text-sm text-muted-foreground"
                 >
-                  No exports yet.
+                  {t('exports.noExports')}
                 </td>
               </tr>
             ) : (
@@ -77,7 +91,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
                   </td>
                   <td className="px-3 py-3">
                     <Badge variant={exportStatusVariant(row.status)}>
-                      {exportStatusLabel(row.status)}
+                      {exportStatusLabels[row.status ?? ''] ?? row.status ?? '—'}
                     </Badge>
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">
@@ -104,11 +118,11 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
 
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground">
-          {totalCount > 0 ? `${totalCount} total` : ''}
+          {totalCount > 0 ? t('pagination.total', { count: totalCount }) : ''}
         </span>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">
-            Page {pageIndex + 1} of {pageCount}
+            {t('pagination.page', { current: pageIndex + 1, pageCount })}
           </span>
           <Button
             variant="outline"
@@ -116,7 +130,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
             onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
             disabled={pageIndex === 0}
           >
-            Previous
+            {t('pagination.previous')}
           </Button>
           <Button
             variant="outline"
@@ -124,7 +138,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
             onClick={() => setPageIndex((p) => p + 1)}
             disabled={pageIndex + 1 >= pageCount}
           >
-            Next
+            {t('pagination.next')}
           </Button>
         </div>
       </div>

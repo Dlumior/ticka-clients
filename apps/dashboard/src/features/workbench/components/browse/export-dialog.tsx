@@ -25,7 +25,8 @@ import {
 import { useWorkbenchContext } from '../../context/workbench.context'
 
 export function ExportDialog() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('workbench')
+  const { t: tc } = useTranslation('common')
   const {
     workspaceId,
     filters,
@@ -48,7 +49,7 @@ export function ExportDialog() {
     [fields],
   )
 
-  const selectedTemplate = templates?.find((t) => t.id === templateId)
+  const selectedTemplate = templates?.find((tmpl) => tmpl.id === templateId)
   const isLineGrain = selectedTemplate?.columns.some((c) =>
     lineFieldKeys.has(c.field),
   )
@@ -77,24 +78,24 @@ export function ExportDialog() {
     <Dialog open={exportDialogOpen} onOpenChange={(o) => !o && closeExportDialog()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Export selection</DialogTitle>
+          <DialogTitle>{t('exportDialog.title')}</DialogTitle>
           <DialogDescription>
-            Choose the template that defines which columns the CSV will contain.
+            {t('exportDialog.description')}
           </DialogDescription>
         </DialogHeader>
 
         {templates && templates.length === 0 ? (
           <p className="rounded-md border border-dashed px-4 py-6 text-center text-sm text-muted-foreground">
-            No templates yet. Create one in the Templates tab first.
+            {t('exportDialog.noTemplatesYet')}
           </p>
         ) : (
           <div className="flex flex-col gap-3">
             <Select value={templateId} onValueChange={setTemplateId}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a template">
+                <SelectValue placeholder={t('exportDialog.selectTemplate')}>
                   {(value: string) =>
-                    templates?.find((t) => t.id === value)?.name ??
-                    'Select a template'
+                    templates?.find((tmpl) => tmpl.id === value)?.name ??
+                    t('exportDialog.selectTemplate')
                   }
                 </SelectValue>
               </SelectTrigger>
@@ -110,8 +111,8 @@ export function ExportDialog() {
             {selectedTemplate && (
               <p className="text-xs text-muted-foreground">
                 {isLineGrain
-                  ? 'This template includes line-item fields → one row per line item.'
-                  : 'One row per invoice.'}
+                  ? t('exportDialog.lineGrainHint')
+                  : t('exportDialog.invoiceGrainHint')}
               </p>
             )}
           </div>
@@ -127,14 +128,14 @@ export function ExportDialog() {
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={closeExportDialog}>
-            {t('cancel')}
+            {tc('cancel')}
           </Button>
           <Button
             type="button"
             disabled={!templateId || createExport.isPending}
             onClick={handleGenerate}
           >
-            {createExport.isPending ? t('generating') : 'Generate CSV'}
+            {createExport.isPending ? tc('generating') : t('exportDialog.generateCsv')}
           </Button>
         </DialogFooter>
       </DialogContent>

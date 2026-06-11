@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import {
   WorkbenchPage,
@@ -15,6 +16,7 @@ export const Route = createFileRoute(
 })
 
 function WorkbenchRoute() {
+  const { t } = useTranslation('workbench')
   const { workspace, organizationDetail } = Route.useRouteContext()
   const { tab } = Route.useSearch()
   const navigate = useNavigate()
@@ -22,11 +24,8 @@ function WorkbenchRoute() {
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold">Workbench</h1>
-        <p className="text-sm text-muted-foreground">
-          Browse approved invoices, pick what to export, and generate CSV files
-          from your templates.
-        </p>
+        <h1 className="text-xl font-semibold">{t('page.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('page.subtitle')}</p>
       </div>
 
       <WorkbenchPage

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RiAddLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,12 +14,13 @@ interface PeriodsSectionProps {
 }
 
 export function PeriodsSection({ workspaceId }: PeriodsSectionProps) {
+  const { t } = useTranslation('workbench')
   const { data: periods } = useExportPeriods(workspaceId)
   const deletePeriod = useDeletePeriod(workspaceId)
   const [formOpen, setFormOpen] = useState(false)
 
   function handleDelete(period: ExportPeriod) {
-    if (window.confirm(`Delete period "${period.name}"?`)) {
+    if (window.confirm(t('periods.deleteConfirm', { name: period.name }))) {
       deletePeriod.mutate(period.id)
     }
   }
@@ -27,20 +29,20 @@ export function PeriodsSection({ workspaceId }: PeriodsSectionProps) {
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold">Periods</h2>
+          <h2 className="text-sm font-semibold">{t('periods.title')}</h2>
           <p className="text-xs text-muted-foreground">
-            Named date ranges to reuse when exporting.
+            {t('periods.subtitle')}
           </p>
         </div>
         <Button size="sm" variant="outline" onClick={() => setFormOpen(true)}>
           <RiAddLine />
-          New period
+          {t('periods.newPeriod')}
         </Button>
       </div>
 
       {!periods || periods.length === 0 ? (
         <p className="rounded-md border border-dashed px-4 py-6 text-center text-sm text-muted-foreground">
-          No periods yet.
+          {t('periods.noPeriods')}
         </p>
       ) : (
         <ul className="flex flex-col gap-2">
@@ -60,7 +62,7 @@ export function PeriodsSection({ workspaceId }: PeriodsSectionProps) {
                 size="sm"
                 onClick={() => handleDelete(period)}
               >
-                Delete
+                {t('periods.delete')}
               </Button>
             </li>
           ))}

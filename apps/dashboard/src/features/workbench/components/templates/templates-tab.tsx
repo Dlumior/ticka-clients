@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RiAddLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -15,6 +16,7 @@ interface TemplatesTabProps {
 }
 
 export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
+  const { t } = useTranslation('workbench')
   const { data: templates, isLoading } = useExportTemplates(workspaceId)
   const deleteTemplate = useDeleteTemplate(workspaceId)
 
@@ -32,7 +34,7 @@ export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
   }
 
   function handleDelete(template: ExportTemplate) {
-    if (window.confirm(`Delete template "${template.name}"?`)) {
+    if (window.confirm(t('templates.deleteConfirm', { name: template.name }))) {
       deleteTemplate.mutate(template.id)
     }
   }
@@ -42,14 +44,14 @@ export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-semibold">Templates</h2>
+            <h2 className="text-sm font-semibold">{t('templates.title')}</h2>
             <p className="text-xs text-muted-foreground">
-              Reusable column layouts for your exports.
+              {t('templates.subtitle')}
             </p>
           </div>
           <Button size="sm" onClick={openNew}>
             <RiAddLine />
-            New template
+            {t('templates.newTemplate')}
           </Button>
         </div>
 
@@ -61,7 +63,7 @@ export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
           </div>
         ) : !templates || templates.length === 0 ? (
           <p className="rounded-md border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">
-            No templates yet. Create one to start exporting.
+            {t('templates.noTemplatesYet')}
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
@@ -73,8 +75,7 @@ export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{template.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {template.columns.length} column
-                    {template.columns.length === 1 ? '' : 's'} ·{' '}
+                    {t('templates.columnCount', { count: template.columns.length })} ·{' '}
                     {template.columns.map((c) => c.label).join(', ')}
                   </p>
                 </div>
@@ -84,14 +85,14 @@ export function TemplatesTab({ workspaceId }: TemplatesTabProps) {
                     size="sm"
                     onClick={() => openEdit(template)}
                   >
-                    Edit
+                    {t('templates.edit')}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDelete(template)}
                   >
-                    Delete
+                    {t('templates.delete')}
                   </Button>
                 </div>
               </li>

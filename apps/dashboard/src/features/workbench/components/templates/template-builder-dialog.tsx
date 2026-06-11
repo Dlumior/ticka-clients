@@ -36,7 +36,8 @@ export function TemplateBuilderDialog({
   workspaceId,
   template,
 }: TemplateBuilderDialogProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('workbench')
+  const { t: tc } = useTranslation('common')
   const { data: fields } = useExportFields(workspaceId)
   const createTemplate = useCreateTemplate(workspaceId)
   const updateTemplate = useUpdateTemplate(workspaceId, template?.id ?? '')
@@ -105,26 +106,31 @@ export function TemplateBuilderDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] gap-4 overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{template ? 'Edit template' : 'New template'}</DialogTitle>
+          <DialogTitle>
+            {template ? t('templateBuilder.titleEdit') : t('templateBuilder.titleNew')}
+          </DialogTitle>
           <DialogDescription>
-            Pick the fields to export and rename their column headers. Including
-            any line-item field expands the export to one row per line item.
+            {t('templateBuilder.description')}
           </DialogDescription>
         </DialogHeader>
 
         <Field>
-          <FieldLabel htmlFor="template-name">Template name</FieldLabel>
+          <FieldLabel htmlFor="template-name">
+            {t('templateBuilder.templateName')}
+          </FieldLabel>
           <Input
             id="template-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Monthly ERP feed"
+            placeholder={t('templateBuilder.templateNamePlaceholder')}
           />
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium">Available fields</p>
+            <p className="text-sm font-medium">
+              {t('templateBuilder.availableFields')}
+            </p>
             {fields ? (
               <FieldPicker
                 fields={fields}
@@ -132,17 +138,19 @@ export function TemplateBuilderDialog({
                 onToggle={toggleField}
               />
             ) : (
-              <p className="text-sm text-muted-foreground">Loading fields…</p>
+              <p className="text-sm text-muted-foreground">
+                {t('templateBuilder.loadingFields')}
+              </p>
             )}
           </div>
 
           <div className="flex flex-col gap-2">
             <p className="text-sm font-medium">
-              Columns ({columns.length})
+              {t('templateBuilder.columns', { count: columns.length })}
             </p>
             {columns.length === 0 ? (
               <p className="rounded-md border border-dashed px-3 py-6 text-center text-xs text-muted-foreground">
-                Select fields on the left to build your columns.
+                {t('templateBuilder.emptyColumns')}
               </p>
             ) : (
               <ul className="flex flex-col gap-2">
@@ -157,7 +165,7 @@ export function TemplateBuilderDialog({
                         className="text-muted-foreground hover:text-foreground disabled:opacity-30"
                         disabled={index === 0}
                         onClick={() => move(index, -1)}
-                        aria-label="Move up"
+                        aria-label={t('templateBuilder.moveUp')}
                       >
                         <RiArrowUpLine className="size-3.5" />
                       </button>
@@ -166,7 +174,7 @@ export function TemplateBuilderDialog({
                         className="text-muted-foreground hover:text-foreground disabled:opacity-30"
                         disabled={index === columns.length - 1}
                         onClick={() => move(index, 1)}
-                        aria-label="Move down"
+                        aria-label={t('templateBuilder.moveDown')}
                       >
                         <RiArrowDownLine className="size-3.5" />
                       </button>
@@ -180,7 +188,7 @@ export function TemplateBuilderDialog({
                       type="button"
                       className="text-muted-foreground hover:text-destructive"
                       onClick={() => removeColumn(index)}
-                      aria-label="Remove column"
+                      aria-label={t('templateBuilder.removeColumn')}
                     >
                       <RiCloseLine className="size-4" />
                     </button>
@@ -199,10 +207,14 @@ export function TemplateBuilderDialog({
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            {t('cancel')}
+            {tc('cancel')}
           </Button>
           <Button type="button" disabled={isPending} onClick={handleSubmit}>
-            {isPending ? t('saving') : template ? t('saveChanges') : 'Create template'}
+            {isPending
+              ? tc('saving')
+              : template
+                ? tc('saveChanges')
+                : t('templateBuilder.createTemplate')}
           </Button>
         </DialogFooter>
       </DialogContent>

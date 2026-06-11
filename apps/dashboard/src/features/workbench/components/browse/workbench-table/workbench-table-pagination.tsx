@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { useWorkbenchContext } from '../../../context/workbench.context'
 
 export function WorkbenchTablePagination() {
+  const { t } = useTranslation('workbench')
   const {
     table: { instance, totalCount },
   } = useWorkbenchContext()
@@ -11,11 +13,11 @@ export function WorkbenchTablePagination() {
   return (
     <div className="flex items-center justify-between">
       <span className="text-xs text-muted-foreground">
-        {totalCount > 0 ? `${totalCount} total` : ''}
+        {totalCount > 0 ? t('pagination.total', { count: totalCount }) : ''}
       </span>
       <div className="flex items-center gap-2">
         <span className="text-xs text-muted-foreground">
-          Page {pageIndex + 1} of {pageCount}
+          {t('pagination.page', { current: pageIndex + 1, pageCount })}
         </span>
         <Button
           variant="outline"
@@ -23,7 +25,7 @@ export function WorkbenchTablePagination() {
           onClick={() => instance.previousPage()}
           disabled={!instance.getCanPreviousPage()}
         >
-          Previous
+          {t('pagination.previous')}
         </Button>
         <Button
           variant="outline"
@@ -31,7 +33,7 @@ export function WorkbenchTablePagination() {
           onClick={() => instance.nextPage()}
           disabled={!instance.getCanNextPage()}
         >
-          Next
+          {t('pagination.next')}
         </Button>
       </div>
     </div>

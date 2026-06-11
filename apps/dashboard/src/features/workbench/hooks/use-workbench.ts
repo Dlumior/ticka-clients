@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useSuppliers } from '@/features/suppliers/api/suppliers.api'
 import { useExportPeriods } from '../api/workbench.api'
@@ -18,6 +19,7 @@ export function useWorkbench({
   timezone,
   onExported,
 }: UseWorkbenchOptions): WorkbenchContextValue {
+  const { t } = useTranslation('workbench')
   const browse = useWorkbenchBrowse({ workspaceId })
   const selection = useWorkbenchSelection()
 
@@ -30,7 +32,7 @@ export function useWorkbench({
   const [linesInvoiceId, setLinesInvoiceId] = useState<string | null>(null)
   const [exportDialogOpen, setExportDialogOpen] = useState(false)
 
-  const columns = getWorkbenchColumns({ selection })
+  const columns = getWorkbenchColumns({ selection, t })
 
   const tableInstance = useReactTable({
     data: browse.data?.results ?? [],

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { WorkbenchTab } from './browse/workbench-tab'
 import { TemplatesTab } from './templates/templates-tab'
@@ -18,15 +19,17 @@ export function WorkbenchPage({
   tab,
   onTabChange,
 }: WorkbenchPageProps) {
+  const { t } = useTranslation('workbench')
+
   return (
     <Tabs
       value={tab}
       onValueChange={(value) => onTabChange(value as WorkbenchTabKey)}
     >
       <TabsList>
-        <TabsTrigger value="workbench">Workbench</TabsTrigger>
-        <TabsTrigger value="templates">Templates</TabsTrigger>
-        <TabsTrigger value="exports">Exports</TabsTrigger>
+        <TabsTrigger value="workbench">{t('tabs.workbench')}</TabsTrigger>
+        <TabsTrigger value="templates">{t('tabs.templates')}</TabsTrigger>
+        <TabsTrigger value="exports">{t('tabs.exports')}</TabsTrigger>
       </TabsList>
 
       <TabsContent value="workbench" className="pt-4">
