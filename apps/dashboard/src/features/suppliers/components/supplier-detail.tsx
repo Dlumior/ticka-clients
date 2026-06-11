@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RiBuilding2Line, RiPencilLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -51,6 +52,7 @@ function InfoCard({
   canEdit: boolean
   onEdit: () => void
 }) {
+  const { t } = useTranslation('suppliers')
   return (
     <div className="flex flex-col gap-4 rounded-lg border p-5">
       <div className="flex items-start justify-between gap-4">
@@ -61,7 +63,7 @@ function InfoCard({
         {canEdit && (
           <Button variant="outline" size="sm" onClick={onEdit}>
             <RiPencilLine className="size-4" />
-            Edit
+            {t('detail.editBtn')}
           </Button>
         )}
       </div>
@@ -69,11 +71,11 @@ function InfoCard({
       <Separator />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <Field label="RUC" value={supplier.ruc} mono />
-        <Field label="Email" value={supplier.email} />
-        <Field label="Phone" value={supplier.phone} />
-        <Field label="Address" value={supplier.address} />
-        <Field label="Invoices" value={supplier.invoice_count} mono />
+        <Field label={t('detail.fieldRuc')} value={supplier.ruc} mono />
+        <Field label={t('detail.fieldEmail')} value={supplier.email} />
+        <Field label={t('detail.fieldPhone')} value={supplier.phone} />
+        <Field label={t('detail.fieldAddress')} value={supplier.address} />
+        <Field label={t('detail.fieldInvoices')} value={supplier.invoice_count} mono />
       </div>
     </div>
   )
@@ -84,6 +86,7 @@ export function SupplierDetail({
   supplierId,
   timezone,
 }: SupplierDetailProps) {
+  const { t } = useTranslation('suppliers')
   const [editOpen, setEditOpen] = useState(false)
   const { data: supplier, isLoading } = useSupplierDetail(
     workspaceId,
@@ -109,7 +112,7 @@ export function SupplierDetail({
   if (!supplier) {
     return (
       <p className="text-sm text-muted-foreground">
-        Unable to load supplier details.
+        {t('detail.loadError')}
       </p>
     )
   }
@@ -123,7 +126,7 @@ export function SupplierDetail({
       />
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-medium text-muted-foreground">Invoices</h3>
+        <h3 className="text-sm font-medium text-muted-foreground">{t('detail.sectionInvoices')}</h3>
         <InvoicesTable
           workspaceId={workspaceId}
           supplierId={supplierId}

@@ -11,5 +11,32 @@
   },
   "table": {
     "noResults": "No suppliers found."
+  },
+  "detail": {
+    "editBtn": "Edit",
+    "fieldRuc": "RUC",
+    "fieldEmail": "Email",
+    "fieldPhone": "Phone",
+    "fieldAddress": "Address",
+    "fieldInvoices": "Invoices",
+    "sectionInvoices": "Invoices",
+    "loadError": "Unable to load supplier details."
+  },
+  "editDialog": {
+    "title": "Edit supplier",
+    "description": "Update the supplier's contact details. The RUC cannot be changed.",
+    "fieldRuc": "RUC",
+    "namePlaceholder": "Supplier name",
+    "emailPlaceholder": "billing@supplier.com",
+    "fieldPhone": "Phone",
+    "phonePlaceholder": "+51 999 888 777",
+    "fieldAddress": "Address",
+    "addressPlaceholder": "Street, city"
+  },
+  "pagination": {
+    "total": "{{count}} total",
+    "page": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next"
   }
 }

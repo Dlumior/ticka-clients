@@ -11,5 +11,32 @@
   },
   "table": {
     "noResults": "No se encontraron proveedores."
+  },
+  "detail": {
+    "editBtn": "Editar",
+    "fieldRuc": "RUC",
+    "fieldEmail": "Email",
+    "fieldPhone": "Teléfono",
+    "fieldAddress": "Dirección",
+    "fieldInvoices": "Facturas",
+    "sectionInvoices": "Facturas",
+    "loadError": "No se pudieron cargar los detalles del proveedor."
+  },
+  "editDialog": {
+    "title": "Editar proveedor",
+    "description": "Actualiza los datos de contacto del proveedor. El RUC no puede modificarse.",
+    "fieldRuc": "RUC",
+    "namePlaceholder": "Nombre del proveedor",
+    "emailPlaceholder": "facturación@proveedor.com",
+    "fieldPhone": "Teléfono",
+    "phonePlaceholder": "+51 999 888 777",
+    "fieldAddress": "Dirección",
+    "addressPlaceholder": "Calle, ciudad"
+  },
+  "pagination": {
+    "total": "{{count}} en total",
+    "page": "Página {{current}} de {{total}}",
+    "previous": "Anterior",
+    "next": "Siguiente"
   }
 }

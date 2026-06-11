@@ -135,14 +135,14 @@ export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
 
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground">
-          {data ? `${data.count} total` : ''}
+          {data ? t('pagination.total', { count: data.count }) : ''}
         </span>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1}
-            {data
-              ? ` of ${Math.max(1, Math.ceil(data.count / pagination.pageSize))}`
-              : ''}
+            {t('pagination.page', {
+              current: table.getState().pagination.pageIndex + 1,
+              total: data ? Math.max(1, Math.ceil(data.count / pagination.pageSize)) : 1,
+            })}
           </span>
           <Button
             variant="outline"
@@ -150,7 +150,7 @@ export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {t('pagination.previous')}
           </Button>
           <Button
             variant="outline"
@@ -158,7 +158,7 @@ export function SuppliersTable({ workspaceId }: SuppliersTableProps) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {t('pagination.next')}
           </Button>
         </div>
       </div>

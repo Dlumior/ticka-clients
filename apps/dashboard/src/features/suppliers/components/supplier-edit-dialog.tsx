@@ -30,6 +30,7 @@ export function SupplierEditDialog({
   supplier,
 }: SupplierEditDialogProps) {
   const { t } = useTranslation('common')
+  const { t: tS } = useTranslation('suppliers')
   const updateSupplier = useUpdateSupplier(workspaceId, supplier.id)
 
   const form = useForm({
@@ -51,9 +52,9 @@ export function SupplierEditDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit supplier</DialogTitle>
+          <DialogTitle>{tS('editDialog.title')}</DialogTitle>
           <DialogDescription>
-            Update the supplier's contact details. The RUC cannot be changed.
+            {tS('editDialog.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -65,7 +66,7 @@ export function SupplierEditDialog({
         >
           <FieldGroup className="gap-4">
             <Field>
-              <FieldLabel htmlFor="ruc">RUC</FieldLabel>
+              <FieldLabel htmlFor="ruc">{tS('editDialog.fieldRuc')}</FieldLabel>
               <Input id="ruc" value={supplier.ruc} disabled />
             </Field>
 
@@ -82,7 +83,7 @@ export function SupplierEditDialog({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Supplier name"
+                      placeholder={tS('editDialog.namePlaceholder')}
                     />
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
@@ -104,7 +105,7 @@ export function SupplierEditDialog({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="billing@supplier.com"
+                      placeholder={tS('editDialog.emailPlaceholder')}
                     />
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
@@ -115,14 +116,14 @@ export function SupplierEditDialog({
             <form.Field name="phone">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{tS('editDialog.fieldPhone')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="+51 999 888 777"
+                    placeholder={tS('editDialog.phonePlaceholder')}
                   />
                 </Field>
               )}
@@ -131,14 +132,14 @@ export function SupplierEditDialog({
             <form.Field name="address">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Address</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{tS('editDialog.fieldAddress')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="Street, city"
+                    placeholder={tS('editDialog.addressPlaceholder')}
                   />
                 </Field>
               )}
