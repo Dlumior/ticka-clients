@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { RiArrowLeftLine } from '@remixicon/react'
 import { supplierDetailQueryOptions } from '@/features/suppliers/api/suppliers.api'
 import { SupplierDetail } from '@/features/suppliers/components/supplier-detail'
@@ -15,6 +16,7 @@ export const Route = createFileRoute(
 })
 
 function SupplierDetailPage() {
+  const { t } = useTranslation('suppliers')
   const { orgSlug, workspaceSlug, supplierId } = Route.useParams()
   const { workspace, organizationDetail } = Route.useRouteContext()
 
@@ -27,7 +29,7 @@ function SupplierDetailPage() {
           className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <RiArrowLeftLine className="size-4" />
-          Back to suppliers
+          {t('page.backToList')}
         </Link>
       </div>
 

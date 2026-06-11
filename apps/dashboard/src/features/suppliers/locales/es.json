@@ -38,5 +38,10 @@
     "page": "Página {{current}} de {{total}}",
     "previous": "Anterior",
     "next": "Siguiente"
+  },
+  "page": {
+    "title": "Proveedores",
+    "subtitle": "Proveedores que han enviado facturas a este workspace.",
+    "backToList": "Volver a proveedores"
   }
 }
