@@ -1,5 +1,6 @@
 import type { VariantProps } from 'class-variance-authority'
 import type { OrgInvitation } from '../api/members.api'
+import { useTranslation } from 'react-i18next'
 import { RiMailSendLine, RiLoaderLine } from '@remixicon/react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge, badgeVariants } from '@/components/ui/badge'
@@ -17,28 +18,6 @@ const STATUS_VARIANT: Record<Status, BadgeVariant> = {
   expired:  'secondary',
 }
 
-const STATUS_LABEL: Record<Status, string> = {
-  pending:  'Pending',
-  accepted: 'Accepted',
-  declined: 'Declined',
-  expired:  'Expired',
-}
-
-function formatExpiry(expiresAt: string, status: Status): string {
-  if (status === 'accepted' || status === 'declined') return ''
-  const diffMs = new Date(expiresAt).getTime() - Date.now()
-  const absDays = Math.floor(Math.abs(diffMs) / 86_400_000)
-  const absHours = Math.floor(Math.abs(diffMs) / 3_600_000)
-  if (diffMs > 0) {
-    if (absDays >= 1) return `Expires in ${absDays}d`
-    if (absHours >= 1) return `Expires in ${absHours}h`
-    return 'Expires soon'
-  }
-  if (absDays >= 1) return `Expired ${absDays}d ago`
-  if (absHours >= 1) return `Expired ${absHours}h ago`
-  return 'Just expired'
-}
-
 interface InvitationCardProps {
   invitation: OrgInvitation
   workspaceId: string
@@ -47,11 +26,27 @@ interface InvitationCardProps {
 }
 
 export function InvitationCard({ invitation, workspaceId, orgId, canResend }: InvitationCardProps) {
+  const { t } = useTranslation('members')
   const initial = invitation.email[0].toUpperCase()
   const role = String(invitation.workspace_role ?? invitation.role ?? 'member')
   const status = (invitation.status as Status) ?? 'pending'
-  const expiryLabel = formatExpiry(invitation.expires_at, status)
   const canShowResend = canResend && (status === 'pending' || status === 'expired')
+
+  let expiryLabel = ''
+  if (status !== 'accepted' && status !== 'declined') {
+    const diffMs = new Date(invitation.expires_at).getTime() - Date.now()
+    const absDays = Math.floor(Math.abs(diffMs) / 86_400_000)
+    const absHours = Math.floor(Math.abs(diffMs) / 3_600_000)
+    if (diffMs > 0) {
+      if (absDays >= 1) expiryLabel = t('expiresInDays', { count: absDays })
+      else if (absHours >= 1) expiryLabel = t('expiresInHours', { count: absHours })
+      else expiryLabel = t('expiresSoon')
+    } else {
+      if (absDays >= 1) expiryLabel = t('expiredDaysAgo', { count: absDays })
+      else if (absHours >= 1) expiryLabel = t('expiredHoursAgo', { count: absHours })
+      else expiryLabel = t('justExpired')
+    }
+  }
 
   const { mutate: resend, isPending: isResending } = useResendWorkspaceInvitation(workspaceId, orgId)
 
@@ -67,7 +62,7 @@ export function InvitationCard({ invitation, workspaceId, orgId, canResend }: In
           <div className="flex items-start justify-between gap-2">
             <p className="truncate text-sm font-medium leading-none">{invitation.email}</p>
             <Badge variant={STATUS_VARIANT[status]} className="shrink-0 text-[10px]">
-              {STATUS_LABEL[status]}
+              {t(`status.${status}`)}
             </Badge>
           </div>
           <p className="mt-0.5 text-xs capitalize text-muted-foreground">{role}</p>
@@ -76,7 +71,7 @@ export function InvitationCard({ invitation, workspaceId, orgId, canResend }: In
           )}
           <div className="mt-2 flex items-center justify-between gap-2">
             <p className="text-[11px] text-muted-foreground/70">
-              Invited by {invitation.invited_by_email}
+              {t('invitedBy', { email: invitation.invited_by_email })}
             </p>
             {canShowResend && (
               <Button
@@ -91,7 +86,7 @@ export function InvitationCard({ invitation, workspaceId, orgId, canResend }: In
                 ) : (
                   <RiMailSendLine className="size-3" />
                 )}
-                Resend
+                {t('resend')}
               </Button>
             )}
           </div>

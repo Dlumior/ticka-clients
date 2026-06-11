@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { WorkspaceMembersList } from '@/features/members/components/workspace-members-list'
 
 export const Route = createFileRoute(
@@ -9,14 +10,14 @@ export const Route = createFileRoute(
 
 function MembersPage() {
   const { organization, organizationDetail, workspace } = Route.useRouteContext()
+  const { t } = useTranslation('members')
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold">Members</h1>
+        <h1 className="text-xl font-semibold">{t('members')}</h1>
         <p className="text-sm text-muted-foreground">
-          Manage who has access to{' '}
-          <span className="font-medium text-foreground">{workspace.name}</span>.
+          {t('manageAccess', { workspace: workspace.name })}
         </p>
       </div>
 

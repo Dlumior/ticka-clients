@@ -7,5 +7,21 @@
   "noMembersDesc": "Invita personas para colaborar en este workspace.",
   "noInvitations": "Sin invitaciones",
   "noInvitationsDesc": "Las invitaciones que envíes aparecerán aquí.",
-  "joined": "Unido el {{date}}"
+  "joined": "Unido el {{date}}",
+  "manageAccess": "Administra quién tiene acceso a {{workspace}}.",
+  "inviteMemberDesc": "Envía una invitación para agregar a alguien a este workspace.",
+  "status": {
+    "pending": "Pendiente",
+    "accepted": "Aceptado",
+    "declined": "Rechazado",
+    "expired": "Expirado"
+  },
+  "expiresInDays": "Expira en {{count}}d",
+  "expiresInHours": "Expira en {{count}}h",
+  "expiresSoon": "Expira pronto",
+  "expiredDaysAgo": "Expiró hace {{count}}d",
+  "expiredHoursAgo": "Expiró hace {{count}}h",
+  "justExpired": "Recién expirado",
+  "invitedBy": "Invitado por {{email}}",
+  "resend": "Reenviar"
 }

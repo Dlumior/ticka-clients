@@ -42,6 +42,7 @@ export function InviteMemberDialog({
   onOpenChange,
 }: InviteMemberDialogProps) {
   const { t } = useTranslation('common')
+  const { t: tMembers } = useTranslation('members')
   const wsRoleLabel = useWorkspaceRoleLabel()
   const [internalOpen, setInternalOpen] = useState(false)
   const invite = useInviteWorkspaceMember(workspaceId, orgId)
@@ -80,9 +81,9 @@ export function InviteMemberDialog({
           <div className="mb-3 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-inset ring-primary/20">
             <RiUserAddLine className="size-4" />
           </div>
-          <DialogTitle>Invite member</DialogTitle>
+          <DialogTitle>{tMembers('inviteMember')}</DialogTitle>
           <DialogDescription>
-            Send an invitation to add someone to this workspace.
+            {tMembers('inviteMemberDesc')}
           </DialogDescription>
         </DialogHeader>
 
