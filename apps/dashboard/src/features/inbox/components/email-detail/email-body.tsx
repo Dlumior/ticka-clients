@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface EmailBodyProps {
@@ -7,6 +8,7 @@ interface EmailBodyProps {
 }
 
 export function EmailBody({ bodyHtml, bodyText, isLoading }: EmailBodyProps) {
+  const { t } = useTranslation('inbox')
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2.5 rounded-lg border bg-muted/20 p-4">
@@ -36,7 +38,7 @@ export function EmailBody({ bodyHtml, bodyText, isLoading }: EmailBodyProps) {
 
   return (
     <div className="flex flex-1 items-center justify-center rounded-lg border bg-muted/10">
-      <p className="text-sm text-muted-foreground">No message body.</p>
+      <p className="text-sm text-muted-foreground">{t('detail.noMessageBody')}</p>
     </div>
   )
 }

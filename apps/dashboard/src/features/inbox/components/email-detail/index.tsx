@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { useInboxAttachments, useInboxEmailDetail } from '../../api/inbox.api'
 import { useInboxTableContext } from '../../context/inbox-table.context'
@@ -16,6 +17,7 @@ export function EmailDetailSheet() {
   // The detail query carries every header field the strip needs, so the sheet
   // can open from an id alone — no list-row object required. This is what makes
   // deep-linking work.
+  const { t } = useTranslation('inbox')
   const { data: detail, isFetching: detailFetching } = useInboxEmailDetail(
     workspaceId,
     selectedEmailId ?? '',
@@ -40,7 +42,7 @@ export function EmailDetailSheet() {
 
         <div className="flex min-h-0 flex-1 divide-x">
           <div className="flex min-w-0 flex-1 flex-col gap-3 overflow-y-auto p-5">
-            <SectionLabel>Message</SectionLabel>
+            <SectionLabel>{t('detail.message')}</SectionLabel>
             <EmailBody
               bodyHtml={detail?.body_html ?? ''}
               bodyText={detail?.body_text ?? ''}
@@ -50,10 +52,10 @@ export function EmailDetailSheet() {
 
           <div className="flex w-[520px] shrink-0 flex-col gap-3 overflow-y-auto p-5">
             <div className="flex items-center justify-between">
-              <SectionLabel>Attachments</SectionLabel>
+              <SectionLabel>{t('detail.attachments')}</SectionLabel>
               {attachments && attachments.length > 0 && (
                 <span className="text-[10px] text-muted-foreground">
-                  {attachments.length} file{attachments.length !== 1 ? 's' : ''}
+                  {t('uploadedFiles.count', { count: attachments.length })}
                 </span>
               )}
             </div>

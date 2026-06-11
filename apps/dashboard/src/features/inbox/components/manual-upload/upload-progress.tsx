@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiLoaderLine } from '@remixicon/react'
 import type { UploadState } from '../../hooks/use-manual-upload'
 
@@ -6,6 +7,7 @@ interface UploadProgressProps {
 }
 
 export function UploadProgress({ pendingUploads }: UploadProgressProps) {
+  const { t } = useTranslation('inbox')
   if (pendingUploads.length === 0) return null
 
   return (
@@ -14,7 +16,7 @@ export function UploadProgress({ pendingUploads }: UploadProgressProps) {
         <div key={i} className="flex items-center gap-3 rounded-lg border bg-muted/20 px-4 py-3">
           <RiLoaderLine className="size-4 shrink-0 animate-spin text-muted-foreground" />
           <span className="min-w-0 flex-1 truncate text-sm">{s.filename}</span>
-          <span className="text-xs text-muted-foreground">Uploading…</span>
+          <span className="text-xs text-muted-foreground">{t('uploadStatus.uploading')}</span>
         </div>
       ))}
     </div>

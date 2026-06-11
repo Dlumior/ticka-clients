@@ -24,5 +24,46 @@
   "toolbar": {
     "search": "Buscar por remitente o asunto...",
     "allStatuses": "Todos los estados"
+  },
+  "page": {
+    "title": "Fuentes de comprobantes",
+    "subtitle": "Recibe y sube comprobantes desde múltiples canales.",
+    "emailHelp": "Correos recibidos en",
+    "soon": "Pronto",
+    "whatsappTitle": "Integración con WhatsApp próximamente",
+    "whatsappDesc": "Recibe comprobantes directamente desde conversaciones de WhatsApp.",
+    "telegramTitle": "Integración con Telegram próximamente",
+    "telegramDesc": "Recibe comprobantes directamente desde el bot de Telegram."
+  },
+  "tabs": {
+    "email": "Bandeja de correo",
+    "upload": "Subida manual",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram"
+  },
+  "dropZone": {
+    "dropText": "Arrastra archivos aquí o",
+    "browseText": "explora",
+    "constraints": "Soporta XML y PDF · Máximo 10 MB por archivo",
+    "ariaLabel": "Subir archivo de comprobante"
+  },
+  "uploadedFiles": {
+    "title": "Archivos subidos",
+    "count_one": "{{count}} archivo",
+    "count_other": "{{count}} archivos",
+    "empty": "No hay archivos subidos aún"
+  },
+  "uploadStatus": {
+    "uploading": "Subiendo…",
+    "dismiss": "Descartar",
+    "retry": "Reintentar"
+  },
+  "detail": {
+    "noSubject": "(sin asunto)",
+    "failedPreview": "No se pudo cargar la vista previa.",
+    "message": "Mensaje",
+    "attachments": "Adjuntos",
+    "noAttachments": "Sin adjuntos",
+    "noMessageBody": "Sin cuerpo de mensaje."
   }
 }

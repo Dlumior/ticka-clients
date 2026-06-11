@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiErrorWarningLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import type { UploadState } from '../../hooks/use-manual-upload'
@@ -8,6 +9,7 @@ interface UploadErrorsProps {
 }
 
 export function UploadErrors({ pendingErrors, onDismiss }: UploadErrorsProps) {
+  const { t } = useTranslation('inbox')
   if (pendingErrors.length === 0) return null
 
   return (
@@ -28,7 +30,7 @@ export function UploadErrors({ pendingErrors, onDismiss }: UploadErrorsProps) {
             className="h-6 px-2 text-xs"
             onClick={() => onDismiss(i)}
           >
-            Dismiss
+            {t('uploadStatus.dismiss')}
           </Button>
         </div>
       ))}

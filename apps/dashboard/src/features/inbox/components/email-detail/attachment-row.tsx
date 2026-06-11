@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   RiAttachmentLine,
   RiDownloadLine,
@@ -11,13 +12,11 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
-  ATTACHMENT_STATUS_LABEL,
   ATTACHMENT_STATUS_VARIANT,
   StatusIcon,
   formatBytes,
 } from '../../inbox.lib'
 import {
-  INVOICE_STATUS_LABEL,
   INVOICE_STATUS_VARIANT,
 } from '@/features/invoices/invoices.lib'
 import {
@@ -41,6 +40,8 @@ export function AttachmentRow({
   isSelected,
   onSelect,
 }: AttachmentRowProps) {
+  const { t } = useTranslation('inbox')
+  const { t: tInvoices } = useTranslation('invoices')
   const status = attachment.status ?? 'stored'
   const isPdf = attachment.content_type === 'application/pdf'
   const canDownload = !!attachment.storage_path && status !== 'duplicate'
@@ -83,7 +84,7 @@ export function AttachmentRow({
           <div className="flex items-center gap-1.5">
             <StatusIcon status={status} />
             <Badge variant={ATTACHMENT_STATUS_VARIANT[status] ?? 'outline'} className="text-[10px]">
-              {ATTACHMENT_STATUS_LABEL[status] ?? status}
+              {t(`attachmentStatus.${status}` as `attachmentStatus.${string}`, { defaultValue: status })}
             </Badge>
             {status === 'completed' && (
               invoiceFetching ? (
@@ -93,7 +94,7 @@ export function AttachmentRow({
                   variant={INVOICE_STATUS_VARIANT[invoice.status] ?? 'outline'}
                   className="text-[10px]"
                 >
-                  {INVOICE_STATUS_LABEL[invoice.status] ?? invoice.status}
+                  {tInvoices(`status.${invoice.status}` as `status.${string}`, { defaultValue: invoice.status })}
                 </Badge>
               ) : null
             )}
@@ -113,7 +114,7 @@ export function AttachmentRow({
               ) : (
                 <RiRefreshLine className="size-3.5" />
               )}
-              Retry
+              {t('uploadStatus.retry')}
             </Button>
           )}
 
@@ -159,7 +160,7 @@ export function AttachmentRow({
           ) : urlError ? (
             <div className="flex items-center gap-2 px-4 py-3">
               <RiErrorWarningLine className="size-4 shrink-0 text-destructive" />
-              <p className="text-sm text-destructive">Failed to load preview.</p>
+              <p className="text-sm text-destructive">{t('detail.failedPreview')}</p>
             </div>
           ) : previewUrl ? (
             <>

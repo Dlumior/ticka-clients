@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { RiUploadCloud2Line } from '@remixicon/react'
 
 interface DropZoneProps {
@@ -17,6 +18,8 @@ export function DropZone({
   onDragLeave,
   onInputChange,
 }: DropZoneProps) {
+  const { t } = useTranslation('inbox')
+
   return (
     <div
       className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-8 py-12 text-center transition-colors ${
@@ -31,18 +34,18 @@ export function DropZone({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.click()}
-      aria-label="Upload invoice file"
+      aria-label={t('dropZone.ariaLabel')}
     >
       <div className="flex size-12 items-center justify-center rounded-full bg-muted">
         <RiUploadCloud2Line className="size-6 text-muted-foreground" />
       </div>
       <div>
         <p className="text-sm font-medium">
-          Drop files here or{' '}
-          <span className="text-primary underline underline-offset-2">browse</span>
+          {t('dropZone.dropText')}{' '}
+          <span className="text-primary underline underline-offset-2">{t('dropZone.browseText')}</span>
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Supports XML and PDF · Max 10 MB per file
+          {t('dropZone.constraints')}
         </p>
       </div>
       <input

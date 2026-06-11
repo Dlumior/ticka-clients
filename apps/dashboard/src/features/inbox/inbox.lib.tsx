@@ -13,29 +13,12 @@ export const ATTACHMENT_STATUS_VARIANT: Record<string, BadgeVariant> = {
   duplicate: 'secondary',
 }
 
-export const ATTACHMENT_STATUS_LABEL: Record<string, string> = {
-  stored: 'Stored',
-  queued: 'Queued for invoice',
-  processing: 'Processing as invoice',
-  completed: 'Invoiced',
-  failed: 'Failed',
-  duplicate: 'Duplicate',
-}
-
 export const EMAIL_STATUS_VARIANT: Record<string, BadgeVariant> = {
   completed: 'default',
   failed: 'destructive',
   pending: 'secondary',
   processing: 'outline',
   no_attachments_found: 'secondary',
-}
-
-export const EMAIL_STATUS_LABEL: Record<string, string> = {
-  pending: 'Pending',
-  processing: 'Processing',
-  completed: 'Completed',
-  failed: 'Failed',
-  no_attachments_found: 'No attachments',
 }
 
 export function formatBytes(n: bigint | number): string {

@@ -26,7 +26,7 @@ export function getInboxColumns(timezone: string, t: TFunction<'inbox'>) {
     columnHelper.accessor('subject', {
       header: t('col.subject'),
       cell: (info) => (
-        <span className="line-clamp-1 text-sm">{info.getValue() || '(no subject)'}</span>
+        <span className="line-clamp-1 text-sm">{info.getValue() || t('detail.noSubject')}</span>
       ),
     }),
     columnHelper.accessor('received_at', {

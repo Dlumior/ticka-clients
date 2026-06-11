@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useManualAttachments } from '../../api/inbox.api'
 import { useManualUpload } from '../../hooks/use-manual-upload'
 import { DropZone } from './drop-zone'
@@ -17,6 +18,7 @@ export function ManualUploadTab({
   timezone,
   highlightAttachmentId,
 }: ManualUploadTabProps) {
+  const { t } = useTranslation('inbox')
   const { data: attachments, isFetching } = useManualAttachments(workspaceId)
   const {
     inputRef,
@@ -47,10 +49,10 @@ export function ManualUploadTab({
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium">Uploaded files</p>
+          <p className="text-sm font-medium">{t('uploadedFiles.title')}</p>
           {attachments && attachments.length > 0 && (
             <span className="text-xs text-muted-foreground">
-              {attachments.length} file{attachments.length !== 1 ? 's' : ''}
+              {t('uploadedFiles.count', { count: attachments.length })}
             </span>
           )}
         </div>
@@ -63,7 +65,7 @@ export function ManualUploadTab({
           </div>
         ) : !attachments || attachments.length === 0 ? (
           <div className="flex items-center justify-center rounded-lg border border-dashed bg-muted/10 py-8">
-            <p className="text-sm text-muted-foreground">No files uploaded yet</p>
+            <p className="text-sm text-muted-foreground">{t('uploadedFiles.empty')}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-0.5">

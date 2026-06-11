@@ -24,5 +24,46 @@
   "toolbar": {
     "search": "Search by sender or subject...",
     "allStatuses": "All statuses"
+  },
+  "page": {
+    "title": "Invoice Sources",
+    "subtitle": "Receive and upload invoices from multiple channels.",
+    "emailHelp": "Emails received at",
+    "soon": "Soon",
+    "whatsappTitle": "WhatsApp integration coming soon",
+    "whatsappDesc": "Receive invoices directly from WhatsApp conversations.",
+    "telegramTitle": "Telegram integration coming soon",
+    "telegramDesc": "Receive invoices directly from Telegram bot conversations."
+  },
+  "tabs": {
+    "email": "Email Inbox",
+    "upload": "Manual Upload",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram"
+  },
+  "dropZone": {
+    "dropText": "Drop files here or",
+    "browseText": "browse",
+    "constraints": "Supports XML and PDF · Max 10 MB per file",
+    "ariaLabel": "Upload invoice file"
+  },
+  "uploadedFiles": {
+    "title": "Uploaded files",
+    "count_one": "{{count}} file",
+    "count_other": "{{count}} files",
+    "empty": "No files uploaded yet"
+  },
+  "uploadStatus": {
+    "uploading": "Uploading…",
+    "dismiss": "Dismiss",
+    "retry": "Retry"
+  },
+  "detail": {
+    "noSubject": "(no subject)",
+    "failedPreview": "Failed to load preview.",
+    "message": "Message",
+    "attachments": "Attachments",
+    "noAttachments": "No attachments",
+    "noMessageBody": "No message body."
   }
 }

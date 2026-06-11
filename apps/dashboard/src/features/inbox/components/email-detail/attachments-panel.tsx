@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { InboundAttachment } from '../../api/inbox.api'
 import { AttachmentRow } from './attachment-row'
@@ -14,6 +15,7 @@ export function AttachmentsPanel({
   isFetching,
   workspaceId,
 }: AttachmentsPanelProps) {
+  const { t } = useTranslation('inbox')
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   function toggle(id: string) {
@@ -32,7 +34,7 @@ export function AttachmentsPanel({
   if (!attachments || attachments.length === 0) {
     return (
       <div className="mx-4 flex flex-1 items-center justify-center rounded-lg border border-dashed bg-muted/10">
-        <p className="text-sm text-muted-foreground">No attachments</p>
+        <p className="text-sm text-muted-foreground">{t('detail.noAttachments')}</p>
       </div>
     )
   }
