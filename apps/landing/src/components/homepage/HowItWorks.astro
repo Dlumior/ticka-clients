@@ -1,99 +1,85 @@
 ---
 const steps = [
   {
-    number: 1,
-    title: "Crea tu cuenta",
-    description:
-      "Regístrate en Ticka.pe y recibe tu email único para facturas.",
-    icon: "📝",
+    num: '01',
+    title: 'Comparte el correo de tu workspace',
+    body: 'Cada cliente de tu estudio tiene un workspace con su propia dirección. Pídele que reenvíe ahí sus comprobantes — o súbelos tú directamente.',
+    detail: 'ws-tu-cliente@ticka.pe',
   },
   {
-    number: 2,
-    title: "Reenvía tus facturas",
-    description:
-      "Simplemente reenvía los correos con facturas a tu email de Ticka.pe.",
-    icon: "📧",
+    num: '02',
+    title: 'Ticka extrae los datos',
+    body: 'Cada XML y PDF se procesa al llegar: proveedor, RUC, serie, fechas, importes, IGV y líneas de detalle, sin que nadie los tipee.',
+    detail: 'procesando… 2.4s',
   },
   {
-    number: 3,
-    title: "Descarga y utiliza",
-    description:
-      "Todos los datos extraídos y organizados listos para exportar a Excel.",
-    icon: "✨",
+    num: '03',
+    title: 'Revisa y aprueba',
+    body: 'Lo que necesita tu ojo queda marcado como “requiere revisión”. El resto espera tu aprobación con todos los datos a la vista.',
+    detail: '✓ aprobado',
   },
-];
+  {
+    num: '04',
+    title: 'Exporta con tu plantilla',
+    body: 'En la mesa de trabajo filtras los aprobados, seleccionas comprobantes o líneas y descargas un CSV con las columnas exactas de tu sistema contable.',
+    detail: 'export_junio.csv ↓',
+  },
+]
 ---
 
-<section id="como-funciona" class="relative py-32 overflow-hidden">
-  <div
-    class="absolute inset-0 bg-gradient-to-b from-charcoal-brown via-dark-khaki to-charcoal-brown-2"
-  >
-  </div>
-
-  <!-- Animated Grid -->
-  <div
-    class="absolute inset-0 bg-[linear-gradient(rgba(192,216,32,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(192,216,32,0.05)_1px,transparent_1px)] bg-[size:100px_100px]"
-  >
-  </div>
-
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-20">
-      <div
-        class="inline-block mb-4 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
+<section id="como-funciona" class="scroll-mt-16 border-y border-moss/15 bg-ink-900 py-24 lg:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="mb-16 max-w-2xl lg:mb-24">
+      <p class="kicker mb-6" data-anim="reveal">[ 02 — Cómo funciona ]</p>
+      <h2
+        class="font-display text-4xl leading-[1.08] font-medium tracking-tight text-paper sm:text-5xl"
+        data-anim="reveal"
       >
-        <span class="text-lime-moss text-sm font-semibold font-sans"
-          >⚡ Proceso</span
-        >
-      </div>
-      <h2 class="text-5xl md:text-6xl font-serif font-bold mb-6">
-        <span
-          class="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
-        >
-          ¿Cómo funciona?
-        </span>
+        Cuatro pasos. <em class="text-lime italic">Cero tipeo.</em>
       </h2>
-      <p class="text-xl text-gray-400 font-sans">
-        Tres simples pasos para automatizar tu flujo de trabajo
-      </p>
     </div>
 
-    <div class="max-w-5xl mx-auto space-y-12">
-      {
-        steps.map((step, index) => (
-          <>
-            <div class="relative">
-              <div class="flex flex-col md:flex-row items-center gap-8">
-                <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 bg-gradient-to-br from-lemon-lime to-lime-moss rounded-full blur-xl opacity-50" />
-                  <div class="relative bg-gradient-to-br from-lemon-lime to-lime-moss text-charcoal-brown rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold font-sans shadow-2xl">
-                    {step.number}
-                  </div>
-                </div>
-                <div class="flex-1 bg-dark-khaki-2/40 backdrop-blur-xl rounded-2xl p-8 border border-lime-moss/20 hover:border-lime-moss/40 transition-all duration-300 group">
-                  <div class="flex items-start justify-between">
-                    <div class="flex-1">
-                      <h3 class="text-3xl font-serif font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                        {step.title}
-                      </h3>
-                      <p class="text-gray-400 text-lg leading-relaxed font-sans">
-                        {step.description}
-                      </p>
-                    </div>
-                    <div class="text-6xl ml-6 transform group-hover:scale-110 transition-transform duration-300">
-                      {step.icon}
-                    </div>
-                  </div>
-                </div>
+    <div class="relative" data-anim="steps-wrap">
+      <div
+        class="absolute top-2 bottom-2 left-[7px] w-px bg-moss/20 sm:left-[9px]"
+        aria-hidden="true"
+      >
+        <div
+          class="h-full w-full origin-top bg-lime"
+          data-anim="steps-progress"
+        >
+        </div>
+      </div>
+
+      <ol class="space-y-16 lg:space-y-20">
+        {
+          steps.map((step) => (
+            <li class="relative grid gap-4 pl-10 sm:pl-14 lg:grid-cols-12 lg:gap-8" data-anim="step">
+              <span
+                class="absolute top-1.5 left-0 h-[15px] w-[15px] border border-moss/50 bg-ink-900 sm:h-[19px] sm:w-[19px]"
+                data-anim="step-dot"
+                aria-hidden="true"
+              />
+              <div class="lg:col-span-4">
+                <span class="font-mono text-xs tracking-[0.22em] text-moss uppercase">
+                  Paso {step.num}
+                </span>
+                <h3 class="mt-2 font-display text-2xl leading-snug font-medium text-paper sm:text-3xl">
+                  {step.title}
+                </h3>
               </div>
-            </div>
-            {index < steps.length - 1 && (
-              <div class="flex justify-center">
-                <div class="w-1 h-16 bg-gradient-to-b from-lime-moss to-lemon-lime opacity-30" />
+              <div class="lg:col-span-5 lg:pt-7">
+                <p class="text-[15px] leading-relaxed text-paper-dim">{step.body}</p>
               </div>
-            )}
-          </>
-        ))
-      }
+              <div class="lg:col-span-3 lg:pt-7 lg:text-right">
+                <span class="inline-block border border-moss/25 bg-ink-950 px-3 py-1.5 font-mono text-xs text-paper-mute">
+                  {step.detail}
+                </span>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>

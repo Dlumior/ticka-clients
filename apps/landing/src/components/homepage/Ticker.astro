@@ -1,0 +1,36 @@
+---
+const items = [
+  'Factura',
+  'Boleta',
+  'Nota de crédito',
+  'Nota de débito',
+  'XML',
+  'PDF',
+  'RUC',
+  'IGV',
+  'CSV',
+  'Plantillas',
+  'Proveedores',
+  'Workspaces',
+]
+---
+
+<div
+  class="overflow-hidden border-y border-moss/20 bg-ink-900 py-3.5"
+  aria-hidden="true"
+>
+  <div class="ticker-track">
+    {
+      [0, 1].map(() => (
+        <div class="flex shrink-0 items-center">
+          {items.map((item) => (
+            <span class="flex items-center font-mono text-xs tracking-[0.22em] whitespace-nowrap text-paper-mute uppercase">
+              <span class="px-5">{item}</span>
+              <span class="text-lime">+</span>
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

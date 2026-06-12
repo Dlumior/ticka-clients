@@ -12,8 +12,12 @@
     "@astrojs/mdx": "^4.3.12",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/ibm-plex-sans": "^5.2.8",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.4",
+    "gsap": "^3.15.0",
     "sharp": "^0.34.3",
     "tailwindcss": "^4.1.17"
   }

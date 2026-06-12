@@ -1,20 +1,153 @@
 ---
-import Benefits from "../components/homepage/Benefits.astro";
-import Features from "../components/homepage/Features.astro";
-import Hero from "../components/homepage/Hero.astro";
-import HowItWorks from "../components/homepage/HowItWorks.astro";
-import Subscribe from "../components/homepage/Subscribe.astro";
-import Footer from "../components/shared/Footer.astro";
-import Navigation from "../components/shared/Navigation.astro";
-import MainLayout from "../layouts/MainLayout.astro";
+import AlphaContact from '../components/homepage/AlphaContact.astro'
+import Features from '../components/homepage/Features.astro'
+import Hero from '../components/homepage/Hero.astro'
+import HowItWorks from '../components/homepage/HowItWorks.astro'
+import Ticker from '../components/homepage/Ticker.astro'
+import Footer from '../components/shared/Footer.astro'
+import Navigation from '../components/shared/Navigation.astro'
+import MainLayout from '../layouts/MainLayout.astro'
 ---
 
-<MainLayout title="Ticka.pe - Automatiza la gestión de tus facturas">
+<MainLayout>
   <Navigation />
-  <Hero />
-  <Features />
-  <HowItWorks />
-  <Benefits />
-  <Subscribe />
+  <main>
+    <Hero />
+    <Ticker />
+    <Features />
+    <HowItWorks />
+    <AlphaContact />
+  </main>
   <Footer />
 </MainLayout>
+
+<script>
+  import gsap from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const mm = gsap.matchMedia()
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    // ── Hero: load timeline ──
+    const hero = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+    hero
+      .from('[data-anim="hero-kicker"]', { y: 16, autoAlpha: 0, duration: 0.6 })
+      .from(
+        '[data-anim="hero-line"]',
+        { yPercent: 110, duration: 0.9, stagger: 0.13 },
+        '-=0.35',
+      )
+      .from('[data-anim="hero-sub"]', { y: 24, autoAlpha: 0, duration: 0.7 }, '-=0.5')
+      .from('[data-anim="hero-cta"]', { y: 24, autoAlpha: 0, duration: 0.6 }, '-=0.5')
+      .from('[data-anim="hero-note"]', { autoAlpha: 0, duration: 0.5 }, '-=0.4')
+
+    // ── Hero: the document gets processed ──
+    const docPanel = document.querySelector<HTMLElement>('[data-anim="hero-doc"]')
+
+    if (docPanel) {
+      const panelBox = docPanel.querySelector<HTMLElement>('div.relative')
+
+      hero
+        .from(docPanel, { y: 44, autoAlpha: 0, duration: 0.9 }, '-=1.0')
+        .fromTo(
+          '[data-anim="doc-scan"]',
+          { autoAlpha: 0, y: 0 },
+          {
+            autoAlpha: 1,
+            y: () => (panelBox ? panelBox.offsetHeight - 40 : 300),
+            duration: 1.1,
+            ease: 'power1.inOut',
+          },
+          '-=0.2',
+        )
+        .to('[data-anim="doc-scan"]', { autoAlpha: 0, duration: 0.3 }, '-=0.15')
+        .from(
+          '[data-anim="doc-row"]',
+          { autoAlpha: 0, x: -10, duration: 0.32, stagger: 0.09, ease: 'power1.out' },
+          '-=1.05',
+        )
+        .from('[data-anim="doc-stamp"]', {
+          scale: 2.4,
+          rotation: 10,
+          autoAlpha: 0,
+          duration: 0.45,
+          ease: 'back.out(2.5)',
+        })
+        .from('[data-anim="doc-export"]', { autoAlpha: 0, duration: 0.4 }, '-=0.1')
+    }
+
+    // ── Generic scroll reveals ──
+    gsap.utils.toArray<HTMLElement>('[data-anim="reveal"]').forEach((el) => {
+      gsap.from(el, {
+        y: 28,
+        autoAlpha: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+      })
+    })
+
+    // ── Features: staggered cell entrance ──
+    ScrollTrigger.batch('[data-anim="feature-cell"]', {
+      start: 'top 86%',
+      once: true,
+      onEnter: (batch) => {
+        gsap.from(batch, {
+          y: 36,
+          autoAlpha: 0,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power3.out',
+        })
+      },
+    })
+
+    // ── How it works: progress rail scrubbed by scroll ──
+    gsap.fromTo(
+      '[data-anim="steps-progress"]',
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '[data-anim="steps-wrap"]',
+          start: 'top 70%',
+          end: 'bottom 60%',
+          scrub: 0.6,
+        },
+      },
+    )
+
+    gsap.utils.toArray<HTMLElement>('[data-anim="step"]').forEach((step) => {
+      gsap.from(step, {
+        y: 32,
+        autoAlpha: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: step, start: 'top 84%', once: true },
+      })
+
+      const dot = step.querySelector('[data-anim="step-dot"]')
+      if (dot) {
+        gsap.to(dot, {
+          backgroundColor: '#c0d820',
+          borderColor: '#c0d820',
+          duration: 0.35,
+          scrollTrigger: { trigger: step, start: 'top 64%', once: true },
+        })
+      }
+    })
+
+    // ── Contact form panel ──
+    gsap.from('[data-anim="contact-form"]', {
+      y: 40,
+      autoAlpha: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '[data-anim="contact-form"]', start: 'top 84%', once: true },
+    })
+  })
+</script>

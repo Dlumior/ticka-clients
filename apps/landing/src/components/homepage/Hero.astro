@@ -1,243 +1,134 @@
 ---
-
+const docRows = [
+  { label: 'RUC', value: '20512345678' },
+  { label: 'TIPO', value: 'FACTURA' },
+  { label: 'SERIE', value: 'F001-00482' },
+  { label: 'EMISIÓN', value: '02/06/2026' },
+  { label: 'SUBTOTAL', value: 'S/ 690.00' },
+  { label: 'IGV (18%)', value: 'S/ 124.20' },
+  { label: 'TOTAL', value: 'S/ 814.20', strong: true },
+]
 ---
 
-<style is:global>
-  /* Define the animation */
-  @keyframes spark-float {
-    0% {
-      opacity: 0;
-      transform: translate(0, 0) scale(0);
-    }
-    15% {
-      opacity: var(--target-opacity, 0.8); /* Fade in quickly */
-      transform: translate(calc(var(--tx) * 0.2), calc(var(--ty) * 0.2))
-        scale(1);
-    }
-    80% {
-      opacity: var(--target-opacity, 0.4); /* Fade out slowly */
-    }
-    100% {
-      opacity: 0;
-      transform: translate(var(--tx), var(--ty)) scale(0);
-    }
-  }
-
-  .animate-spark {
-    animation-name: spark-float;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* Ease-in-out */
-    animation-iteration-count: infinite;
-  }
-</style>
-
-<script>
-  function initSparks() {
-    const container = document.getElementById("particles-container");
-    if (!container) return;
-
-    // Configuration
-    const particleCount = 100; // Number of sparks
-    const colors = [
-      "bg-lemon-lime",
-      "bg-lime-moss",
-      "bg-white",
-      "bg-lemon-lime",
-    ]; // Added lemon-lime twice to make it dominant
-
-    // Clear existing (in case of re-renders)
-    container.innerHTML = "";
-
-    for (let i = 0; i < particleCount; i++) {
-      const spark = document.createElement("div");
-
-      // Randomize Properties
-      const size =
-        Math.random() < 0.6
-          ? "w-0.5 h-0.5"
-          : Math.random() < 0.9
-            ? "w-1 h-1"
-            : "w-1.5 h-1.5"; // mostly small, some medium, few large
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const left = Math.floor(Math.random() * 100);
-      const top = Math.floor(Math.random() * 100);
-
-      // Random movement vectors (between -100px and 100px)
-      const tx = (Math.random() - 0.5) * 200;
-      const ty = (Math.random() - 0.5) * 150; // slightly less vertical movement to keep them floating
-
-      // Random timings
-      const duration = 3 + Math.random() * 5; // Between 3s and 8s
-      const delay = Math.random() * -5; // Negative delay ensures some are already visible on load
-      const opacity = 0.4 + Math.random() * 0.6; // Opacity between 0.4 and 1.0
-
-      // Apply Classes
-      spark.className = `absolute rounded-full opacity-0 animate-spark ${size} ${color}`;
-
-      // Apply CSS Variables for the animation keyframes
-      spark.style.left = `${left}%`;
-      spark.style.top = `${top}%`;
-      spark.style.setProperty("--tx", `${tx}px`);
-      spark.style.setProperty("--ty", `${ty}px`);
-      spark.style.setProperty("--target-opacity", `${opacity}`);
-      spark.style.animationDuration = `${duration}s`;
-      spark.style.animationDelay = `${delay}s`;
-
-      container.appendChild(spark);
-    }
-  }
-
-  // Run on load
-  initSparks();
-
-  // If you use View Transitions in Astro, uncomment the line below:
-  document.addEventListener("astro:page-load", initSparks);
-</script>
-
-<section
-  class="relative min-h-screen flex items-center justify-center overflow-hidden"
->
+<section class="ledger-lines relative overflow-hidden pt-16">
   <div
-    class="absolute inset-0 bg-gradient-to-br from-charcoal-brown via-charcoal-brown-2 to-dark-khaki"
+    class="pointer-events-none absolute -top-32 right-[-10%] h-96 w-96 rounded-full bg-lime/10 blur-[140px]"
+    aria-hidden="true"
   >
   </div>
 
-  <div
-    class="absolute top-20 left-10 w-96 h-96 bg-lemon-lime rounded-full blur-3xl opacity-20 glow-pulse"
-  >
-  </div>
-  <div
-    class="absolute bottom-20 right-10 w-80 h-80 bg-lime-moss rounded-full blur-3xl opacity-20 glow-pulse"
-    style="animation-delay: 2s;"
-  >
-  </div>
-  <div
-    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-lemon-lime to-lime-moss rounded-full blur-3xl opacity-10"
-  >
-  </div>
+  <div class="mx-auto grid max-w-6xl gap-14 px-5 pt-16 pb-20 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-28">
+    <div class="lg:col-span-7 lg:pr-8">
+      <p class="kicker mb-8" data-anim="hero-kicker">
+        [ Alfa privada — Perú ]
+      </p>
 
-  <div
-    id="particles-container"
-    class="absolute inset-0 overflow-hidden pointer-events-none z-0"
-  >
-  </div>
-  <div
-    class="absolute inset-0 bg-[linear-gradient(rgba(170,180,74,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(170,180,74,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"
-  >
-  </div>
-
-  <div
-    class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 py-30"
-  >
-    <div
-      class="inline-block mb-8 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
-    >
-      <span class="text-lime-moss text-sm font-semibold tracking-wide font-sans"
-        >🚀 Contabilidad Inteligente</span
-      >
-    </div>
-
-    <div class="mb-8">
-      <h1
-        class="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight tracking-tight"
-      >
-        <span
-          class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent block"
-        >
-          De tu correo a tus cuentas
+      <h1 class="font-display text-[clamp(2.75rem,8vw,5.25rem)] leading-[1.02] font-medium tracking-tight text-paper">
+        <span class="block overflow-hidden">
+          <span class="block" data-anim="hero-line">Del correo</span>
         </span>
-        <span
-          class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent block"
-        >
-          en segundos.
+        <span class="block overflow-hidden">
+          <span class="block" data-anim="hero-line">
+            al <em class="font-light text-lime italic">CSV</em>,
+          </span>
+        </span>
+        <span class="block overflow-hidden">
+          <span class="block" data-anim="hero-line">sin tipear nada.</span>
         </span>
       </h1>
-      <h2 class="text-3xl md:text-5xl font-serif font-bold leading-normal">
-        <span
-          class="bg-gradient-to-r from-lemon-lime via-lime-moss to-lemon-lime bg-clip-text text-transparent gradient-animate inline-block"
+
+      <p
+        class="mt-8 max-w-xl text-lg leading-relaxed text-paper-dim"
+        data-anim="hero-sub"
+      >
+        Ticka recibe los comprobantes de tus clientes, extrae los datos de cada
+        XML o PDF y te entrega un CSV con las columnas exactas de tu sistema
+        contable. Hecho para estudios contables en el Perú.
+      </p>
+
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-anim="hero-cta">
+        <a
+          href="#contacto"
+          class="border border-lime bg-lime px-7 py-4 text-center font-mono text-sm font-semibold tracking-[0.14em] text-ink-950 uppercase transition-colors duration-300 hover:bg-transparent hover:text-lime"
         >
-          TICKA
-        </span>
-        <span class="text-white ml-2">lo hace por ti.</span>
-      </h2>
+          Unirme al alfa
+        </a>
+        <a
+          href="/blog/"
+          class="draw-link self-center py-2 font-mono text-sm tracking-[0.08em] text-paper-dim uppercase hover:text-paper"
+        >
+          Ver novedades →
+        </a>
+      </div>
+
+      <p class="mt-8 font-mono text-xs tracking-[0.12em] text-paper-mute" data-anim="hero-note">
+        v0.x — en construcción con estudios contables reales
+      </p>
     </div>
 
-    <p
-      class="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed font-sans"
-    >
-      Automatiza la gestión de facturas para contadores modernos. <br
-        class="hidden md:block"
-      />
-
-      <span class="text-lime-moss">Olvídate de procesar manualmente</span> cada documento.
-    </p>
-
-    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-      <a
-        href="#suscribirse"
-        class="group relative bg-gradient-to-r from-lemon-lime to-lime-moss text-charcoal-brown px-8 py-4 rounded-xl text-lg font-bold font-sans hover:shadow-[0_0_30px_-5px_rgba(192,216,32,0.4)] transition-all duration-300 transform hover:scale-105 overflow-hidden"
-      >
-        <span class="relative z-10">Probar Demo Gratis</span>
+    <div class="lg:col-span-5" data-anim="hero-doc">
+      <div class="relative border border-moss/25 bg-ink-900/90">
         <div
-          class="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"
+          class="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-lime/15 to-transparent opacity-0"
+          data-anim="doc-scan"
+          aria-hidden="true"
         >
         </div>
-      </a>
-      <a
-        href="#como-funciona"
-        class="bg-dark-khaki-2/80 backdrop-blur-sm border-2 border-lime-moss/30 text-white px-8 py-4 rounded-xl text-lg font-bold font-sans hover:bg-dark-khaki-2 hover:border-lime-moss/60 transition-all duration-300 transform hover:scale-105"
-      >
-        Ver Integraciones
-      </a>
-    </div>
 
-    <div class="relative mt-12 max-w-5xl mx-auto">
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-lemon-lime/10 to-lime-moss/10 rounded-3xl blur-3xl"
-      >
-      </div>
-      <div
-        class="relative bg-dark-khaki-2/40 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-lime-moss/20 shadow-2xl"
-      >
-        <div class="grid md:grid-cols-3 gap-8 items-center">
-          <div class="text-center group">
-            <div
-              class="text-5xl md:text-6xl mb-4 transform group-hover:-translate-y-2 transition-transform duration-500"
-            >
-              📧
-            </div>
-            <p class="text-gray-400 font-medium font-sans">Reenvía factura</p>
-          </div>
-          <div class="text-center relative">
-            <div
-              class="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-lime-moss/30 to-transparent -z-10"
-            >
-            </div>
+        <div class="flex items-center justify-between gap-3 border-b border-moss/25 px-5 py-3">
+          <span class="truncate font-mono text-xs text-moss">
+            ws-estudio-garcia@ticka.pe
+          </span>
+          <span class="shrink-0 font-mono text-[10px] tracking-[0.14em] text-paper-mute uppercase">
+            Recibido 09:41
+          </span>
+        </div>
 
-            <div
-              class="text-4xl md:text-5xl mb-4 text-lemon-lime animate-pulse"
-            >
-              ⚡
-            </div>
-            <div
-              class="inline-block px-4 py-2 bg-lemon-lime/10 border border-lemon-lime/30 rounded-lg backdrop-blur-md"
-            >
-              <p
-                class="text-lemon-lime font-bold text-sm tracking-wide font-sans"
+        <div class="border-b border-moss/25 px-5 py-3">
+          <span class="font-mono text-xs text-paper-dim">
+            ↳ factura-f001-00482.xml
+          </span>
+        </div>
+
+        <dl class="px-5 py-4">
+          {
+            docRows.map((row) => (
+              <div
+                class:list={[
+                  'flex items-baseline justify-between gap-4 py-1.5',
+                  row.strong && 'mt-1.5 border-t border-moss/25 pt-3',
+                ]}
+                data-anim="doc-row"
               >
-                TICKA ENGINE
-              </p>
-            </div>
-          </div>
-          <div class="text-center group">
-            <div
-              class="text-5xl md:text-6xl mb-4 transform group-hover:-translate-y-2 transition-transform duration-500 delay-100"
-            >
-              📊
-            </div>
-            <p class="text-gray-400 font-medium font-sans">Listo en tu ERP</p>
-          </div>
+                <dt class="font-mono text-xs tracking-[0.14em] text-paper-mute uppercase">
+                  {row.label}
+                </dt>
+                <dd
+                  class:list={[
+                    'font-mono text-sm',
+                    row.strong ? 'font-semibold text-lime' : 'text-paper',
+                  ]}
+                >
+                  {row.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <div class="flex items-center justify-between border-t border-moss/25 px-5 py-4">
+          <span class="stamp -rotate-2 text-xs text-lime" data-anim="doc-stamp">
+            ✓ Aprobado
+          </span>
+          <span class="font-mono text-xs text-paper-dim" data-anim="doc-export">
+            → listo para exportar<span class="animate-pulse text-lime">_</span>
+          </span>
         </div>
       </div>
+
+      <p class="mt-4 text-center font-mono text-[11px] tracking-[0.1em] text-paper-mute">
+        Procesado por Ticka — sin intervención manual
+      </p>
     </div>
   </div>
 </section>

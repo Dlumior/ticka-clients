@@ -1,86 +1,84 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
+import type { CollectionEntry } from 'astro:content'
+import FormattedDate from '../components/FormattedDate.astro'
+import Footer from '../components/shared/Footer.astro'
+import Navigation from '../components/shared/Navigation.astro'
+import MainLayout from './MainLayout.astro'
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data']
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<MainLayout title={`${title} — Ticka`} description={description}>
+  <Navigation />
+  <main class="pt-16">
+    <article>
+      <header class="ledger-lines border-b border-moss/15">
+        <div class="mx-auto max-w-3xl px-5 pt-20 pb-14 sm:px-8 lg:pt-28">
+          <p class="mb-8">
+            <a
+              href="/blog/"
+              class="draw-link font-mono text-xs tracking-[0.18em] text-paper-mute uppercase hover:text-paper"
+            >
+              ← Novedades
+            </a>
+          </p>
+          <p class="kicker mb-6" data-anim="post-meta">
+            <FormattedDate date={pubDate} />
+          </p>
+          <h1
+            class="font-display text-4xl leading-[1.08] font-medium tracking-tight text-paper sm:text-5xl"
+            data-anim="post-title"
+          >
+            {title}
+          </h1>
+          <p class="mt-6 text-lg leading-relaxed text-paper-dim" data-anim="post-desc">
+            {description}
+          </p>
+          {
+            updatedDate && (
+              <p class="mt-6 font-mono text-xs tracking-[0.1em] text-paper-mute">
+                Actualizado: <FormattedDate date={updatedDate} />
+              </p>
+            )
+          }
+        </div>
+      </header>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+      <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 lg:py-20">
+        <div class="prose-ticka" data-anim="post-body">
+          <slot />
+        </div>
+
+        <div class="mt-16 border-t border-moss/15 pt-10 text-center">
+          <p class="font-mono text-xs tracking-[0.14em] text-paper-mute uppercase">
+            ¿Quieres probar esto con tus propios comprobantes?
+          </p>
+          <a
+            href="/#contacto"
+            class="mt-5 inline-block border border-lime bg-lime px-7 py-3.5 font-mono text-sm font-semibold tracking-[0.14em] text-ink-950 uppercase transition-colors duration-300 hover:bg-transparent hover:text-lime"
+          >
+            Unirme al alfa
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</MainLayout>
+
+<script>
+  import gsap from 'gsap'
+
+  const mm = gsap.matchMedia()
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .from('[data-anim="post-meta"]', { y: 14, autoAlpha: 0, duration: 0.5 })
+      .from('[data-anim="post-title"]', { y: 26, autoAlpha: 0, duration: 0.8 }, '-=0.25')
+      .from('[data-anim="post-desc"]', { y: 22, autoAlpha: 0, duration: 0.7 }, '-=0.5')
+      .from('[data-anim="post-body"]', { y: 24, autoAlpha: 0, duration: 0.8 }, '-=0.4')
+  })
+</script>

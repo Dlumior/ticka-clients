@@ -1,177 +1,67 @@
 ---
-const currentYear = new Date().getFullYear();
+const currentYear = new Date().getFullYear()
 ---
 
-<footer
-  class="relative bg-charcoal-brown pt-20 pb-10 overflow-hidden border-t border-lime-moss/20"
->
-  <div
-    class="absolute inset-0 bg-gradient-to-t from-charcoal-brown-2 to-charcoal-brown pointer-events-none"
-  >
-  </div>
-
-  <div
-    class="absolute inset-0 bg-[linear-gradient(rgba(170,180,74,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(170,180,74,0.03)_1px,transparent_1px)] bg-[size:50px_50px] opacity-50 pointer-events-none"
-  >
-  </div>
-
-  <div
-    class="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-lime-moss rounded-full blur-3xl opacity-10 pointer-events-none"
-  >
-  </div>
-
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-      <div class="space-y-6">
-        <a href="/" class="text-2xl font-black tracking-tight">
-          <span
-            class="bg-gradient-to-r from-lemon-lime via-lime-moss to-lemon-lime bg-clip-text text-transparent"
-          >
-            Ticka
-          </span>
-        </a>
-        <p class="text-gray-400 text-sm leading-relaxed">
-          Automatización inteligente de facturas para contadores que valoran su
-          tiempo. Deja que nosotros nos encarguemos del trabajo pesado.
+<footer class="relative overflow-hidden border-t border-moss/15 bg-ink-950">
+  <div class="mx-auto max-w-6xl px-5 pt-16 pb-8 sm:px-8">
+    <div class="flex flex-col justify-between gap-10 sm:flex-row">
+      <div class="max-w-sm">
+        <p class="font-display text-2xl font-semibold italic text-paper">
+          Ticka<span class="text-lime">.</span>
         </p>
-        <div class="flex space-x-4">
-          <a
-            href="#"
-            class="text-gray-400 hover:text-lemon-lime transition-colors"
-          >
-            <span class="sr-only">Twitter</span>
-            <svg
-              class="h-6 w-6"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
-              ></path>
-            </svg>
-          </a>
-          <a
-            href="#"
-            class="text-gray-400 hover:text-lemon-lime transition-colors"
-          >
-            <span class="sr-only">LinkedIn</span>
-            <svg
-              class="h-6 w-6"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </a>
+        <p class="mt-4 text-sm leading-relaxed text-paper-dim">
+          Comprobantes que se procesan solos. De la bandeja de entrada al CSV
+          de tu sistema contable, sin tipear.
+        </p>
+        <p class="mt-6 flex items-center gap-2 font-mono text-xs text-paper-mute">
+          <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-lime"></span>
+          Alfa privada — construyendo en Perú
+        </p>
+      </div>
+
+      <nav class="flex gap-16" aria-label="Pie de página">
+        <div>
+          <p class="kicker mb-5 text-[10px]">Producto</p>
+          <ul class="space-y-3 text-sm">
+            <li>
+              <a href="/#producto" class="draw-link text-paper-dim hover:text-paper">Características</a>
+            </li>
+            <li>
+              <a href="/#como-funciona" class="draw-link text-paper-dim hover:text-paper">Cómo funciona</a>
+            </li>
+            <li>
+              <a href="/#contacto" class="draw-link text-paper-dim hover:text-paper">Unirse al alfa</a>
+            </li>
+          </ul>
         </div>
-      </div>
-
-      <div>
-        <h3 class="text-white font-semibold mb-6">Producto</h3>
-        <ul class="space-y-4">
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Características</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Integraciones</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Precios</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Para Contadores</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <!-- <div>
-        <h3 class="text-white font-semibold mb-6">Compañía</h3>
-        <ul class="space-y-4">
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Sobre Nosotros</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Blog</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Contacto</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="text-gray-400 hover:text-lemon-lime transition-colors text-sm"
-              >Términos y Privacidad</a
-            >
-          </li>
-        </ul>
-      </div>
- -->
-      <!-- <div>
-        <h3 class="text-white font-semibold mb-6">Mantente actualizado</h3>
-        <p class="text-gray-400 text-sm mb-4">
-          Recibe las últimas novedades sobre la plataforma.
-        </p>
-        <form class="space-y-2">
-          <div class="relative">
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              class="w-full bg-dark-khaki-2/30 backdrop-blur-sm border border-lime-moss/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-lemon-lime/50 focus:ring-1 focus:ring-lemon-lime/50 transition-all text-sm"
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full bg-gradient-to-r from-lemon-lime to-lime-moss text-charcoal-brown font-bold py-2.5 rounded-lg text-sm hover:shadow-lg hover:shadow-lemon-lime/20 transition-all transform active:scale-95"
-          >
-            Suscribirse
-          </button>
-        </form>
-      </div> -->
+        <div>
+          <p class="kicker mb-5 text-[10px]">Recursos</p>
+          <ul class="space-y-3 text-sm">
+            <li>
+              <a href="/blog/" class="draw-link text-paper-dim hover:text-paper">Novedades</a>
+            </li>
+            <li>
+              <a href="/rss.xml" class="draw-link text-paper-dim hover:text-paper">RSS</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
 
-    <div
-      class="pt-8 mt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4"
-    >
-      <p class="text-gray-500 text-sm">
-        &copy; {currentYear} Ticka Inc. Todos los derechos reservados.
+    <div class="mt-14 flex flex-col items-start justify-between gap-3 border-t border-moss/15 pt-6 sm:flex-row sm:items-center">
+      <p class="font-mono text-xs text-paper-mute">
+        © {currentYear} Ticka — Todos los derechos reservados
       </p>
-      <div class="flex items-center gap-2 text-sm text-gray-500">
-        <span class="w-2 h-2 rounded-full bg-lemon-lime animate-pulse"></span>
-        <span>Sistemas operativos</span>
-      </div>
+      <p class="font-mono text-xs tracking-[0.14em] text-paper-mute uppercase">
+        Hecho en Perú 🇵🇪
+      </p>
     </div>
   </div>
+
+  <p
+    class="pointer-events-none -mb-[0.27em] text-center font-display text-[clamp(6rem,22vw,17rem)] leading-none font-semibold tracking-tight text-moss/10 select-none"
+    aria-hidden="true"
+  >
+    Ticka
+  </p>
 </footer>

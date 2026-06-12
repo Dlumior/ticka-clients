@@ -1,94 +1,163 @@
 ---
-const features = [
+interface Feature {
+  num: string
+  title: string
+  body: string
+  span: string
+  garnish?: 'inbox' | 'upload' | 'extract' | 'states' | 'csv' | 'team'
+}
+
+const features: Feature[] = [
   {
-    icon: "✉️",
-    title: "Email único",
-    description:
-      "Recibe un correo exclusivo para reenviar todas tus facturas. En el futuro, solo enlaza tu cuenta.",
-    gradient: "from-lemon-lime/20 to-lime-moss/20",
+    num: '01',
+    title: 'Una bandeja con correo propio',
+    body: 'Cada workspace tiene su propia dirección de correo. Tus clientes reenvían sus comprobantes y aparecen solos en Ticka, con el archivo original guardado.',
+    span: 'lg:col-span-7',
+    garnish: 'inbox',
   },
   {
-    icon: "🤖",
-    title: "Extracción automática",
-    description:
-      "Soporte para XML ahora. OCR e IA próximamente para máxima precisión.",
-    gradient: "from-lime-moss/20 to-lemon-lime/20",
+    num: '02',
+    title: 'Subida manual cuando haga falta',
+    body: '¿El comprobante no llegó por correo? Arrástralo a la bandeja. XML o PDF, hasta 10 MB, mismo flujo y mismo resultado.',
+    span: 'lg:col-span-5',
+    garnish: 'upload',
   },
   {
-    icon: "📊",
-    title: "Exporta a Excel",
-    description:
-      "Descarga todos tus datos organizados y listos para trabajar en Excel.",
-    gradient: "from-lemon-lime/20 to-lime-moss/20",
+    num: '03',
+    title: 'Extracción automática de datos',
+    body: 'RUC, serie, fechas, importes, IGV y líneas de detalle se leen directamente del documento. Facturas, boletas, notas de crédito y de débito.',
+    span: 'lg:col-span-5',
+    garnish: 'extract',
   },
   {
-    icon: "👥",
-    title: "Colaboración",
-    description:
-      "Agrupa todas las facturas de tu organización en un solo lugar centralizado.",
-    gradient: "from-lime-moss/20 to-lemon-lime/20",
+    num: '04',
+    title: 'Un flujo de revisión con estados claros',
+    body: 'Cada comprobante avanza por estados visibles. Lo que requiere revisión se distingue de lo aprobado, y nada se exporta sin pasar por ti.',
+    span: 'lg:col-span-7',
+    garnish: 'states',
   },
-];
+  {
+    num: '05',
+    title: 'Mesa de trabajo y plantillas CSV',
+    body: 'Filtra los comprobantes aprobados, selecciona documentos completos o líneas individuales, y exporta un CSV con las columnas exactas que tu sistema contable espera.',
+    span: 'lg:col-span-7',
+    garnish: 'csv',
+  },
+  {
+    num: '06',
+    title: 'Proveedores y equipos, ordenados',
+    body: 'El directorio de proveedores se construye solo a partir del RUC. Organiza tu estudio con workspaces por cliente y roles para cada miembro del equipo.',
+    span: 'lg:col-span-5',
+    garnish: 'team',
+  },
+]
+
+const states = ['Recibido', 'Procesado', 'Revisión', 'Aprobado', 'Exportado']
 ---
 
-<section id="caracteristicas" class="relative py-32 overflow-hidden">
-  <div
-    class="absolute inset-0 bg-gradient-to-b from-charcoal-brown via-charcoal-brown-2 to-charcoal-brown"
-  >
-  </div>
-
-  <!-- Background Effects -->
-  <div
-    class="absolute top-1/2 left-0 w-96 h-96 bg-lime-moss rounded-full blur-3xl opacity-10"
-  >
-  </div>
-  <div
-    class="absolute bottom-0 right-0 w-96 h-96 bg-lemon-lime rounded-full blur-3xl opacity-10"
-  >
-  </div>
-
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-20">
-      <div
-        class="inline-block mb-4 px-4 py-2 bg-dark-khaki-2/50 backdrop-blur-sm border border-lime-moss/30 rounded-full"
+<section id="producto" class="relative scroll-mt-16 py-24 lg:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="mb-16 max-w-2xl lg:mb-20">
+      <p class="kicker mb-6" data-anim="reveal">[ 01 — El producto ]</p>
+      <h2
+        class="font-display text-4xl leading-[1.08] font-medium tracking-tight text-paper sm:text-5xl"
+        data-anim="reveal"
       >
-        <span class="text-lime-moss text-sm font-semibold font-sans"
-          >✨ Características</span
-        >
-      </div>
-      <h2 class="text-5xl md:text-6xl font-serif font-bold mb-6">
-        <span
-          class="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
-        >
-          Todo lo que necesitas
-        </span>
+        Todo el camino del comprobante, <em class="text-lime italic">cubierto</em>.
       </h2>
-      <p class="text-xl text-gray-400 max-w-2xl mx-auto font-sans">
-        Herramientas poderosas para gestionar tus facturas de forma eficiente
+      <p class="mt-6 text-lg leading-relaxed text-paper-dim" data-anim="reveal">
+        Desde que el documento llega hasta que entra a tu sistema contable,
+        cada paso ocurre en un solo lugar.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid gap-px border border-moss/20 bg-moss/20 lg:grid-cols-12">
       {
-        features.map((feature, index) => (
-          <div class="group relative">
-            <div
-              class={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-            />
-            <div class="relative bg-dark-khaki-2/50 backdrop-blur-xl rounded-2xl p-8 border border-lime-moss/20 hover:border-lime-moss/40 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 h-full">
-              <div class="text-6xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                {feature.icon}
+        features.map((feature) => (
+          <article
+            class:list={[
+              'group relative flex flex-col justify-between bg-ink-950 p-7 transition-colors duration-500 hover:bg-ink-900 sm:p-9',
+              feature.span,
+            ]}
+            data-anim="feature-cell"
+          >
+            <div>
+              <div class="mb-6 flex items-baseline justify-between">
+                <span class="font-mono text-xs tracking-[0.2em] text-paper-mute">
+                  {feature.num}
+                </span>
+                <span class="h-px w-8 bg-moss/30 transition-all duration-500 group-hover:w-14 group-hover:bg-lime/60" />
               </div>
-              <h3 class="text-2xl font-serif font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h3 class="font-display text-2xl leading-snug font-medium text-paper">
                 {feature.title}
               </h3>
-              <p class="text-gray-400 leading-relaxed font-sans">
-                {feature.description}
+              <p class="mt-4 text-[15px] leading-relaxed text-paper-dim">
+                {feature.body}
               </p>
             </div>
-          </div>
+
+            <div class="mt-8">
+              {feature.garnish === 'inbox' && (
+                <p class="inline-block border border-moss/25 bg-ink-900 px-3 py-2 font-mono text-xs text-moss transition-colors group-hover:text-lime">
+                  ws-tu-cliente@ticka.pe
+                </p>
+              )}
+              {feature.garnish === 'upload' && (
+                <p class="border border-dashed border-moss/35 px-3 py-2 text-center font-mono text-xs text-paper-mute">
+                  Suelta aquí · XML / PDF
+                </p>
+              )}
+              {feature.garnish === 'extract' && (
+                <p class="font-mono text-xs leading-relaxed text-paper-mute">
+                  <span class="text-moss">&lt;cbc:ID&gt;</span>
+                  <span class="text-paper-dim">F001-00482</span>
+                  <span class="text-moss">&lt;/cbc:ID&gt;</span>
+                  <span class="text-lime"> → S/ 814.20</span>
+                </p>
+              )}
+              {feature.garnish === 'states' && (
+                <p class="flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-[10px] tracking-[0.1em] uppercase">
+                  {states.map((state, i) => (
+                    <>
+                      {i > 0 && <span class="text-paper-mute">→</span>}
+                      <span
+                        class:list={[
+                          'border px-1.5 py-0.5',
+                          i >= 3
+                            ? 'border-lime/50 text-lime'
+                            : 'border-moss/30 text-paper-mute',
+                        ]}
+                      >
+                        {state}
+                      </span>
+                    </>
+                  ))}
+                </p>
+              )}
+              {feature.garnish === 'csv' && (
+                <p class="overflow-x-auto font-mono text-xs whitespace-nowrap text-paper-mute">
+                  <span class="text-moss">fecha;ruc;serie;igv;total</span>
+                  <br />
+                  02/06/2026;20512345678;F001-00482;124.20;<span class="text-lime">814.20</span>
+                </p>
+              )}
+              {feature.garnish === 'team' && (
+                <p class="flex flex-wrap gap-2 font-mono text-[10px] tracking-[0.1em] uppercase">
+                  {['Owner', 'Admin', 'Member', 'Viewer'].map((role) => (
+                    <span class="border border-moss/30 px-1.5 py-0.5 text-paper-mute transition-colors group-hover:border-moss/50">
+                      {role}
+                    </span>
+                  ))}
+                </p>
+              )}
+            </div>
+          </article>
         ))
       }
     </div>
+
+    <p class="mt-6 text-right font-mono text-xs tracking-[0.12em] text-paper-mute">
+      Pronto: ingreso por WhatsApp y Telegram
+    </p>
   </div>
 </section>

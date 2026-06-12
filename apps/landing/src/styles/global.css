@@ -1,88 +1,281 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-charcoal-brown: #20240e;
-  --color-charcoal-brown-2: #22260c;
-  --color-dark-khaki: #242804;
-  --color-dark-khaki-2: #2c2f0f;
-  --color-lime-moss: #aab44a;
-  --color-lemon-lime: #c0d820;
+  /* ── Ticka palette: dark earthy green + lime accent ── */
+  --color-ink-950: #131607;
+  --color-ink-900: #1a1e0b;
+  --color-ink-850: #20240e; /* brand charcoal-brown */
+  --color-ink-800: #272b10;
+  --color-ink-700: #32370f;
+  --color-lime: #c0d820; /* brand lemon-lime */
+  --color-moss: #aab44a; /* brand lime-moss */
+  --color-paper: #f4f2e3;
+  --color-paper-dim: #c3c6a6;
+  --color-paper-mute: #8d925f;
 
-  /* Professional Serif Font Stack */
-  --font-family-serif: "Georgia", "Cambria", "Times New Roman", "Times", serif;
-  --font-family-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans:
+    'IBM Plex Sans Variable', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --font-mono:
+    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* Float Animation for Text - Removed rotation for professional look */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+::selection {
+  background-color: var(--color-lime);
+  color: var(--color-ink-950);
 }
 
-.float-animation {
-  animation: float 8s ease-in-out infinite;
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-ink-950);
 }
 
-/* Glow Pulse for Background Orbs */
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.1);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
-.glow-pulse {
-  animation: glow-pulse 6s ease-in-out infinite;
+body {
+  font-family: var(--font-sans);
+  color: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* NEW: Spark/Particle Animation */
-@keyframes spark-float {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
+/* ── Film grain overlay (fixed, sits above everything, never intercepts) ── */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Ledger ruling: faint horizontal account-book lines ── */
+.ledger-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 47px,
+    rgb(170 180 74 / 0.07) 47px,
+    rgb(170 180 74 / 0.07) 48px
+  );
+}
+
+/* Vertical margin rule, like the red line of an account book */
+.ledger-margin {
+  background-image: linear-gradient(
+    to right,
+    transparent calc(100% - 1px),
+    rgb(192 216 32 / 0.14) calc(100% - 1px)
+  );
+}
+
+/* ── Mono kicker labels: [ 01 — PRODUCTO ] ── */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-moss);
+}
+
+/* ── Rubber-stamp chip ── */
+.stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  padding: 0.2em 0.55em;
+  line-height: 1.3;
+}
+
+/* ── Marquee ticker ── */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
   }
-  20% {
-    opacity: 1;
-    transform: translate(var(--tx), var(--ty)) scale(1);
-  }
-  80% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(calc(var(--tx) * 1.5), calc(var(--ty) * 1.5)) scale(0);
+  to {
+    transform: translateX(-50%);
   }
 }
 
-.spark {
-  /* Using 5s as base, but this can be overridden inline or via random classes */
-  animation: spark-float 5s ease-in-out infinite;
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 36s linear infinite;
 }
 
-/* Text Gradient Shift */
-@keyframes gradient-shift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
   }
 }
 
-.gradient-animate {
-  background-size: 200% 200%;
-  animation: gradient-shift 6s ease infinite;
+/* ── Underline-draw link hover ── */
+.draw-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.draw-link:hover {
+  background-size: 100% 1px;
+}
+
+/* ── Blog prose (es-PE editorial) ── */
+.prose-ticka {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--color-paper-dim);
+}
+
+.prose-ticka h2 {
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  color: var(--color-paper);
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+}
+
+.prose-ticka h3 {
+  font-family: var(--font-display);
+  font-weight: 540;
+  font-size: 1.3rem;
+  color: var(--color-paper);
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-ticka p {
+  margin-bottom: 1.4rem;
+}
+
+.prose-ticka strong {
+  color: var(--color-paper);
+  font-weight: 600;
+}
+
+.prose-ticka a {
+  color: var(--color-lime);
+  text-decoration: underline;
+  text-decoration-color: rgb(192 216 32 / 0.4);
+  text-underline-offset: 3px;
+}
+
+.prose-ticka a:hover {
+  text-decoration-color: var(--color-lime);
+}
+
+.prose-ticka ul,
+.prose-ticka ol {
+  margin: 0 0 1.4rem;
+  padding-left: 1.5rem;
+}
+
+.prose-ticka ul {
+  list-style: none;
+}
+
+.prose-ticka ul li {
+  position: relative;
+  margin-bottom: 0.6rem;
+}
+
+.prose-ticka ul li::before {
+  content: '—';
+  position: absolute;
+  left: -1.5rem;
+  color: var(--color-moss);
+  font-family: var(--font-mono);
+}
+
+.prose-ticka ol {
+  list-style: decimal;
+}
+
+.prose-ticka ol li {
+  margin-bottom: 0.6rem;
+  padding-left: 0.25rem;
+}
+
+.prose-ticka ol li::marker {
+  color: var(--color-moss);
+  font-family: var(--font-mono);
+}
+
+.prose-ticka code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--color-lime);
+  background: rgb(192 216 32 / 0.08);
+  border: 1px solid rgb(192 216 32 / 0.15);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+.prose-ticka pre {
+  background: var(--color-ink-900);
+  border: 1px solid rgb(170 180 74 / 0.2);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.4rem;
+}
+
+.prose-ticka pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-paper-dim);
+}
+
+.prose-ticka blockquote {
+  border-left: 2px solid var(--color-lime);
+  padding-left: 1.25rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15em;
+  color: var(--color-paper);
+  margin: 2rem 0;
+}
+
+.prose-ticka hr {
+  border: none;
+  border-top: 1px solid rgb(170 180 74 / 0.2);
+  margin: 2.5rem 0;
+}
+
+.prose-ticka table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  margin-bottom: 1.4rem;
+}
+
+.prose-ticka th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-moss);
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgb(170 180 74 / 0.3);
+}
+
+.prose-ticka td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgb(170 180 74 / 0.12);
 }
