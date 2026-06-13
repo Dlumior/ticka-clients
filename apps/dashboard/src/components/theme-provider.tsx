@@ -30,7 +30,7 @@ const ThemeProviderContext = React.createContext<
 >(undefined)
 
 function getSystemThemeId(isDark: boolean): ThemeId {
-  return isDark ? DEFAULT_THEME_ID : "slate-light"
+  return isDark ? DEFAULT_THEME_ID : "pacific"
 }
 
 function disableTransitionsTemporarily() {
