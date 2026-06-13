@@ -14,7 +14,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           '--rail-width': ORG_RAIL_WIDTH,
         } as React.CSSProperties
       }
-      className="[--sidebar-width:16rem] md:[&_[data-slot=sidebar-container]]:left-[var(--rail-width)]!"
+      className="h-svh overflow-hidden [--sidebar-width:16rem] md:[&_[data-slot=sidebar-container]]:left-[var(--rail-width)]!"
     >
       <OrgRail />
       <WorkspaceSidebar />
