@@ -43,7 +43,7 @@ export function OrgRail() {
       <Link
         to="/"
         aria-label={t('org.home')}
-        className="mb-3 flex size-10 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30 transition-colors ring-inset hover:bg-primary/25"
+        className="mb-3 flex size-10 items-center justify-center bg-primary/15 text-primary ring-1 ring-primary/30 transition-colors ring-inset hover:bg-primary/25"
       >
         <RiInboxLine className="size-5" />
       </Link>
@@ -53,7 +53,7 @@ export function OrgRail() {
       <div className="[scrollbar-none] mt-3 flex flex-1 flex-col items-center gap-2 overflow-y-auto px-2 pb-2 [&::-webkit-scrollbar]:hidden">
         {isLoading
           ? Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="size-10 rounded-xl" />
+              <Skeleton key={i} className="size-10 rounded-none" />
             ))
           : organizations?.map((org) => (
               <OrgRailItem
@@ -71,7 +71,7 @@ export function OrgRail() {
                 size="icon"
                 aria-label={t('org.create')}
                 onClick={() => setCreateOpen(true)}
-                className="size-10 rounded-xl border border-dashed border-sidebar-border text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
+                className="size-10 rounded-none border border-dashed border-sidebar-border text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
               >
                 <RiAddLine />
               </Button>
@@ -98,7 +98,7 @@ export function OrgRail() {
                     params={{ orgSlug: activeOrgSlug }}
                     aria-label={t('org.settings')}
                     className={cn(
-                      "flex size-10 items-center justify-center rounded-xl transition-colors",
+                      "flex size-10 items-center justify-center transition-colors",
                       isOnSettings
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -156,13 +156,15 @@ function OrgRailItem({
             />
             <Avatar
               className={cn(
-                "size-10 transition-[border-radius] duration-200",
-                isActive ? "rounded-md" : "rounded-xl group-hover:rounded-lg"
+                "size-10 rounded-none after:rounded-none ring-1 transition-colors duration-200",
+                isActive
+                  ? "ring-primary/40"
+                  : "ring-transparent group-hover:ring-primary/20"
               )}
             >
               <AvatarFallback
                 className={cn(
-                  "text-sm font-semibold tracking-tight uppercase transition-colors duration-200",
+                  "rounded-none text-sm font-semibold tracking-tight uppercase transition-colors duration-200",
                   isActive
                     ? "bg-primary/15 text-primary"
                     : "bg-sidebar-accent text-sidebar-accent-foreground group-hover:bg-primary/10 group-hover:text-primary"
