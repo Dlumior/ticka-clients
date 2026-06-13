@@ -72,7 +72,7 @@ function NoWorkspacesPlaceholder() {
 
         {/* Heading */}
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-semibold">No workspaces yet</h1>
+          <h1 className="font-heading text-2xl font-medium tracking-tight">No workspaces yet</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Create a workspace to start organizing your projects and team.
           </p>

@@ -1,4 +1,5 @@
-export type ThemeId = "ticka" | "pine" | "orchid" | "pacific";
+export type ThemeId = "ticka" | "pine" | "orchid" | "pacific"
+                   | "admiral" | "garnet" | "grove" | "ember";
 
 export interface ThemeDefinition {
   id: ThemeId;
@@ -12,6 +13,10 @@ export const THEMES: ThemeDefinition[] = [
   { id: "pine",    label: "Pine",    polarity: "dark",  cssClass: "theme-pine" },
   { id: "orchid",  label: "Orchid",  polarity: "light", cssClass: "theme-orchid" },
   { id: "pacific", label: "Pacific", polarity: "light", cssClass: "theme-pacific" },
+  { id: "admiral", label: "Admiral", polarity: "dark",  cssClass: "theme-admiral" },
+  { id: "garnet",  label: "Garnet",  polarity: "dark",  cssClass: "theme-garnet" },
+  { id: "grove",   label: "Grove",   polarity: "light", cssClass: "theme-grove" },
+  { id: "ember",   label: "Ember",   polarity: "dark",  cssClass: "theme-ember" },
 ];
 
 export const DEFAULT_THEME_ID: ThemeId = "ticka";

@@ -82,7 +82,7 @@ function NoOrganizationsPlaceholder() {
 
         {/* Heading */}
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-semibold">Welcome to Ticka</h1>
+          <h1 className="font-heading text-2xl font-medium tracking-tight">Welcome to Ticka</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Follow these two steps to get started.
           </p>

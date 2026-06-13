@@ -180,11 +180,6 @@ export function RegisterForm({
           0%, 100% { opacity: 0.12; transform: scale(1); }
           50% { opacity: 0.22; transform: scale(1.08); }
         }
-        @keyframes ticka-gradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
         @keyframes ticka-fadeup {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -192,7 +187,7 @@ export function RegisterForm({
         .ticka-card { animation: ticka-fadeup 0.45s cubic-bezier(0.22,1,0.36,1) both; }
       `}</style>
 
-      <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-4 py-8">
+      <div className="ledger-lines relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-4 py-8">
         {/* Ambient blobs */}
         <div
           className="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-primary blur-3xl"
@@ -242,18 +237,8 @@ export function RegisterForm({
                 <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-accent ring-2 ring-background" />
               </div>
 
-              <h1
-                className="text-2xl font-black tracking-[0.2em]"
-                style={{
-                  background:
-                    "linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-primary))",
-                  backgroundSize: "200% auto",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  animation: "ticka-gradient 4s linear infinite",
-                }}
-              >
-                TICKA
+              <h1 className="font-heading text-3xl font-medium tracking-tight italic">
+                Ticka<span className="text-primary">.</span>
               </h1>
 
               <p className="text-xs text-muted-foreground/70">

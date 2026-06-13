@@ -74,14 +74,9 @@ export function LoginForm() {
           0%, 100% { opacity: 0.2; }
           50%       { opacity: 0.35; }
         }
-        @keyframes ticka-gradient {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
       `}</style>
 
-      <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background p-6">
+      <div className="ledger-lines relative flex min-h-svh items-center justify-center overflow-hidden bg-background p-6">
         {/* ── Atmospheric glows ── */}
         <div
           className="absolute top-[-80px] left-[-80px] h-96 w-96 rounded-full bg-primary blur-3xl"
@@ -141,20 +136,10 @@ export function LoginForm() {
               </div>
 
               <div>
-                <h1
-                  className="text-center text-2xl font-bold tracking-wide"
-                  style={{
-                    background:
-                      "linear-gradient(90deg,var(--color-primary),var(--color-accent),var(--color-primary))",
-                    backgroundSize: "200% auto",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    animation: "ticka-gradient 4s linear infinite",
-                  }}
-                >
-                  TICKA
+                <h1 className="text-center font-heading text-3xl font-medium tracking-tight italic">
+                  Ticka<span className="text-primary">.</span>
                 </h1>
-                <p className="mt-0.5 text-center text-xs tracking-wider text-muted-foreground uppercase">
+                <p className="mt-1 text-center font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
                   Contabilidad Inteligente
                 </p>
               </div>
