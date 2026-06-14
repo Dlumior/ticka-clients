@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
 import { z } from 'zod'
 import { RiFileCopyLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
@@ -42,7 +41,6 @@ export function OrgSettingsInfo({ organization, perms }: OrgSettingsInfoProps) {
 
   const form = useForm({
     defaultValues: { name: organization.name, slug: organization.slug },
-    validatorAdapter: zodValidator(),
     validators: { onSubmit: zOrgInfoForm },
     onSubmit: async ({ value }) => {
       await updateOrg.mutateAsync(value)

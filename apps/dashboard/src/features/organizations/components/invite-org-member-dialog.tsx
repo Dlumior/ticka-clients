@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
 import { z } from 'zod'
 import { RiUserAddLine } from '@remixicon/react'
 import {
@@ -61,7 +60,6 @@ export function InviteOrgMemberDialog({
 
   const form = useForm({
     defaultValues: { email: '', role: 'member' as OrgRole },
-    validatorAdapter: zodValidator(),
     validators: { onSubmit: zInviteOrgMemberForm },
     onSubmit: async ({ value }) => {
       await invite.mutateAsync(value)

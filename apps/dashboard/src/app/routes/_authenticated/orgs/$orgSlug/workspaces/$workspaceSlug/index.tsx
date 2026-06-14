@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { WorkspaceMetrics } from '@/features/workspaces/components/workspace-metrics'
 import { WorkspaceOverviewCards } from '@/features/workspaces/components/workspace-overview-cards'
 
 export const Route = createFileRoute(
@@ -20,6 +21,11 @@ function WorkspaceOverview() {
       </div>
 
       <WorkspaceOverviewCards workspace={workspace} />
+
+      <WorkspaceMetrics
+        workspaceId={workspace.id}
+        inboxEmail={workspace.inbox_email}
+      />
     </div>
   )
 }

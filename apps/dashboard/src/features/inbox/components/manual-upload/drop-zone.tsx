@@ -3,7 +3,7 @@ import { RiUploadCloud2Line } from '@remixicon/react'
 
 interface DropZoneProps {
   isDragOver: boolean
-  inputRef: React.RefObject<HTMLInputElement>
+  inputRef: React.RefObject<HTMLInputElement | null>
   onDrop: (e: React.DragEvent) => void
   onDragOver: (e: React.DragEvent) => void
   onDragLeave: () => void

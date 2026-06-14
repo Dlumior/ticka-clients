@@ -10,7 +10,7 @@ type LoginOutput = z.infer<typeof zUserLoginOutput>
 
 export const currentUserQueryOptions = queryOptions({
   queryKey: ['auth', 'me'],
-  queryFn: ({ signal }) =>
+  queryFn: ({ signal }): Promise<UserMe | null> =>
     apiClient
       .get<UserMe>('/api/v1/identities/auth/me/', { signal })
       .then((r) => zUserMeOutput.parse(r.data)),

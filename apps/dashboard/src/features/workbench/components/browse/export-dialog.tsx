@@ -90,7 +90,7 @@ export function ExportDialog() {
           </p>
         ) : (
           <div className="flex flex-col gap-3">
-            <Select value={templateId} onValueChange={setTemplateId}>
+            <Select value={templateId} onValueChange={(v) => setTemplateId(v ?? '')}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={t('exportDialog.selectTemplate')}>
                   {(value: string) =>

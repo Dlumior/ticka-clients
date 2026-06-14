@@ -69,9 +69,10 @@ export function WorkbenchToolbar() {
       <Select
         value={filters.periodId}
         onValueChange={(value) => {
-          const period = filters.periods.find((p) => p.id === value)
+          const v = value ?? ''
+          const period = filters.periods.find((p) => p.id === v)
           filters.onPeriodChange(
-            value,
+            v,
             period
               ? { start: period.start_date, end: period.end_date }
               : undefined,
@@ -119,7 +120,7 @@ export function WorkbenchToolbar() {
         />
       </div>
 
-      <Select value={filters.status} onValueChange={filters.onStatusChange}>
+      <Select value={filters.status} onValueChange={(v) => filters.onStatusChange(v ?? '')}>
         <SelectTrigger size="sm" className="w-36">
           <SelectValue placeholder={t('toolbar.allEligible')}>
             {(value: string) =>

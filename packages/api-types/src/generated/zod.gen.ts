@@ -783,6 +783,40 @@ export const zWorkspaceMemberListOutput = z.object({
   joined_at: z.string().datetime(),
 });
 
+export const zInvoicesStats = z.object({
+  total: z.number().int(),
+  needs_attention: z.number().int(),
+  by_status: z.object({}),
+  by_type: z.object({}),
+  last_received_at: z.union([z.string().datetime(), z.null()]),
+});
+
+export const zTopSupplier = z.object({
+  name: z.string(),
+  ruc: z.string(),
+  invoice_count: z.number().int(),
+});
+
+export const zSuppliersStats = z.object({
+  total: z.number().int(),
+  top: z.array(zTopSupplier),
+});
+
+export const zIngestionStats = z.object({
+  emails_total: z.number().int(),
+  emails_by_status: z.object({}),
+  attachments_total: z.number().int(),
+  attachments_completed: z.number().int(),
+  duplicates: z.number().int(),
+  manual_uploads: z.number().int(),
+});
+
+export const zWorkspaceStatsOutput = z.object({
+  invoices: zInvoicesStats,
+  suppliers: zSuppliersStats,
+  ingestion: zIngestionStats,
+});
+
 export const zWorkspaceUpdateOutput = z.object({
   id: z.string().uuid(),
   organization_id: z.string().uuid(),
@@ -1519,6 +1553,17 @@ export const zV1WorkspacesInvoicesRetrieveData = z.object({
 });
 
 export const zV1WorkspacesInvoicesRetrieveResponse = zInvoiceDetailOutput;
+
+export const zV1WorkspacesStatsRetrieveData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.object({
+    workspace_id: z.string().uuid(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zV1WorkspacesStatsRetrieveResponse = zWorkspaceStatsOutput;
 
 export const zV1WorkspacesSuppliersListData = z.object({
   body: z.never().optional(),

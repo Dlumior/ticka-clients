@@ -33,7 +33,7 @@ export function InvoicesToolbar() {
         onChange={(e) => setLocalSearch(e.target.value)}
         className="h-8 w-64"
       />
-      <Select value={filters.statusFilter} onValueChange={filters.onStatusChange}>
+      <Select value={filters.statusFilter} onValueChange={(v) => filters.onStatusChange(v ?? '')}>
         <SelectTrigger size="sm" className="w-40">
           <SelectValue placeholder={t('toolbar.allStatuses')} />
         </SelectTrigger>
@@ -47,7 +47,7 @@ export function InvoicesToolbar() {
           ))}
         </SelectContent>
       </Select>
-      <Select value={filters.typeFilter} onValueChange={filters.onTypeChange}>
+      <Select value={filters.typeFilter} onValueChange={(v) => filters.onTypeChange(v ?? '')}>
         <SelectTrigger size="sm" className="w-44">
           <SelectValue placeholder={t('toolbar.allTypes')} />
         </SelectTrigger>

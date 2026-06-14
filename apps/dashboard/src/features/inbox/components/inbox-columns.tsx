@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next'
-import { createColumnHelper } from '@tanstack/react-table'
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { formatDatetimeInTz } from '@/lib/date'
 import type { InboundEmail } from '../api/inbox.api'
@@ -8,7 +8,8 @@ import { EMAIL_STATUS_VARIANT } from '../inbox.lib'
 const columnHelper = createColumnHelper<InboundEmail>()
 
 export function getInboxColumns(timezone: string, t: TFunction<'inbox'>) {
-  return [
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const columns: ColumnDef<InboundEmail, any>[] = [
     columnHelper.accessor('sender_email', {
       id: 'from',
       header: t('col.from'),
@@ -57,4 +58,6 @@ export function getInboxColumns(timezone: string, t: TFunction<'inbox'>) {
       ),
     }),
   ]
+
+  return columns
 }

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import {
@@ -19,7 +19,7 @@ function WorkbenchRoute() {
   const { t } = useTranslation('workbench')
   const { workspace, organizationDetail } = Route.useRouteContext()
   const { tab } = Route.useSearch()
-  const navigate = useNavigate()
+  const navigate = Route.useNavigate()
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">

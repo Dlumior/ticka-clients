@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
 import { useLogin } from "@/features/auth/api/auth.api"
 import { zUserLoginInputRequest } from "@repo/api-types"
 
@@ -53,7 +52,6 @@ export function LoginForm() {
   const login = useLogin()
   const form = useForm({
     defaultValues: { email: "", password: "" },
-    validatorAdapter: zodValidator(),
     validators: { onSubmit: zUserLoginInputRequest },
     onSubmit: async ({ value }) => {
       login.mutate(value)

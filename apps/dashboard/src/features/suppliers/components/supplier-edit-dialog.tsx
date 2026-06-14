@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -40,7 +39,6 @@ export function SupplierEditDialog({
       email: supplier.email ?? '',
       phone: supplier.phone ?? '',
     },
-    validatorAdapter: zodValidator(),
     validators: { onSubmit: supplierFormSchema },
     onSubmit: async ({ value }) => {
       await updateSupplier.mutateAsync(value)
