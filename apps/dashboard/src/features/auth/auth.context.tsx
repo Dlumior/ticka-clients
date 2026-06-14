@@ -26,27 +26,24 @@ function isAuthMeKey(key: ReadonlyArray<unknown>) {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient()
-  const [user, setUser] = React.useState<UserMe | null | undefined>(() =>
-    readUser(queryClient),
+
+  const subscribe = React.useCallback(
+    (onStoreChange: () => void) =>
+      // Read the user from the cache directly instead of via useQuery. A
+      // useQuery observer would be torn down during React StrictMode's
+      // double-mount cleanup, and that teardown cancels the in-flight /me
+      // request — rejecting the route guard's awaiter with a CancelledError.
+      // Subscribing at the cache layer reacts to login/logout/setQueryData
+      // without owning the query's lifecycle.
+      queryClient.getQueryCache().subscribe((event) => {
+        if (isAuthMeKey(event.query.queryKey)) onStoreChange()
+      }),
+    [queryClient],
   )
 
-  React.useEffect(() => {
-    // Catch any cache update that happened between initial render and the
-    // effect attaching its subscription.
-    setUser(readUser(queryClient))
-
-    // Read the user from the cache directly instead of via useQuery. A
-    // useQuery observer would be torn down during React StrictMode's
-    // double-mount cleanup, and that teardown cancels the in-flight /me
-    // request — rejecting the route guard's awaiter with a CancelledError.
-    // Subscribing at the cache layer reacts to login/logout/setQueryData
-    // without owning the query's lifecycle.
-    return queryClient.getQueryCache().subscribe((event) => {
-      if (isAuthMeKey(event.query.queryKey)) {
-        setUser(readUser(queryClient))
-      }
-    })
-  }, [queryClient])
+  const user = React.useSyncExternalStore(subscribe, () =>
+    readUser(queryClient),
+  )
 
   const value = React.useMemo<AuthContext>(
     () => ({ isAuthenticated: !!user, user }),

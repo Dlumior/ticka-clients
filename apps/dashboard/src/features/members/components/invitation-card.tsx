@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { VariantProps } from 'class-variance-authority'
 import type { OrgInvitation } from '../api/members.api'
 import { useTranslation } from 'react-i18next'
@@ -32,9 +33,10 @@ export function InvitationCard({ invitation, workspaceId, orgId, canResend }: In
   const status = (invitation.status as Status) ?? 'pending'
   const canShowResend = canResend && (status === 'pending' || status === 'expired')
 
+  const [now] = useState(() => Date.now())
   let expiryLabel = ''
   if (status !== 'accepted' && status !== 'declined') {
-    const diffMs = new Date(invitation.expires_at).getTime() - Date.now()
+    const diffMs = new Date(invitation.expires_at).getTime() - now
     const absDays = Math.floor(Math.abs(diffMs) / 86_400_000)
     const absHours = Math.floor(Math.abs(diffMs) / 3_600_000)
     if (diffMs > 0) {
