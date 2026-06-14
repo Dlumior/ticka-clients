@@ -76,7 +76,7 @@ const states = ['Recibido', 'Procesado', 'Revisión', 'Aprobado', 'Exportado']
         features.map((feature) => (
           <article
             class:list={[
-              'group relative flex flex-col justify-between bg-ink-950 p-7 transition-colors duration-500 hover:bg-ink-900 sm:p-9',
+              'group relative flex min-w-0 flex-col justify-between bg-ink-950 p-7 transition-colors duration-500 hover:bg-ink-900 sm:p-9',
               feature.span,
             ]}
             data-anim="feature-cell"
@@ -86,7 +86,7 @@ const states = ['Recibido', 'Procesado', 'Revisión', 'Aprobado', 'Exportado']
                 <span class="font-mono text-xs tracking-[0.2em] text-paper-mute">
                   {feature.num}
                 </span>
-                <span class="h-px w-8 bg-moss/30 transition-all duration-500 group-hover:w-14 group-hover:bg-lime/60" />
+                <span class="hidden h-px w-8 bg-moss/30 duration-500 transition-[width,background-color] group-hover:w-14 group-hover:bg-lime/60 sm:block" />
               </div>
               <h3 class="font-display text-2xl leading-snug font-medium text-paper">
                 {feature.title}
