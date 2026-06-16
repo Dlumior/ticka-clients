@@ -3,6 +3,8 @@ import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate, formatDatetimeInTz } from '@/lib/date'
 import { useInvoicesContext } from '../../context/invoices.context'
 import type { InvoiceDetail } from '../../api/invoices.api'
+import { SUNAT_ADMIN_TYPES } from '../../invoices.lib'
+import { AdminDocCard } from './admin-doc-card'
 import { AmountsCard } from './amounts-card'
 import { Field } from './field'
 import { LineItemsTable } from './line-items-table'
@@ -83,29 +85,45 @@ export function DetailBody({ detail }: DetailBodyProps) {
         </div>
       )}
 
-      {/* Amounts + Supplier */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-3">
-          <SectionLabel>{t('detail.sectionAmounts')}</SectionLabel>
-          {header ? (
-            <AmountsCard detail={detail} />
-          ) : (
-            <div className="flex items-center justify-center rounded-lg border border-dashed bg-muted/10 py-8">
-              <p className="text-sm text-muted-foreground">{t('detail.notParsed')}</p>
+      {SUNAT_ADMIN_TYPES.has(detail.invoice_type ?? '') ? (
+        /* Admin document — show type-specific content and the issuer card */
+        <>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-3">
+              <SectionLabel>{t('detail.sectionAdminDoc')}</SectionLabel>
+              <AdminDocCard detail={detail} />
             </div>
-          )}
-        </div>
-        <div className="flex flex-col gap-3">
-          <SectionLabel>{t('detail.sectionSupplier')}</SectionLabel>
-          <SupplierCard detail={detail} />
-        </div>
-      </div>
-
-      {/* Line items */}
-      <div className="flex flex-col gap-3">
-        <SectionLabel>{t('detail.sectionLineItems')}</SectionLabel>
-        <LineItemsTable detail={detail} />
-      </div>
+            <div className="flex flex-col gap-3">
+              <SectionLabel>{t('detail.sectionSupplier')}</SectionLabel>
+              <SupplierCard detail={detail} />
+            </div>
+          </div>
+        </>
+      ) : (
+        /* Regular invoice — amounts, supplier, line items */
+        <>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-3">
+              <SectionLabel>{t('detail.sectionAmounts')}</SectionLabel>
+              {header ? (
+                <AmountsCard detail={detail} />
+              ) : (
+                <div className="flex items-center justify-center rounded-lg border border-dashed bg-muted/10 py-8">
+                  <p className="text-sm text-muted-foreground">{t('detail.notParsed')}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-3">
+              <SectionLabel>{t('detail.sectionSupplier')}</SectionLabel>
+              <SupplierCard detail={detail} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <SectionLabel>{t('detail.sectionLineItems')}</SectionLabel>
+            <LineItemsTable detail={detail} />
+          </div>
+        </>
+      )}
     </>
   )
 }

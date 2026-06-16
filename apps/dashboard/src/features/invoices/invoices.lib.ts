@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { Badge } from '@/components/ui/badge'
+import i18next from 'i18next'
 import { getActiveLocale } from '@/lib/locale-ref'
 
 type BadgeVariant = NonNullable<ComponentProps<typeof Badge>['variant']>
@@ -52,12 +53,21 @@ export const INVOICE_STATUS_LABEL: Record<string, string> = {
   failed: 'Failed',
 }
 
-export const INVOICE_TYPE_LABEL: Record<string, string> = {
-  factura: 'Factura',
-  boleta: 'Boleta',
-  nota_credito: 'Nota de Crédito',
-  nota_debito: 'Nota de Débito',
+export const INVOICE_TYPE_VARIANT: Record<string, BadgeVariant> = {
+  factura: 'default',
+  boleta: 'default',
+  nota_credito: 'outline',
+  nota_debito: 'outline',
+  comunicacion_baja: 'secondary',
+  resumen_diario: 'secondary',
+  guia_remitente: 'secondary',
 }
+
+export const SUNAT_ADMIN_TYPES = new Set([
+  'comunicacion_baja',
+  'resumen_diario',
+  'guia_remitente',
+])
 
 export function statusLabel(status: string | null | undefined): string {
   if (!status) return '—'
@@ -71,5 +81,10 @@ export function statusVariant(status: string | null | undefined): BadgeVariant {
 
 export function typeLabel(type: string | null | undefined): string {
   if (!type) return '—'
-  return INVOICE_TYPE_LABEL[type] ?? type
+  return i18next.t(`type.${type}`, { ns: 'invoices', defaultValue: type })
+}
+
+export function typeVariant(type: string | null | undefined): BadgeVariant {
+  if (!type) return 'outline'
+  return INVOICE_TYPE_VARIANT[type] ?? 'outline'
 }

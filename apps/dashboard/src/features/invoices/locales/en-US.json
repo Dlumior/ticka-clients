@@ -12,7 +12,10 @@
     "factura": "Factura",
     "boleta": "Boleta",
     "nota_credito": "Nota de Crédito",
-    "nota_debito": "Nota de Débito"
+    "nota_debito": "Nota de Débito",
+    "comunicacion_baja": "Voiding Notice",
+    "resumen_diario": "Daily Summary",
+    "guia_remitente": "Remittance Guide"
   },
   "col": {
     "invoice": "Invoice",
@@ -69,7 +72,30 @@
     "sectionReference": "Reference",
     "fieldReferencedInvoice": "Referenced invoice",
     "fieldDiscrepancyCode": "Reason code",
-    "fieldDiscrepancyDescription": "Reason"
+    "fieldDiscrepancyDescription": "Reason",
+    "sectionAdminDoc": "Document",
+    "adminDocNotice": "Administrative SUNAT document — no commercial amounts.",
+    "fieldReferenceDate": "Reference date",
+    "voidedLinesTitle": "Voided documents",
+    "colVoidedType": "Type",
+    "colVoidedSeries": "Series",
+    "colVoidedNumber": "Number",
+    "colVoidedReason": "Reason",
+    "summaryLinesTitle": "Summarised documents",
+    "colSummaryDoc": "Document",
+    "colSummaryType": "Type",
+    "colSummaryStatus": "Status",
+    "colSummaryTotal": "Total",
+    "despatchLinesTitle": "Items",
+    "fieldTransportMode": "Transport mode",
+    "fieldGrossWeight": "Gross weight",
+    "fieldCarrier": "Carrier",
+    "fieldDeliveryAddress": "Delivery address",
+    "fieldOriginAddress": "Origin address",
+    "fieldRelatedInvoice": "Related invoice",
+    "fieldTransitDate": "Transit date",
+    "colDespatchQty": "Qty",
+    "colDespatchDesc": "Description"
   },
   "operationType": {
     "gravada": "Gravada",

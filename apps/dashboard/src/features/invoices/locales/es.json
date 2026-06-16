@@ -12,7 +12,10 @@
     "factura": "Factura",
     "boleta": "Boleta",
     "nota_credito": "Nota de Crédito",
-    "nota_debito": "Nota de Débito"
+    "nota_debito": "Nota de Débito",
+    "comunicacion_baja": "Comunicación de Baja",
+    "resumen_diario": "Resumen Diario",
+    "guia_remitente": "Guía de Remisión"
   },
   "col": {
     "invoice": "Comprobante",
@@ -61,7 +64,30 @@
     "sectionReference": "Referencia",
     "fieldReferencedInvoice": "Comprobante referenciado",
     "fieldDiscrepancyCode": "Código de motivo",
-    "fieldDiscrepancyDescription": "Motivo"
+    "fieldDiscrepancyDescription": "Motivo",
+    "sectionAdminDoc": "Documento",
+    "adminDocNotice": "Documento administrativo SUNAT — sin importes comerciales.",
+    "fieldReferenceDate": "Fecha de referencia",
+    "voidedLinesTitle": "Documentos anulados",
+    "colVoidedType": "Tipo",
+    "colVoidedSeries": "Serie",
+    "colVoidedNumber": "Número",
+    "colVoidedReason": "Motivo",
+    "summaryLinesTitle": "Documentos resumidos",
+    "colSummaryDoc": "Documento",
+    "colSummaryType": "Tipo",
+    "colSummaryStatus": "Estado",
+    "colSummaryTotal": "Total",
+    "despatchLinesTitle": "Productos",
+    "fieldTransportMode": "Modalidad de traslado",
+    "fieldGrossWeight": "Peso bruto",
+    "fieldCarrier": "Transportista",
+    "fieldDeliveryAddress": "Dirección de entrega",
+    "fieldOriginAddress": "Dirección de origen",
+    "fieldRelatedInvoice": "Comprobante relacionado",
+    "fieldTransitDate": "Fecha de traslado",
+    "colDespatchQty": "Cant.",
+    "colDespatchDesc": "Descripción"
   },
   "lineItems": {
     "noItems": "Sin líneas de detalle.",
