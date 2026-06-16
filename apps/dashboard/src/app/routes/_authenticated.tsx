@@ -2,6 +2,7 @@ import { createFileRoute, isRedirect, Outlet, redirect } from '@tanstack/react-r
 import axios from 'axios'
 import { currentUserQueryOptions } from '@/features/auth/api/auth.api'
 import { organizationsQueryOptions } from '@/features/organizations/api/organizations.api'
+import { EmailVerificationBanner } from '@/features/auth/components/email-verification-banner'
 import { AppShell } from '@/components/layout/app-shell'
 
 export const Route = createFileRoute('/_authenticated')({
@@ -31,6 +32,7 @@ export const Route = createFileRoute('/_authenticated')({
 function AuthenticatedLayout() {
   return (
     <AppShell>
+      <EmailVerificationBanner />
       <Outlet />
     </AppShell>
   )

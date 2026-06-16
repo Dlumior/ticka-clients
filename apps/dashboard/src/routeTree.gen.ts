@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as VerifyEmailRouteImport } from './app/routes/verify-email'
 import { Route as RegisterRouteImport } from './app/routes/register'
 import { Route as LoginRouteImport } from './app/routes/login'
 import { Route as AuthenticatedRouteImport } from './app/routes/_authenticated'
@@ -26,6 +27,11 @@ import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRouteImpor
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/index'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersSupplierIdRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/$supplierId'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
   '/orgs/$orgSlug/settings': typeof AuthenticatedOrgsOrgSlugSettingsRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/': typeof AuthenticatedIndexRoute
   '/orgs/$orgSlug/settings': typeof AuthenticatedOrgsOrgSlugSettingsRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugRouteWithChildren
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/verify-email'
     | '/invitations/accept'
     | '/orgs/$orgSlug'
     | '/orgs/$orgSlug/settings'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/register'
+    | '/verify-email'
     | '/invitations/accept'
     | '/'
     | '/orgs/$orgSlug/settings'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/register'
+    | '/verify-email'
     | '/invitations/accept'
     | '/_authenticated/'
     | '/_authenticated/orgs/$orgSlug'
@@ -231,11 +243,19 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
   InvitationsAcceptRoute: typeof InvitationsAcceptRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -422,6 +442,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
   InvitationsAcceptRoute: InvitationsAcceptRoute,
 }
 export const routeTree = rootRouteImport

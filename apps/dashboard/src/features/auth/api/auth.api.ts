@@ -55,6 +55,28 @@ export function useAcceptInvitation() {
   })
 }
 
+export function useVerifyEmail() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (token: string) =>
+      apiClient
+        .post('/api/v1/identities/auth/verify-email/', { token })
+        .then((r) => r.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: currentUserQueryOptions.queryKey })
+    },
+  })
+}
+
+export function useResendVerification() {
+  return useMutation({
+    mutationFn: () =>
+      apiClient
+        .post('/api/v1/identities/auth/resend-verification/')
+        .then((r) => r.data),
+  })
+}
+
 export function useLogout() {
   const queryClient = useQueryClient()
   const router = useRouter()

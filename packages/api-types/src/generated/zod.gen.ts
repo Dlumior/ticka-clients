@@ -290,12 +290,18 @@ export const zInvoiceDetailOutputStatusEnum = z.enum([
  * * `boleta` - Boleta
  * * `nota_credito` - Nota de Crédito
  * * `nota_debito` - Nota de Débito
+ * * `comunicacion_baja` - Comunicación de Baja
+ * * `resumen_diario` - Resumen Diario
+ * * `guia_remitente` - Guía de Remisión
  */
 export const zInvoiceTypeEnum = z.enum([
   "factura",
   "boleta",
   "nota_credito",
   "nota_debito",
+  "comunicacion_baja",
+  "resumen_diario",
+  "guia_remitente",
 ]);
 
 /**
@@ -366,6 +372,7 @@ export const zInvoiceHeaderOutput = z.object({
   billing_reference_number: z.string().max(30).optional(),
   discrepancy_code: z.string().max(10).optional(),
   discrepancy_description: z.string().max(255).optional(),
+  raw_data: z.unknown().optional(),
 });
 
 export const zInvoiceLineItemOutput = z.object({
@@ -594,6 +601,10 @@ export const zUser = z.object({
   first_name: z.string().max(150).optional(),
   last_name: z.string().max(150).optional(),
   full_name: z.string().readonly(),
+  email_verified: z.boolean().readonly(),
+  email_verified_at: z
+    .union([z.string().datetime().readonly(), z.null()])
+    .readonly(),
   date_joined: z.string().datetime().readonly(),
 });
 
@@ -735,6 +746,10 @@ export const zUserMeOutput = z.object({
   first_name: z.string().max(150).optional(),
   last_name: z.string().max(150).optional(),
   full_name: z.string().readonly(),
+  email_verified: z.boolean().readonly(),
+  email_verified_at: z
+    .union([z.string().datetime().readonly(), z.null()])
+    .readonly(),
   date_joined: z.string().datetime().readonly(),
 });
 
@@ -748,6 +763,10 @@ export const zUserRegisterInputRequest = z.object({
 
 export const zUserRegisterOutput = z.object({
   user: zUser,
+});
+
+export const zUserVerifyEmailInputRequest = z.object({
+  token: z.string().uuid(),
 });
 
 export const zWorkspaceCreateInputRequest = z.object({
@@ -921,6 +940,25 @@ export const zV1IdentitiesAuthRegisterCreateData = z.object({
 });
 
 export const zV1IdentitiesAuthRegisterCreateResponse = zUserRegisterOutput;
+
+export const zV1IdentitiesAuthResendVerificationCreateData = z.object({
+  body: z.never().optional(),
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+/**
+ * No response body
+ */
+export const zV1IdentitiesAuthResendVerificationCreateResponse = z.void();
+
+export const zV1IdentitiesAuthVerifyEmailCreateData = z.object({
+  body: zUserVerifyEmailInputRequest,
+  headers: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
 
 export const zV1IdentitiesInvitationsListData = z.object({
   body: z.never().optional(),
