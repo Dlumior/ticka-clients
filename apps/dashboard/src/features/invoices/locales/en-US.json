@@ -65,7 +65,11 @@
     "fieldDetractionAmount": "Amount",
     "fieldDetractionAccount": "BN account",
     "fieldPerceptionAmount": "Perception",
-    "fieldPrepaidAmount": "Advance deducted"
+    "fieldPrepaidAmount": "Advance deducted",
+    "sectionReference": "Reference",
+    "fieldReferencedInvoice": "Referenced invoice",
+    "fieldDiscrepancyCode": "Reason code",
+    "fieldDiscrepancyDescription": "Reason"
   },
   "operationType": {
     "gravada": "Gravada",

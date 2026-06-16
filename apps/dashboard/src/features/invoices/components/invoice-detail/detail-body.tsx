@@ -61,6 +61,28 @@ export function DetailBody({ detail }: DetailBodyProps) {
         )}
       </div>
 
+      {/* Reference — nota de crédito / débito only */}
+      {(detail.invoice_type === 'nota_credito' ||
+        detail.invoice_type === 'nota_debito') && (
+        <div className="flex flex-col gap-3">
+          <SectionLabel>{t('detail.sectionReference')}</SectionLabel>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <Field
+              label={t('detail.fieldReferencedInvoice')}
+              value={header?.billing_reference_number}
+            />
+            <Field
+              label={t('detail.fieldDiscrepancyCode')}
+              value={header?.discrepancy_code}
+            />
+            <Field
+              label={t('detail.fieldDiscrepancyDescription')}
+              value={header?.discrepancy_description}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Amounts + Supplier */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-3">

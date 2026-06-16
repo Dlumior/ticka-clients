@@ -363,6 +363,9 @@ export const zInvoiceHeaderOutput = z.object({
   prepaid_amount: z
     .union([z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/), z.null()])
     .optional(),
+  billing_reference_number: z.string().max(30).optional(),
+  discrepancy_code: z.string().max(10).optional(),
+  discrepancy_description: z.string().max(255).optional(),
 });
 
 export const zInvoiceLineItemOutput = z.object({

@@ -57,7 +57,11 @@
     "fieldRuc": "RUC",
     "fieldPhone": "Teléfono",
     "fieldEmail": "Email",
-    "fieldAddress": "Dirección"
+    "fieldAddress": "Dirección",
+    "sectionReference": "Referencia",
+    "fieldReferencedInvoice": "Comprobante referenciado",
+    "fieldDiscrepancyCode": "Código de motivo",
+    "fieldDiscrepancyDescription": "Motivo"
   },
   "lineItems": {
     "noItems": "Sin líneas de detalle.",
