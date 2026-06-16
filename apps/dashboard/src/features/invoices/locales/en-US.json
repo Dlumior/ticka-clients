@@ -53,11 +53,28 @@
     "fieldUploadedFile": "Uploaded file",
     "fieldSubtotal": "Subtotal",
     "fieldIgv": "IGV",
+    "fieldIcbper": "ICBPER",
     "fieldTotal": "Total",
     "fieldRuc": "RUC",
     "fieldPhone": "Phone",
     "fieldEmail": "Email",
-    "fieldAddress": "Address"
+    "fieldAddress": "Address",
+    "sectionDetraction": "Detraction",
+    "fieldDetractionCode": "Service code",
+    "fieldDetractionPercent": "Rate",
+    "fieldDetractionAmount": "Amount",
+    "fieldDetractionAccount": "BN account",
+    "fieldPerceptionAmount": "Perception",
+    "fieldPrepaidAmount": "Advance deducted"
+  },
+  "operationType": {
+    "gravada": "Gravada",
+    "exonerada": "Exonerada",
+    "gratuita": "Gratuita",
+    "icbper": "ICBPER",
+    "detraccion": "Detracción",
+    "percepcion": "Percepción",
+    "anticipo": "Anticipo"
   },
   "lineItems": {
     "noItems": "No line items.",

@@ -304,6 +304,25 @@ export const zInvoiceTypeEnum = z.enum([
  */
 export const zSourceTypeEnum = z.enum(["xml", "pdf"]);
 
+/**
+ * * `gravada` - Gravada
+ * * `exonerada` - Exonerada
+ * * `gratuita` - Gratuita
+ * * `icbper` - ICBPER
+ * * `detraccion` - Detracción
+ * * `percepcion` - Percepción
+ * * `anticipo` - Anticipo
+ */
+export const zOperationTypeEnum = z.enum([
+  "gravada",
+  "exonerada",
+  "gratuita",
+  "icbper",
+  "detraccion",
+  "percepcion",
+  "anticipo",
+]);
+
 export const zInvoiceSupplierOutput = z.object({
   id: z.string().uuid().readonly(),
   ruc: z.string().max(11),
@@ -327,6 +346,23 @@ export const zInvoiceHeaderOutput = z.object({
   subtotal: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
   igv_amount: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
   total: z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/),
+  icbper_amount: z
+    .union([z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/), z.null()])
+    .optional(),
+  detraction_service_code: z.string().max(10).optional(),
+  detraction_percent: z
+    .union([z.string().regex(/^-?\d{0,3}(?:\.\d{0,2})?$/), z.null()])
+    .optional(),
+  detraction_amount: z
+    .union([z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/), z.null()])
+    .optional(),
+  detraction_account: z.string().max(30).optional(),
+  perception_amount: z
+    .union([z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/), z.null()])
+    .optional(),
+  prepaid_amount: z
+    .union([z.string().regex(/^-?\d{0,12}(?:\.\d{0,2})?$/), z.null()])
+    .optional(),
 });
 
 export const zInvoiceLineItemOutput = z.object({
@@ -364,6 +400,9 @@ export const zInvoiceDetailOutput = z.object({
   inbound_email_id: z
     .union([z.string().uuid().readonly(), z.null()])
     .readonly(),
+  operation_type: z
+    .union([zOperationTypeEnum, zBlankEnum, zNullEnum, z.null()])
+    .optional(),
   sender_email: z.string().email().max(254).optional(),
   subject: z.string().optional(),
   received_at: z.union([z.string().datetime(), z.null()]).optional(),

@@ -23,6 +23,7 @@ export function DetailHeader({ invoice, detail, invoiceNumber }: DetailHeaderPro
 
   const status = detail?.status ?? invoice?.status
   const invoiceType = detail?.invoice_type ?? invoice?.invoice_type
+  const operationType = detail?.operation_type
 
   return (
     <div className="shrink-0 border-b bg-muted/20">
@@ -49,6 +50,12 @@ export function DetailHeader({ invoice, detail, invoiceNumber }: DetailHeaderPro
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {invoiceType ? t(`type.${invoiceType}` as any, { defaultValue: invoiceType }) : '—'}
             </Badge>
+            {operationType && operationType !== 'gravada' && (
+              <Badge variant="secondary">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {t(`operationType.${operationType}` as any, { defaultValue: operationType })}
+              </Badge>
+            )}
           </div>
           {invoice && canManage && (
             <Button
