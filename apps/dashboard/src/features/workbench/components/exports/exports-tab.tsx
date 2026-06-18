@@ -54,7 +54,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
               <th className="px-3 py-2 font-medium">{t('exports.colRange')}</th>
               <th className="px-3 py-2 font-medium">{t('exports.colStatus')}</th>
               <th className="px-3 py-2 font-medium text-right">{t('exports.colRows')}</th>
-              <th className="px-3 py-2 font-medium text-right">{t('exports.colInvoices')}</th>
+              <th className="px-3 py-2 font-medium text-right">{t('exports.colBillingDocuments')}</th>
               <th className="px-3 py-2 font-medium text-right">{t('exports.colSize')}</th>
               <th className="px-3 py-2 font-medium">{t('exports.colCreated')}</th>
               <th className="px-3 py-2 font-medium" />
@@ -98,7 +98,7 @@ export function ExportsTab({ workspaceId, timezone }: ExportsTabProps) {
                     {row.row_count}
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">
-                    {row.invoice_count}
+                    {row.billing_document_count}
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">
                     {formatBytes(row.file_size_bytes)}

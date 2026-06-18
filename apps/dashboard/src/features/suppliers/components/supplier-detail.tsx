@@ -11,7 +11,7 @@ import {
   useOrgPermissions,
   useWorkspacePermissions,
 } from '@/features/permissions'
-import { InvoicesTable } from '@/features/invoices/components/invoices-table'
+import { BillingDocumentsTable } from '@/features/billing-documents/components/billing-documents-table'
 import { useSupplierDetail } from '../api/suppliers.api'
 import type { SupplierDetail as SupplierDetailData } from '../api/suppliers.api'
 import { SupplierEditDialog } from './supplier-edit-dialog'
@@ -75,7 +75,7 @@ function InfoCard({
         <Field label={t('detail.fieldEmail')} value={supplier.email} />
         <Field label={t('detail.fieldPhone')} value={supplier.phone} />
         <Field label={t('detail.fieldAddress')} value={supplier.address} />
-        <Field label={t('detail.fieldInvoices')} value={supplier.invoice_count} mono />
+        <Field label={t('detail.fieldBillingDocuments')} value={supplier.billing_document_count} mono />
       </div>
     </div>
   )
@@ -126,8 +126,8 @@ export function SupplierDetail({
       />
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-medium text-muted-foreground">{t('detail.sectionInvoices')}</h3>
-        <InvoicesTable
+        <h3 className="text-sm font-medium text-muted-foreground">{t('detail.sectionBillingDocuments')}</h3>
+        <BillingDocumentsTable
           workspaceId={workspaceId}
           supplierId={supplierId}
           timezone={timezone}

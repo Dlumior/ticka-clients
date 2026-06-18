@@ -22,8 +22,8 @@ import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteImport } f
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/index'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/workbench'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members'
-import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
+import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersIndexRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/index'
 import { Route as AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersSupplierIdRouteImport } from './app/routes/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/$supplierId'
 
@@ -98,18 +98,21 @@ const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute =
     path: '/members',
     getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
   } as any)
-const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute =
-  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRouteImport.update({
-    id: '/invoices',
-    path: '/invoices',
-    getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
-  } as any)
 const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute =
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRouteImport.update({
     id: '/inbox',
     path: '/inbox',
     getParentRoute: () => AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
   } as any)
+const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute =
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRouteImport.update(
+    {
+      id: '/billing-documents',
+      path: '/billing-documents',
+      getParentRoute: () =>
+        AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute,
+    } as any,
+  )
 const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersIndexRoute =
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugSuppliersIndexRouteImport.update(
     {
@@ -139,8 +142,8 @@ export interface FileRoutesByFullPath {
   '/orgs/$orgSlug/settings': typeof AuthenticatedOrgsOrgSlugSettingsRoute
   '/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute
-  '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/workbench': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
@@ -155,8 +158,8 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/orgs/$orgSlug/settings': typeof AuthenticatedOrgsOrgSlugSettingsRoute
   '/orgs/$orgSlug': typeof AuthenticatedOrgsOrgSlugIndexRoute
+  '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute
-  '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug/workbench': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute
   '/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
@@ -175,8 +178,8 @@ export interface FileRoutesById {
   '/_authenticated/orgs/$orgSlug/settings': typeof AuthenticatedOrgsOrgSlugSettingsRoute
   '/_authenticated/orgs/$orgSlug/': typeof AuthenticatedOrgsOrgSlugIndexRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteWithChildren
+  '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/inbox': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute
-  '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/invoices': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/workbench': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute
   '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/': typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
@@ -195,8 +198,8 @@ export interface FileRouteTypes {
     | '/orgs/$orgSlug/settings'
     | '/orgs/$orgSlug/'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
-    | '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/workbench'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/'
@@ -211,8 +214,8 @@ export interface FileRouteTypes {
     | '/'
     | '/orgs/$orgSlug/settings'
     | '/orgs/$orgSlug'
+    | '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
-    | '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug/workbench'
     | '/orgs/$orgSlug/workspaces/$workspaceSlug'
@@ -230,8 +233,8 @@ export interface FileRouteTypes {
     | '/_authenticated/orgs/$orgSlug/settings'
     | '/_authenticated/orgs/$orgSlug/'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug'
+    | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
-    | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/members'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/workbench'
     | '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/'
@@ -340,18 +343,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRouteImport
       parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
     }
-    '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/invoices': {
-      id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
-      path: '/invoices'
-      fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices'
-      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRouteImport
-      parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
-    }
     '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/inbox': {
       id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
       path: '/inbox'
       fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug/inbox'
       preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRouteImport
+      parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
+    }
+    '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents': {
+      id: '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
+      path: '/billing-documents'
+      fullPath: '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents'
+      preLoaderRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRouteImport
       parentRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRoute
     }
     '/_authenticated/orgs/$orgSlug/workspaces/$workspaceSlug/suppliers/': {
@@ -372,8 +375,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren {
+  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute
-  AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute
   AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute: typeof AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugIndexRoute
@@ -383,10 +386,10 @@ interface AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren {
 
 const AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren: AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugRouteChildren =
   {
+    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute:
+      AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugBillingDocumentsRoute,
     AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute:
       AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInboxRoute,
-    AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute:
-      AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugInvoicesRoute,
     AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute:
       AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugMembersRoute,
     AuthenticatedOrgsOrgSlugWorkspacesWorkspaceSlugWorkbenchRoute:

@@ -23,8 +23,8 @@
   },
   "col": {
     "select": "Seleccionar",
-    "selectInvoice": "Seleccionar comprobante",
-    "invoice": "Comprobante",
+    "selectDocument": "Seleccionar comprobante",
+    "document": "Comprobante",
     "supplier": "Proveedor",
     "issueDate": "Fecha de emisión",
     "total": "Total",
@@ -42,15 +42,15 @@
   },
   "selection": {
     "allMatchingSelected": "Todos los {{count}} comprobantes coincidentes seleccionados",
-    "invoiceCount_one": "{{count}} comprobante",
-    "invoiceCount_other": "{{count}} comprobantes",
+    "billingDocumentCount_one": "{{count}} comprobante",
+    "billingDocumentCount_other": "{{count}} comprobantes",
     "lineItemCount_one": "{{count}} línea de detalle",
     "lineItemCount_other": "{{count}} líneas de detalle",
     "selected": "{{summary}} seleccionado(s)",
     "clear": "Limpiar",
     "export": "Exportar…"
   },
-  "invoiceLines": {
+  "billingDocumentLines": {
     "title": "Líneas de detalle",
     "description": "Selecciona líneas individuales para exportar. Las líneas seleccionadas aquí se agregan a tu exportación junto a los comprobantes completos marcados.",
     "empty": "Este comprobante no tiene líneas de detalle.",
@@ -64,7 +64,7 @@
     "noTemplatesYet": "Aún no hay plantillas. Crea una en la pestaña Plantillas primero.",
     "selectTemplate": "Selecciona una plantilla",
     "lineGrainHint": "Esta plantilla incluye campos de líneas → una fila por línea de detalle.",
-    "invoiceGrainHint": "Una fila por comprobante.",
+    "billingDocumentGrainHint": "Una fila por comprobante.",
     "generateCsv": "Generar CSV"
   },
   "templates": {
@@ -98,7 +98,7 @@
     "colRange": "Rango",
     "colStatus": "Estado",
     "colRows": "Filas",
-    "colInvoices": "Comprobantes",
+    "colBillingDocuments": "Comprobantes",
     "colSize": "Tamaño",
     "colCreated": "Creado",
     "noExports": "Aún no hay exportaciones.",

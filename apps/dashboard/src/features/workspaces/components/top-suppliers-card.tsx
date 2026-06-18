@@ -19,7 +19,7 @@ interface TopSuppliersCardProps {
 export function TopSuppliersCard({ stats, className }: TopSuppliersCardProps) {
   const { t } = useTranslation('workspaces')
   const top = stats.suppliers.top
-  const max = Math.max(...top.map((s) => s.invoice_count), 1)
+  const max = Math.max(...top.map((s) => s.billing_document_count), 1)
 
   return (
     <Card className={cn('flex flex-col', className)}>
@@ -60,14 +60,14 @@ export function TopSuppliersCard({ stats, className }: TopSuppliersCardProps) {
                     </span>
                   </span>
                   <span className="font-mono text-sm tabular-nums">
-                    {supplier.invoice_count.toLocaleString()}
+                    {supplier.billing_document_count.toLocaleString()}
                   </span>
                 </div>
                 <div className="h-1.5 w-full bg-muted">
                   <div
                     className="h-full bg-primary"
                     style={{
-                      width: `${(supplier.invoice_count / max) * 100}%`,
+                      width: `${(supplier.billing_document_count / max) * 100}%`,
                     }}
                   />
                 </div>

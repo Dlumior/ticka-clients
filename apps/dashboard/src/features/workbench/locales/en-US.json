@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Workbench",
-    "subtitle": "Browse approved invoices, pick what to export, and generate CSV files from your templates."
+    "subtitle": "Browse approved billing documents, pick what to export, and generate CSV files from your templates."
   },
   "tabs": {
     "workbench": "Workbench",
@@ -23,15 +23,15 @@
   },
   "col": {
     "select": "Select",
-    "selectInvoice": "Select invoice",
-    "invoice": "Invoice",
+    "selectDocument": "Select document",
+    "document": "Document",
     "supplier": "Supplier",
     "issueDate": "Issue date",
     "total": "Total",
     "status": "Status"
   },
   "table": {
-    "noResults": "No approved invoices match these filters.",
+    "noResults": "No approved billing documents match these filters.",
     "clickToPickLines": "Click to pick individual line items"
   },
   "pagination": {
@@ -41,19 +41,19 @@
     "next": "Next"
   },
   "selection": {
-    "allMatchingSelected": "All {{count}} matching invoices selected",
-    "invoiceCount_one": "{{count}} invoice",
-    "invoiceCount_other": "{{count}} invoices",
+    "allMatchingSelected": "All {{count}} matching documents selected",
+    "billingDocumentCount_one": "{{count}} document",
+    "billingDocumentCount_other": "{{count}} documents",
     "lineItemCount_one": "{{count}} line item",
     "lineItemCount_other": "{{count}} line items",
     "selected": "{{summary}} selected",
     "clear": "Clear",
     "export": "Export…"
   },
-  "invoiceLines": {
-    "title": "Invoice line items",
-    "description": "Pick individual line items to export. Selecting line items here adds them to your export alongside any whole invoices you ticked.",
-    "empty": "No line items on this invoice.",
+  "billingDocumentLines": {
+    "title": "Line items",
+    "description": "Pick individual line items to export. Selecting line items here adds them to your export alongside any whole documents you ticked.",
+    "empty": "No line items on this document.",
     "selectLineItem": "Select line item",
     "line": "Line {{number}}",
     "qty": "Qty"
@@ -64,7 +64,7 @@
     "noTemplatesYet": "No templates yet. Create one in the Templates tab first.",
     "selectTemplate": "Select a template",
     "lineGrainHint": "This template includes line-item fields → one row per line item.",
-    "invoiceGrainHint": "One row per invoice.",
+    "billingDocumentGrainHint": "One row per document.",
     "generateCsv": "Generate CSV"
   },
   "templates": {
@@ -98,7 +98,7 @@
     "colRange": "Range",
     "colStatus": "Status",
     "colRows": "Rows",
-    "colInvoices": "Invoices",
+    "colBillingDocuments": "Documents",
     "colSize": "Size",
     "colCreated": "Created",
     "noExports": "No exports yet.",

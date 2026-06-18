@@ -4,7 +4,7 @@
     "ruc": "RUC",
     "email": "Email",
     "phone": "Teléfono",
-    "invoices": "Facturas"
+    "billingDocuments": "Comprobantes"
   },
   "toolbar": {
     "search": "Buscar por nombre o RUC..."
@@ -18,8 +18,8 @@
     "fieldEmail": "Email",
     "fieldPhone": "Teléfono",
     "fieldAddress": "Dirección",
-    "fieldInvoices": "Facturas",
-    "sectionInvoices": "Facturas",
+    "fieldBillingDocuments": "Comprobantes",
+    "sectionBillingDocuments": "Comprobantes",
     "loadError": "No se pudieron cargar los detalles del proveedor."
   },
   "editDialog": {
@@ -41,7 +41,7 @@
   },
   "page": {
     "title": "Proveedores",
-    "subtitle": "Proveedores que han enviado facturas a este workspace.",
+    "subtitle": "Proveedores que han enviado comprobantes a este workspace.",
     "backToList": "Volver a proveedores"
   }
 }

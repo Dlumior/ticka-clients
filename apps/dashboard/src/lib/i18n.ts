@@ -39,7 +39,7 @@ void i18next.use(initReactI18next).init({
   ns: [
     'common',
     'auth',
-    'invoices',
+    'billing-documents',
     'inbox',
     'members',
     'organizations',

@@ -2,7 +2,7 @@
   "nav": {
     "overview": "Overview",
     "inbox": "Inbox",
-    "invoices": "Invoices",
+    "billing-documents": "Billing Documents",
     "suppliers": "Suppliers",
     "workbench": "Workbench",
     "members": "Members",

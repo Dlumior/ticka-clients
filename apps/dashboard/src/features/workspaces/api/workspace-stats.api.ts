@@ -1,15 +1,15 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import {
   zInboundEmailStatusEnum,
-  zInvoiceDetailOutputStatusEnum,
-  zInvoiceTypeEnum,
+  zBillingDocumentDetailOutputStatusEnum,
+  zBillingDocumentTypeEnum,
   zWorkspaceStatsOutput,
 } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
 
-export type InvoiceStatus = z.infer<typeof zInvoiceDetailOutputStatusEnum>
-export type InvoiceType = z.infer<typeof zInvoiceTypeEnum>
+export type BillingDocumentStatus = z.infer<typeof zBillingDocumentDetailOutputStatusEnum>
+export type BillingDocumentType = z.infer<typeof zBillingDocumentTypeEnum>
 export type InboundEmailStatus = z.infer<typeof zInboundEmailStatusEnum>
 
 // The backend returns these as DictField, which openapi-ts emits as an
@@ -17,10 +17,10 @@ export type InboundEmailStatus = z.infer<typeof zInboundEmailStatusEnum>
 // the enum values), so we narrow them here for safe, exhaustive consumption.
 type RawWorkspaceStats = z.infer<typeof zWorkspaceStatsOutput>
 
-export type WorkspaceStats = Omit<RawWorkspaceStats, 'invoices' | 'ingestion'> & {
-  invoices: Omit<RawWorkspaceStats['invoices'], 'by_status' | 'by_type'> & {
-    by_status: Record<InvoiceStatus, number>
-    by_type: Record<InvoiceType, number>
+export type WorkspaceStats = Omit<RawWorkspaceStats, 'billing_documents' | 'ingestion'> & {
+  billing_documents: Omit<RawWorkspaceStats['billing_documents'], 'by_status' | 'by_type'> & {
+    by_status: Record<BillingDocumentStatus, number>
+    by_type: Record<BillingDocumentType, number>
   }
   ingestion: Omit<RawWorkspaceStats['ingestion'], 'emails_by_status'> & {
     emails_by_status: Record<InboundEmailStatus, number>

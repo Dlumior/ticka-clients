@@ -27,7 +27,7 @@ export function IngestionActivityCard({
   className,
 }: IngestionActivityCardProps) {
   const { t } = useTranslation('workspaces')
-  const { ingestion, invoices } = stats
+  const { ingestion, billing_documents: billingDocuments } = stats
 
   const rows = [
     {
@@ -49,9 +49,9 @@ export function IngestionActivityCard({
     },
     {
       icon: <RiTimeLine className="size-4 shrink-0 text-muted-foreground" />,
-      label: t('metrics.lastInvoice'),
-      value: invoices.last_received_at
-        ? formatRelative(invoices.last_received_at)
+      label: t('metrics.lastBillingDocument'),
+      value: billingDocuments.last_received_at
+        ? formatRelative(billingDocuments.last_received_at)
         : '—',
     },
   ]

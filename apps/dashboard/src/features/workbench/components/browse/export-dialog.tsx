@@ -112,7 +112,7 @@ export function ExportDialog() {
               <p className="text-xs text-muted-foreground">
                 {isLineGrain
                   ? t('exportDialog.lineGrainHint')
-                  : t('exportDialog.invoiceGrainHint')}
+                  : t('exportDialog.billingDocumentGrainHint')}
               </p>
             )}
           </div>

@@ -8,17 +8,17 @@ import {
   zExportFieldOutput,
   zExportPeriodOutput,
   zExportTemplateOutput,
-  zInvoiceExportOutput,
+  zBillingDocumentExportOutput,
 } from '@repo/api-types'
 import type { z } from 'zod'
 import { apiClient } from '@/lib/api-client'
-import type { Invoice } from '@/features/invoices/api/invoices.api'
+import type { BillingDocument } from '@/features/billing-documents/api/billing-documents.api'
 
 export type ExportField = z.infer<typeof zExportFieldOutput>
 export type ExportTemplate = z.infer<typeof zExportTemplateOutput>
 export type ExportColumn = ExportTemplate['columns'][number]
 export type ExportPeriod = z.infer<typeof zExportPeriodOutput>
-export type InvoiceExport = z.infer<typeof zInvoiceExportOutput>
+export type BillingDocumentExport = z.infer<typeof zBillingDocumentExportOutput>
 
 export interface PaginatedResponse<T> {
   count: number
@@ -39,7 +39,7 @@ export interface ExportFilters {
 export interface ExportSelection {
   mode: 'filter' | 'explicit'
   filters?: ExportFilters
-  invoice_ids?: string[]
+  billing_document_ids?: string[]
   line_item_ids?: string[]
 }
 
@@ -48,7 +48,7 @@ export interface CreateExportInput extends ExportSelection {
   period_id?: string | null
 }
 
-// --- workbench browse (reuses the invoices list endpoint) ------------------
+// --- workbench browse (reuses the billing documents list endpoint) ----------
 
 export interface WorkbenchBrowseParams {
   limit: number
@@ -59,16 +59,16 @@ export interface WorkbenchBrowseParams {
   status?: string
 }
 
-export const workbenchInvoicesQueryOptions = (
+export const workbenchBillingDocumentsQueryOptions = (
   workspaceId: string,
   params: WorkbenchBrowseParams,
 ) =>
   queryOptions({
-    queryKey: ['workbench-invoices', workspaceId, params],
+    queryKey: ['workbench-billing-documents', workspaceId, params],
     queryFn: ({ signal }) =>
       apiClient
-        .get<PaginatedResponse<Invoice>>(
-          `/api/v1/workspaces/${workspaceId}/invoices/`,
+        .get<PaginatedResponse<BillingDocument>>(
+          `/api/v1/workspaces/${workspaceId}/billing-documents/`,
           {
             signal,
             params: {
@@ -91,11 +91,11 @@ export const workbenchInvoicesQueryOptions = (
     enabled: !!workspaceId,
   })
 
-export function useWorkbenchInvoices(
+export function useWorkbenchBillingDocuments(
   workspaceId: string,
   params: WorkbenchBrowseParams,
 ) {
-  return useQuery(workbenchInvoicesQueryOptions(workspaceId, params))
+  return useQuery(workbenchBillingDocumentsQueryOptions(workspaceId, params))
 }
 
 // --- field registry --------------------------------------------------------
@@ -243,10 +243,10 @@ export interface ExportsParams {
 
 export function useExports(workspaceId: string, params: ExportsParams) {
   return useQuery({
-    queryKey: ['invoice-exports', workspaceId, params],
+    queryKey: ['billing-document-exports', workspaceId, params],
     queryFn: ({ signal }) =>
       apiClient
-        .get<PaginatedResponse<InvoiceExport>>(
+        .get<PaginatedResponse<BillingDocumentExport>>(
           `/api/v1/workspaces/${workspaceId}/exports/`,
           {
             signal,
@@ -259,7 +259,7 @@ export function useExports(workspaceId: string, params: ExportsParams) {
     // Keep polling while any export is still generating.
     refetchInterval: (query) => {
       const data = query.state.data as
-        | PaginatedResponse<InvoiceExport>
+        | PaginatedResponse<BillingDocumentExport>
         | undefined
       const pending = data?.results?.some(
         (e) => e.status === 'pending' || e.status === 'processing',
@@ -274,13 +274,13 @@ export function useCreateExport(workspaceId: string) {
   return useMutation({
     mutationFn: (data: CreateExportInput) =>
       apiClient
-        .post<InvoiceExport>(
+        .post<BillingDocumentExport>(
           `/api/v1/workspaces/${workspaceId}/exports/`,
           data,
         )
         .then((r) => r.data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoice-exports', workspaceId] })
+      queryClient.invalidateQueries({ queryKey: ['billing-document-exports', workspaceId] })
     },
   })
 }

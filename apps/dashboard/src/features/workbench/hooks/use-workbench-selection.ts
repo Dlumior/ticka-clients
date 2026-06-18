@@ -4,20 +4,20 @@ import type { ExportFilters, ExportSelection } from '../api/workbench.api'
 /**
  * Selection store for the workbench browse tab.
  *
- * Two modes back the same UI: hand-picked `explicit` ids (whole invoices and/or
- * individual line items), or `selectAllMatching` which captures the active
- * filters and lets the backend resolve them — so "all invoices of two
+ * Two modes back the same UI: hand-picked `explicit` ids (whole billing documents
+ * and/or individual line items), or `selectAllMatching` which captures the active
+ * filters and lets the backend resolve them — so "all documents of two
  * suppliers" never has to enumerate thousands of ids client-side. Any manual
  * toggle drops back to explicit mode.
  */
 export function useWorkbenchSelection() {
   const [selectAllMatching, setSelectAllMatching] = useState(false)
-  const [invoiceIds, setInvoiceIds] = useState<Set<string>>(new Set())
+  const [billingDocumentIds, setBillingDocumentIds] = useState<Set<string>>(new Set())
   const [lineItemIds, setLineItemIds] = useState<Set<string>>(new Set())
 
-  const toggleInvoice = useCallback((id: string) => {
+  const toggleBillingDocument = useCallback((id: string) => {
     setSelectAllMatching(false)
-    setInvoiceIds((prev) => {
+    setBillingDocumentIds((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
@@ -37,17 +37,17 @@ export function useWorkbenchSelection() {
 
   const enableSelectAllMatching = useCallback(() => {
     setSelectAllMatching(true)
-    setInvoiceIds(new Set())
+    setBillingDocumentIds(new Set())
     setLineItemIds(new Set())
   }, [])
 
   const clear = useCallback(() => {
     setSelectAllMatching(false)
-    setInvoiceIds(new Set())
+    setBillingDocumentIds(new Set())
     setLineItemIds(new Set())
   }, [])
 
-  const explicitCount = invoiceIds.size + lineItemIds.size
+  const explicitCount = billingDocumentIds.size + lineItemIds.size
   const hasSelection = selectAllMatching || explicitCount > 0
 
   const buildSelection = useCallback(
@@ -57,23 +57,23 @@ export function useWorkbenchSelection() {
       }
       return {
         mode: 'explicit',
-        invoice_ids: [...invoiceIds],
+        billing_document_ids: [...billingDocumentIds],
         line_item_ids: [...lineItemIds],
       }
     },
-    [selectAllMatching, invoiceIds, lineItemIds],
+    [selectAllMatching, billingDocumentIds, lineItemIds],
   )
 
   return useMemo(
     () => ({
       selectAllMatching,
-      invoiceIds,
+      billingDocumentIds,
       lineItemIds,
       explicitCount,
       hasSelection,
-      isInvoiceSelected: (id: string) => invoiceIds.has(id),
+      isBillingDocumentSelected: (id: string) => billingDocumentIds.has(id),
       isLineItemSelected: (id: string) => lineItemIds.has(id),
-      toggleInvoice,
+      toggleBillingDocument,
       toggleLineItem,
       enableSelectAllMatching,
       clear,
@@ -81,11 +81,11 @@ export function useWorkbenchSelection() {
     }),
     [
       selectAllMatching,
-      invoiceIds,
+      billingDocumentIds,
       lineItemIds,
       explicitCount,
       hasSelection,
-      toggleInvoice,
+      toggleBillingDocument,
       toggleLineItem,
       enableSelectAllMatching,
       clear,

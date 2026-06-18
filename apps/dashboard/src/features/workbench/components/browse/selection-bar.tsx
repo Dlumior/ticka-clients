@@ -11,8 +11,8 @@ export function SelectionBar() {
   const summary = selection.selectAllMatching
     ? t('selection.allMatchingSelected', { count: table.totalCount })
     : [
-        selection.invoiceIds.size > 0 &&
-          t('selection.invoiceCount', { count: selection.invoiceIds.size }),
+        selection.billingDocumentIds.size > 0 &&
+          t('selection.billingDocumentCount', { count: selection.billingDocumentIds.size }),
         selection.lineItemIds.size > 0 &&
           t('selection.lineItemCount', { count: selection.lineItemIds.size }),
       ]

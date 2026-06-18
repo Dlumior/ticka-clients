@@ -36,8 +36,8 @@ export function getSuppliersColumns(t: TFunction<'suppliers'>) {
         </span>
       ),
     }),
-    columnHelper.accessor('invoice_count', {
-      header: () => <div className="text-right">{t('col.invoices')}</div>,
+    columnHelper.accessor('billing_document_count', {
+      header: () => <div className="text-right">{t('col.billingDocuments')}</div>,
       cell: (info) => (
         <div className="text-right text-sm font-medium tabular-nums">
           {info.getValue()}

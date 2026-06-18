@@ -12,8 +12,8 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { useWorkspaceStats } from '@/features/workspaces/api/workspace-stats.api'
 import { IngestionActivityCard } from './ingestion-activity-card'
-import { InvoiceStatusChart } from './invoice-status-chart'
-import { InvoiceTypeChart } from './invoice-type-chart'
+import { BillingDocumentStatusChart } from './billing-document-status-chart'
+import { BillingDocumentTypeChart } from './billing-document-type-chart'
 import { TopSuppliersCard } from './top-suppliers-card'
 import { WorkspaceStatCards } from './workspace-stat-cards'
 
@@ -40,7 +40,7 @@ export function WorkspaceMetrics({
     )
   }
 
-  if (stats.invoices.total === 0) {
+  if (stats.billing_documents.total === 0) {
     return (
       <Card>
         <CardContent>
@@ -63,10 +63,10 @@ export function WorkspaceMetrics({
     <div className="flex flex-col gap-4">
       <WorkspaceStatCards stats={stats} />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <InvoiceStatusChart stats={stats} className="lg:col-span-2" />
+        <BillingDocumentStatusChart stats={stats} className="lg:col-span-2" />
         <IngestionActivityCard stats={stats} />
         <TopSuppliersCard stats={stats} className="lg:col-span-2" />
-        <InvoiceTypeChart stats={stats} />
+        <BillingDocumentTypeChart stats={stats} />
       </div>
     </div>
   )

@@ -3,7 +3,7 @@ import {
   zInboundEmailListOutput,
   zInboundAttachmentListOutput,
   zInboundEmailDetailOutput,
-  zInvoiceListOutput,
+  zBillingDocumentListOutput,
 } from "@repo/api-types"
 import type { z } from "zod"
 import { apiClient } from "@/lib/api-client"
@@ -11,7 +11,7 @@ import { apiClient } from "@/lib/api-client"
 export type InboundEmail = z.infer<typeof zInboundEmailListOutput>
 export type InboundAttachment = z.infer<typeof zInboundAttachmentListOutput>
 export type InboundEmailDetail = z.infer<typeof zInboundEmailDetailOutput>
-export type InvoiceForAttachment = z.infer<typeof zInvoiceListOutput>
+export type BillingDocumentForAttachment = z.infer<typeof zBillingDocumentListOutput>
 
 export interface PaginatedResponse<T> {
   count: number
@@ -186,7 +186,7 @@ export function useAttachmentPreviewUrl(
   })
 }
 
-export function useInvoiceForAttachment(
+export function useBillingDocumentForAttachment(
   workspaceId: string,
   attachmentId: string | null
 ) {
@@ -194,8 +194,8 @@ export function useInvoiceForAttachment(
     queryKey: ['invoice-for-attachment', workspaceId, attachmentId],
     queryFn: ({ signal }) =>
       apiClient
-        .get<{ results: InvoiceForAttachment[] }>(
-          `/api/v1/workspaces/${workspaceId}/invoices/`,
+        .get<{ results: BillingDocumentForAttachment[] }>(
+          `/api/v1/workspaces/${workspaceId}/billing-documents/`,
           { signal, params: { source_attachment_id: attachmentId, limit: 1 } }
         )
         .then((r) => r.data.results[0] ?? null),

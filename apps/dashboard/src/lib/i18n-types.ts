@@ -3,7 +3,7 @@
 // Adding a key to en-US.json immediately makes it available (and required) in t() calls.
 import type commonEn from '@/features/common/locales/en-US.json'
 import type authEn from '@/features/auth/locales/en-US.json'
-import type invoicesEn from '@/features/invoices/locales/en-US.json'
+import type billingDocumentsEn from '@/features/billing-documents/locales/en-US.json'
 import type inboxEn from '@/features/inbox/locales/en-US.json'
 import type membersEn from '@/features/members/locales/en-US.json'
 import type organizationsEn from '@/features/organizations/locales/en-US.json'
@@ -19,7 +19,7 @@ declare module 'i18next' {
     resources: {
       common: typeof commonEn
       auth: typeof authEn
-      invoices: typeof invoicesEn
+      'billing-documents': typeof billingDocumentsEn
       inbox: typeof inboxEn
       members: typeof membersEn
       organizations: typeof organizationsEn

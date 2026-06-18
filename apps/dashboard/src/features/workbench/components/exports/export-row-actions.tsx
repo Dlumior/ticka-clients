@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { RiDownloadLine } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
-import { useDownloadExport, type InvoiceExport } from '../../api/workbench.api'
+import { useDownloadExport, type BillingDocumentExport } from '../../api/workbench.api'
 
 interface ExportRowActionsProps {
   workspaceId: string
-  export: InvoiceExport
+  export: BillingDocumentExport
 }
 
 export function ExportRowActions({

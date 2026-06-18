@@ -1,0 +1,133 @@
+{
+  "status": {
+    "received": "Received",
+    "parsing": "Parsing",
+    "parsed": "Parsed",
+    "review_needed": "Review needed",
+    "approved": "Approved",
+    "exported": "Exported",
+    "failed": "Failed"
+  },
+  "type": {
+    "factura": "Factura",
+    "boleta": "Boleta",
+    "nota_credito": "Nota de Crédito",
+    "nota_debito": "Nota de Débito",
+    "comunicacion_baja": "Voiding Notice",
+    "resumen_diario": "Daily Summary",
+    "guia_remitente": "Remittance Guide"
+  },
+  "col": {
+    "document": "Document",
+    "supplier": "Supplier",
+    "type": "Type",
+    "issueDate": "Issue date",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "toolbar": {
+    "search": "Search by number or supplier...",
+    "allStatuses": "All statuses",
+    "allTypes": "All types"
+  },
+  "page": {
+    "title": "Billing Documents",
+    "subtitle": "Billing documents processed for this workspace."
+  },
+  "detail": {
+    "unparsed": "(unparsed)",
+    "supplierNotIdentified": "Supplier not identified",
+    "deleteBtn": "Delete",
+    "loadError": "Unable to load billing document details.",
+    "notParsed": "Not parsed yet.",
+    "sectionDetails": "Details",
+    "sectionAmounts": "Amounts",
+    "sectionSupplier": "Supplier",
+    "sectionLineItems": "Line items",
+    "fieldIssueDate": "Issue date",
+    "fieldDueDate": "Due date",
+    "fieldCurrency": "Currency",
+    "fieldReceived": "Received",
+    "fieldFormat": "Format",
+    "fieldSender": "Sender",
+    "fieldSource": "Source",
+    "fieldSourceEmail": "Source email",
+    "fieldUploadedFile": "Uploaded file",
+    "fieldSubtotal": "Subtotal",
+    "fieldIgv": "IGV",
+    "fieldIcbper": "ICBPER",
+    "fieldTotal": "Total",
+    "fieldRuc": "RUC",
+    "fieldPhone": "Phone",
+    "fieldEmail": "Email",
+    "fieldAddress": "Address",
+    "sectionDetraction": "Detraction",
+    "fieldDetractionCode": "Service code",
+    "fieldDetractionPercent": "Rate",
+    "fieldDetractionAmount": "Amount",
+    "fieldDetractionAccount": "BN account",
+    "fieldPerceptionAmount": "Perception",
+    "fieldPrepaidAmount": "Advance deducted",
+    "sectionReference": "Reference",
+    "fieldReferencedDocument": "Referenced document",
+    "fieldDiscrepancyCode": "Reason code",
+    "fieldDiscrepancyDescription": "Reason",
+    "sectionAdminDoc": "Document",
+    "adminDocNotice": "Administrative SUNAT document — no commercial amounts.",
+    "fieldReferenceDate": "Reference date",
+    "voidedLinesTitle": "Voided documents",
+    "colVoidedType": "Type",
+    "colVoidedSeries": "Series",
+    "colVoidedNumber": "Number",
+    "colVoidedReason": "Reason",
+    "summaryLinesTitle": "Summarised documents",
+    "colSummaryDoc": "Document",
+    "colSummaryType": "Type",
+    "colSummaryStatus": "Status",
+    "colSummaryTotal": "Total",
+    "despatchLinesTitle": "Items",
+    "fieldTransportMode": "Transport mode",
+    "fieldGrossWeight": "Gross weight",
+    "fieldCarrier": "Carrier",
+    "fieldDeliveryAddress": "Delivery address",
+    "fieldOriginAddress": "Origin address",
+    "fieldRelatedDocument": "Related document",
+    "fieldTransitDate": "Transit date",
+    "colDespatchQty": "Qty",
+    "colDespatchDesc": "Description"
+  },
+  "operationType": {
+    "gravada": "Gravada",
+    "exonerada": "Exonerada",
+    "gratuita": "Gratuita",
+    "icbper": "ICBPER",
+    "detraccion": "Detracción",
+    "percepcion": "Percepción",
+    "anticipo": "Anticipo"
+  },
+  "lineItems": {
+    "noItems": "No line items.",
+    "colNum": "#",
+    "colDescription": "Description",
+    "colQty": "Qty",
+    "colUnitPrice": "Unit price",
+    "colSubtotal": "Subtotal"
+  },
+  "deleteDialog": {
+    "title": "Delete document",
+    "descBefore": "This permanently deletes document",
+    "descAfter": "and its parsed data. This action cannot be undone.",
+    "confirm": "Delete document",
+    "ariaLabel": "Delete document"
+  },
+  "table": {
+    "noDocuments": "No billing documents found."
+  },
+  "pagination": {
+    "total": "{{count}} total",
+    "page": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next"
+  }
+}

@@ -5,7 +5,7 @@ import { WorkbenchTableHead } from './workbench-table/workbench-table-head'
 import { WorkbenchTableBody } from './workbench-table/workbench-table-body'
 import { WorkbenchTablePagination } from './workbench-table/workbench-table-pagination'
 import { SelectionBar } from './selection-bar'
-import { InvoiceLinesDrawer } from './invoice-lines-drawer'
+import { BillingDocumentLinesDrawer } from './billing-document-lines-drawer'
 import { ExportDialog } from './export-dialog'
 
 interface WorkbenchTabProps {
@@ -33,7 +33,7 @@ export function WorkbenchTab({
         </div>
         <WorkbenchTablePagination />
         <SelectionBar />
-        <InvoiceLinesDrawer />
+        <BillingDocumentLinesDrawer />
         <ExportDialog />
       </div>
     </WorkbenchContext.Provider>

@@ -11,18 +11,18 @@
     "yourRole": "Tu rol",
     "active": "Activo",
     "inactive": "Inactivo",
-    "inboxDesc": "Reenvía tus facturas de proveedores a esta dirección. Ticka extraerá automáticamente los detalles y creará tickets en este workspace."
+    "inboxDesc": "Reenvía tus comprobantes de proveedores a esta dirección. Ticka extraerá automáticamente los detalles y creará tickets en este workspace."
   },
   "metrics": {
-    "invoices": "Comprobantes",
-    "totalInvoices": "Total de comprobantes",
+    "billingDocuments": "Comprobantes",
+    "totalBillingDocuments": "Total de comprobantes",
     "approvedRate": "{{rate}}% aprobados o exportados",
     "needsAttention": "Requiere atención",
     "percentOfTotal": "{{rate}}% del total",
     "actionRequired": "Acción requerida",
     "allClear": "Todo en orden",
     "suppliers": "Proveedores",
-    "uniqueVendors": "Proveedores únicos facturados",
+    "uniqueVendors": "Proveedores únicos",
     "processed": "Procesados",
     "ofReceived": "{{rate}}% de {{total}} recibidos",
     "statusTitle": "Flujo",
@@ -44,7 +44,10 @@
       "factura": "Factura",
       "boleta": "Boleta",
       "nota_credito": "Nota de crédito",
-      "nota_debito": "Nota de débito"
+      "nota_debito": "Nota de débito",
+      "comunicacion_baja": "Comunicación de baja",
+      "resumen_diario": "Resumen diario",
+      "guia_remitente": "Guía del remitente"
     },
     "topSuppliersTitle": "Proveedores",
     "topSuppliersHeading": "Principales proveedores",
@@ -57,7 +60,7 @@
     "emailsReceived": "Correos recibidos",
     "duplicatesDetected": "Duplicados detectados",
     "manualUploads": "Cargas manuales",
-    "lastInvoice": "Último comprobante",
+    "lastBillingDocument": "Último comprobante",
     "errorTitle": "No se pudieron cargar las métricas",
     "errorDesc": "Ocurrió un error al cargar las métricas del workspace. Inténtalo de nuevo.",
     "emptyTitle": "Aún no hay comprobantes",

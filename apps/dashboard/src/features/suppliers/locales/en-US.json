@@ -4,7 +4,7 @@
     "ruc": "RUC",
     "email": "Email",
     "phone": "Phone",
-    "invoices": "Invoices"
+    "billingDocuments": "Documents"
   },
   "toolbar": {
     "search": "Search by name or RUC..."
@@ -18,8 +18,8 @@
     "fieldEmail": "Email",
     "fieldPhone": "Phone",
     "fieldAddress": "Address",
-    "fieldInvoices": "Invoices",
-    "sectionInvoices": "Invoices",
+    "fieldBillingDocuments": "Documents",
+    "sectionBillingDocuments": "Billing Documents",
     "loadError": "Unable to load supplier details."
   },
   "editDialog": {
@@ -41,7 +41,7 @@
   },
   "page": {
     "title": "Suppliers",
-    "subtitle": "Vendors that have sent invoices to this workspace.",
+    "subtitle": "Vendors that have sent billing documents to this workspace.",
     "backToList": "Back to suppliers"
   }
 }

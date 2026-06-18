@@ -8,9 +8,9 @@
   },
   "attachmentStatus": {
     "stored": "Stored",
-    "queued": "Queued for invoice",
-    "processing": "Processing as invoice",
-    "completed": "Invoiced",
+    "queued": "Queued for processing",
+    "processing": "Processing",
+    "completed": "Processed",
     "failed": "Failed",
     "duplicate": "Duplicate"
   },
@@ -26,14 +26,14 @@
     "allStatuses": "All statuses"
   },
   "page": {
-    "title": "Invoice Sources",
-    "subtitle": "Receive and upload invoices from multiple channels.",
+    "title": "Document Sources",
+    "subtitle": "Receive and upload billing documents from multiple channels.",
     "emailHelp": "Emails received at",
     "soon": "Soon",
     "whatsappTitle": "WhatsApp integration coming soon",
-    "whatsappDesc": "Receive invoices directly from WhatsApp conversations.",
+    "whatsappDesc": "Receive billing documents directly from WhatsApp conversations.",
     "telegramTitle": "Telegram integration coming soon",
-    "telegramDesc": "Receive invoices directly from Telegram bot conversations."
+    "telegramDesc": "Receive billing documents directly from Telegram bot conversations."
   },
   "tabs": {
     "email": "Email Inbox",
@@ -45,7 +45,7 @@
     "dropText": "Drop files here or",
     "browseText": "browse",
     "constraints": "Supports XML and PDF · Max 10 MB per file",
-    "ariaLabel": "Upload invoice file"
+    "ariaLabel": "Upload billing document file"
   },
   "uploadedFiles": {
     "title": "Uploaded files",

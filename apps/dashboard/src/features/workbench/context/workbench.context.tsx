@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { ColumnDef, Table } from '@tanstack/react-table'
-import type { Invoice } from '@/features/invoices/api/invoices.api'
+import type { BillingDocument } from '@/features/billing-documents/api/billing-documents.api'
 import type { ExportPeriod } from '../api/workbench.api'
 import type { Supplier } from '@/features/suppliers/api/suppliers.api'
 import type { WorkbenchSelection } from '../hooks/use-workbench-selection'
@@ -23,16 +23,16 @@ export interface WorkbenchContextValue {
     onDateToChange: (value: string) => void
   }
   table: {
-    instance: Table<Invoice>
-    columns: ColumnDef<Invoice>[]
+    instance: Table<BillingDocument>
+    columns: ColumnDef<BillingDocument>[]
     isLoading: boolean
     isFetching: boolean
     totalCount: number
   }
   selection: WorkbenchSelection
   lines: {
-    invoiceId: string | null
-    open: (invoiceId: string) => void
+    billingDocumentId: string | null
+    open: (billingDocumentId: string) => void
     close: () => void
   }
   exportDialogOpen: boolean

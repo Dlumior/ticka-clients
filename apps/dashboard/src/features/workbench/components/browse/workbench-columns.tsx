@@ -2,15 +2,15 @@ import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 import type { TFunction } from 'i18next'
 import { Badge } from '@/components/ui/badge'
 import { formatCalendarDate } from '@/lib/date'
-import type { Invoice } from '@/features/invoices/api/invoices.api'
+import type { BillingDocument } from '@/features/billing-documents/api/billing-documents.api'
 import {
   formatMoney,
   statusLabel,
   statusVariant,
-} from '@/features/invoices/invoices.lib'
+} from '@/features/billing-documents/billing-documents.lib'
 import type { WorkbenchSelection } from '../../hooks/use-workbench-selection'
 
-const columnHelper = createColumnHelper<Invoice>()
+const columnHelper = createColumnHelper<BillingDocument>()
 
 interface WorkbenchColumnsOptions {
   selection: WorkbenchSelection
@@ -19,28 +19,28 @@ interface WorkbenchColumnsOptions {
 
 export function getWorkbenchColumns({ selection, t }: WorkbenchColumnsOptions) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const columns: ColumnDef<Invoice, any>[] = [
+  const columns: ColumnDef<BillingDocument, any>[] = [
     columnHelper.display({
       id: 'select',
       header: () => <span className="sr-only">{t('col.select')}</span>,
       cell: (info) => {
         const id = info.row.original.id
-        const checked = selection.selectAllMatching || selection.isInvoiceSelected(id)
+        const checked = selection.selectAllMatching || selection.isBillingDocumentSelected(id)
         return (
           <input
             type="checkbox"
             className="size-4 cursor-pointer accent-primary"
             checked={checked}
             disabled={selection.selectAllMatching}
-            aria-label={t('col.selectInvoice')}
+            aria-label={t('col.selectDocument')}
             onClick={(e) => e.stopPropagation()}
-            onChange={() => selection.toggleInvoice(id)}
+            onChange={() => selection.toggleBillingDocument(id)}
           />
         )
       },
     }),
     columnHelper.accessor('invoice_number', {
-      header: t('col.invoice'),
+      header: t('col.document'),
       cell: (info) => (
         <span className="font-mono text-sm font-medium">
           {info.getValue() || '—'}

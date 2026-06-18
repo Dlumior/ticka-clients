@@ -44,8 +44,8 @@ const workspaceNavItems: NavItem[] = [
     icon: RiInboxLine,
   },
   {
-    key: 'invoices',
-    to: '/orgs/$orgSlug/workspaces/$workspaceSlug/invoices',
+    key: 'billing-documents',
+    to: '/orgs/$orgSlug/workspaces/$workspaceSlug/billing-documents',
     icon: RiFileList3Line,
   },
   {

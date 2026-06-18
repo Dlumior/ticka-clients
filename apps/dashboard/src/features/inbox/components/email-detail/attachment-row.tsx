@@ -17,12 +17,12 @@ import {
   formatBytes,
 } from '../../inbox.lib'
 import {
-  INVOICE_STATUS_VARIANT,
-} from '@/features/invoices/invoices.lib'
+  BILLING_DOCUMENT_STATUS_VARIANT,
+} from '@/features/billing-documents/billing-documents.lib'
 import {
   useAttachmentPreviewUrl,
   useDownloadAttachment,
-  useInvoiceForAttachment,
+  useBillingDocumentForAttachment,
   useReprocessAttachment,
 } from '../../api/inbox.api'
 import type { InboundAttachment } from '../../api/inbox.api'
@@ -41,7 +41,7 @@ export function AttachmentRow({
   onSelect,
 }: AttachmentRowProps) {
   const { t } = useTranslation('inbox')
-  const { t: tInvoices } = useTranslation('invoices')
+  const { t: tBillingDocuments } = useTranslation('billing-documents')
   const status = attachment.status ?? 'stored'
   const isPdf = attachment.content_type === 'application/pdf'
   const canDownload = !!attachment.storage_path && status !== 'duplicate'
@@ -49,7 +49,7 @@ export function AttachmentRow({
   const download = useDownloadAttachment(workspaceId)
   const reprocess = useReprocessAttachment(workspaceId)
 
-  const { data: invoice, isFetching: invoiceFetching } = useInvoiceForAttachment(
+  const { data: billingDocument, isFetching: billingDocumentFetching } = useBillingDocumentForAttachment(
     workspaceId,
     status === 'completed' ? attachment.id : null,
   )
@@ -87,14 +87,14 @@ export function AttachmentRow({
               {t(`attachmentStatus.${status}` as `attachmentStatus.${string}`, { defaultValue: status })}
             </Badge>
             {status === 'completed' && (
-              invoiceFetching ? (
+              billingDocumentFetching ? (
                 <RiLoaderLine className="size-3 animate-spin text-muted-foreground" />
-              ) : invoice ? (
+              ) : billingDocument ? (
                 <Badge
-                  variant={INVOICE_STATUS_VARIANT[invoice.status] ?? 'outline'}
+                  variant={BILLING_DOCUMENT_STATUS_VARIANT[billingDocument.status] ?? 'outline'}
                   className="text-[10px]"
                 >
-                  {tInvoices(`status.${invoice.status}` as `status.${string}`, { defaultValue: invoice.status })}
+                  {tBillingDocuments(`status.${billingDocument.status}` as `status.${string}`, { defaultValue: billingDocument.status })}
                 </Badge>
               ) : null
             )}
@@ -107,7 +107,7 @@ export function AttachmentRow({
               className="h-7 gap-1.5 px-2.5 text-xs font-medium"
               onClick={() => reprocess.mutate(attachment.id)}
               disabled={reprocess.isPending}
-              aria-label="Retry processing as invoice"
+              aria-label="Retry processing as billing document"
             >
               {reprocess.isPending ? (
                 <RiLoaderLine className="size-3.5 animate-spin" />

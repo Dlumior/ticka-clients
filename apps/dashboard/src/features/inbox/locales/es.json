@@ -8,9 +8,9 @@
   },
   "attachmentStatus": {
     "stored": "Almacenado",
-    "queued": "En cola para factura",
-    "processing": "Procesando como factura",
-    "completed": "Facturado",
+    "queued": "En cola para procesamiento",
+    "processing": "Procesando",
+    "completed": "Procesado",
     "failed": "Fallido",
     "duplicate": "Duplicado"
   },

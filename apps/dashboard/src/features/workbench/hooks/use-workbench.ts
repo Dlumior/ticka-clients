@@ -29,7 +29,7 @@ export function useWorkbench({
   })
   const { data: periods } = useExportPeriods(workspaceId)
 
-  const [linesInvoiceId, setLinesInvoiceId] = useState<string | null>(null)
+  const [linesBillingDocumentId, setLinesBillingDocumentId] = useState<string | null>(null)
   const [exportDialogOpen, setExportDialogOpen] = useState(false)
 
   const columns = getWorkbenchColumns({ selection, t })
@@ -72,9 +72,9 @@ export function useWorkbench({
     },
     selection,
     lines: {
-      invoiceId: linesInvoiceId,
-      open: (id: string) => setLinesInvoiceId(id),
-      close: () => setLinesInvoiceId(null),
+      billingDocumentId: linesBillingDocumentId,
+      open: (id: string) => setLinesBillingDocumentId(id),
+      close: () => setLinesBillingDocumentId(null),
     },
     exportDialogOpen,
     openExportDialog: () => setExportDialogOpen(true),

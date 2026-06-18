@@ -11,23 +11,23 @@
     "yourRole": "Your role",
     "active": "Active",
     "inactive": "Inactive",
-    "inboxDesc": "Forward your vendor invoices and receipts to this address. Ticka will automatically extract the details and create tickets in this workspace."
+    "inboxDesc": "Forward your billing documents to this address. Ticka will automatically extract the details and create tickets in this workspace."
   },
   "metrics": {
-    "invoices": "Invoices",
-    "totalInvoices": "Total invoices",
+    "billingDocuments": "Billing Documents",
+    "totalBillingDocuments": "Total billing documents",
     "approvedRate": "{{rate}}% approved or exported",
     "needsAttention": "Needs attention",
-    "percentOfTotal": "{{rate}}% of all invoices",
+    "percentOfTotal": "{{rate}}% of all billing documents",
     "actionRequired": "Action required",
     "allClear": "All clear",
     "suppliers": "Suppliers",
-    "uniqueVendors": "Unique vendors invoiced",
+    "uniqueVendors": "Unique vendors",
     "processed": "Processed",
     "ofReceived": "{{rate}}% of {{total}} received",
     "statusTitle": "Pipeline",
-    "statusHeading": "Invoice status",
-    "statusDesc": "Where invoices sit across the processing pipeline.",
+    "statusHeading": "Document status",
+    "statusDesc": "Where billing documents sit across the processing pipeline.",
     "status": {
       "received": "Received",
       "parsing": "Parsing",
@@ -38,29 +38,32 @@
       "failed": "Failed"
     },
     "typeTitle": "Document mix",
-    "typeHeading": "Invoices by type",
+    "typeHeading": "Documents by type",
     "typeDesc": "Breakdown by document type.",
     "type": {
       "factura": "Factura",
       "boleta": "Boleta",
       "nota_credito": "Nota de crédito",
-      "nota_debito": "Nota de débito"
+      "nota_debito": "Nota de débito",
+      "comunicacion_baja": "Voiding Notice",
+      "resumen_diario": "Daily Summary",
+      "guia_remitente": "Remittance Guide"
     },
     "topSuppliersTitle": "Vendors",
     "topSuppliersHeading": "Top suppliers",
-    "topSuppliersDesc": "Your most frequent vendors by invoice count.",
+    "topSuppliersDesc": "Your most frequent vendors by document count.",
     "noSuppliersTitle": "No suppliers yet",
-    "noSuppliersDesc": "Suppliers appear here once invoices are parsed.",
+    "noSuppliersDesc": "Suppliers appear here once billing documents are parsed.",
     "ingestionTitle": "Activity",
     "ingestionHeading": "Ingestion",
     "ingestionDesc": "How documents are reaching this workspace.",
     "emailsReceived": "Emails received",
     "duplicatesDetected": "Duplicates detected",
     "manualUploads": "Manual uploads",
-    "lastInvoice": "Last invoice",
+    "lastBillingDocument": "Last document",
     "errorTitle": "Couldn't load metrics",
     "errorDesc": "Something went wrong loading workspace metrics. Please try again.",
-    "emptyTitle": "No invoices yet",
-    "emptyDesc": "Forward an invoice to your inbox email to start seeing metrics here."
+    "emptyTitle": "No billing documents yet",
+    "emptyDesc": "Forward a billing document to your inbox email to start seeing metrics here."
   }
 }

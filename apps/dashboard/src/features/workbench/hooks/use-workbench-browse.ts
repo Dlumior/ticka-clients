@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react'
-import { useWorkbenchInvoices } from '../api/workbench.api'
+import { useWorkbenchBillingDocuments } from '../api/workbench.api'
 
 interface UseWorkbenchBrowseOptions {
   workspaceId: string
 }
 
-// Only approved invoices are exportable; default the browse filter to it.
+// Only approved billing documents are exportable; default the browse filter to it.
 export const DEFAULT_BROWSE_STATUS = 'approved'
 
 export function useWorkbenchBrowse({ workspaceId }: UseWorkbenchBrowseOptions) {
@@ -16,7 +16,7 @@ export function useWorkbenchBrowse({ workspaceId }: UseWorkbenchBrowseOptions) {
   const [status, setStatus] = useState(DEFAULT_BROWSE_STATUS)
   const [periodId, setPeriodId] = useState('')
 
-  const { data, isLoading, isFetching } = useWorkbenchInvoices(workspaceId, {
+  const { data, isLoading, isFetching } = useWorkbenchBillingDocuments(workspaceId, {
     limit: pagination.pageSize,
     offset: pagination.pageIndex * pagination.pageSize,
     supplier_ids: supplierIds,

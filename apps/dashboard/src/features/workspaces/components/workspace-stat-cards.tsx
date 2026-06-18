@@ -19,11 +19,11 @@ function ratio(part: number, whole: number): number {
 
 export function WorkspaceStatCards({ stats }: WorkspaceStatCardsProps) {
   const { t } = useTranslation('workspaces')
-  const { invoices, suppliers, ingestion } = stats
+  const { billing_documents: billingDocuments, suppliers, ingestion } = stats
 
-  const approved = invoices.by_status.approved + invoices.by_status.exported
-  const approvalRate = ratio(approved, invoices.total)
-  const attentionRate = ratio(invoices.needs_attention, invoices.total)
+  const approved = billingDocuments.by_status.approved + billingDocuments.by_status.exported
+  const approvalRate = ratio(approved, billingDocuments.total)
+  const attentionRate = ratio(billingDocuments.needs_attention, billingDocuments.total)
   const completionRate = ratio(
     ingestion.attachments_completed,
     ingestion.attachments_total,
@@ -33,17 +33,17 @@ export function WorkspaceStatCards({ stats }: WorkspaceStatCardsProps) {
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       <StatCard
         icon={<RiFileList3Line className="size-3.5 shrink-0" />}
-        label={t('metrics.totalInvoices')}
-        value={invoices.total}
+        label={t('metrics.totalBillingDocuments')}
+        value={billingDocuments.total}
         caption={t('metrics.approvedRate', { rate: approvalRate })}
       />
       <StatCard
         icon={<RiErrorWarningLine className="size-3.5 shrink-0" />}
         label={t('metrics.needsAttention')}
-        value={invoices.needs_attention}
+        value={billingDocuments.needs_attention}
         caption={t('metrics.percentOfTotal', { rate: attentionRate })}
         badge={
-          invoices.needs_attention > 0 ? (
+          billingDocuments.needs_attention > 0 ? (
             <Badge variant="destructive">{t('metrics.actionRequired')}</Badge>
           ) : (
             <Badge variant="secondary">{t('metrics.allClear')}</Badge>

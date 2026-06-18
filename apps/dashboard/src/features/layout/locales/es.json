@@ -2,7 +2,7 @@
   "nav": {
     "overview": "Resumen",
     "inbox": "Bandeja",
-    "invoices": "Facturas",
+    "billing-documents": "Comprobantes",
     "suppliers": "Proveedores",
     "workbench": "Workbench",
     "members": "Miembros",
