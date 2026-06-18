@@ -10,6 +10,7 @@ import './index.css'
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
   enabled: !!import.meta.env.VITE_SENTRY_DSN,
+  environment: import.meta.env.VITE_SENTRY_ENVIRONMENT ?? import.meta.env.MODE,
   integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
   tracesSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
