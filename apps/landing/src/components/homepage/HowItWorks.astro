@@ -1,33 +1,36 @@
 ---
 const steps = [
   {
-    num: '01',
-    title: 'Comparte el correo de tu workspace',
-    body: 'Cada cliente de tu estudio tiene un workspace con su propia dirección. Pídele que reenvíe ahí sus comprobantes — o súbelos tú directamente.',
-    detail: 'ws-tu-cliente@ticka.pe',
+    num: "01",
+    title: "Comparte el correo de tu workspace",
+    body: "Cada cliente de tu estudio tiene un workspace con su propia dirección. Pídele que reenvíe ahí sus comprobantes o súbelos directamente.",
+    detail: "ws-tu-cliente@ticka.pe",
   },
   {
-    num: '02',
-    title: 'Ticka extrae los datos',
-    body: 'Cada XML y PDF se procesa al llegar: proveedor, RUC, serie, fechas, importes, IGV y líneas de detalle, sin que nadie los tipee.',
-    detail: 'procesando… 2.4s',
+    num: "02",
+    title: "Ticka extrae los datos",
+    body: "Cada XML y PDF se procesa al llegar: proveedor, RUC, serie, fechas, importes, IGV y líneas de detalle de forma automatica.",
+    detail: "procesando… 2.4s",
   },
   {
-    num: '03',
-    title: 'Revisa y aprueba',
-    body: 'Lo que necesita tu ojo queda marcado como “requiere revisión”. El resto espera tu aprobación con todos los datos a la vista.',
-    detail: '✓ aprobado',
+    num: "03",
+    title: "Revisa y aprueba",
+    body: 'Aprueba los datos extraídos y revisa los comprobantes marcados con "requieren revision.',
+    detail: "✓ aprobado",
   },
   {
-    num: '04',
-    title: 'Exporta con tu plantilla',
-    body: 'En la mesa de trabajo filtras los aprobados, seleccionas comprobantes o líneas y descargas un CSV con las columnas exactas de tu sistema contable.',
-    detail: 'export_junio.csv ↓',
+    num: "04",
+    title: "Exporta con tu plantilla",
+    body: "En la mesa de trabajo filtras los aprobados, seleccionas comprobantes o líneas y descargas un CSV con las columnas exactas de tu sistema contable.",
+    detail: "export_junio.csv ↓",
   },
-]
+];
 ---
 
-<section id="como-funciona" class="scroll-mt-16 border-y border-moss/15 bg-ink-900 py-24 lg:py-32">
+<section
+  id="como-funciona"
+  class="scroll-mt-16 border-y border-moss/15 bg-ink-900 py-24 lg:py-32"
+>
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <div class="mb-16 max-w-2xl lg:mb-24">
       <p class="kicker mb-6" data-anim="reveal">[ 02 — Cómo funciona ]</p>
@@ -35,7 +38,7 @@ const steps = [
         class="font-display text-4xl leading-[1.08] font-medium tracking-tight text-paper sm:text-5xl"
         data-anim="reveal"
       >
-        Cuatro pasos. <em class="text-lime italic">Cero tipeo.</em>
+        Cuatro pasos. <em class="text-lime italic">Cero complicaciones.</em>
       </h2>
     </div>
 
@@ -54,7 +57,10 @@ const steps = [
       <ol class="space-y-16 lg:space-y-20">
         {
           steps.map((step) => (
-            <li class="relative grid gap-4 pl-10 sm:pl-14 lg:grid-cols-12 lg:gap-8" data-anim="step">
+            <li
+              class="relative grid gap-4 pl-10 sm:pl-14 lg:grid-cols-12 lg:gap-8"
+              data-anim="step"
+            >
               <span
                 class="absolute top-1.5 left-0 h-[15px] w-[15px] border border-moss/50 bg-ink-900 sm:h-[19px] sm:w-[19px]"
                 data-anim="step-dot"
@@ -69,7 +75,9 @@ const steps = [
                 </h3>
               </div>
               <div class="lg:col-span-5 lg:pt-7">
-                <p class="text-[15px] leading-relaxed text-paper-dim">{step.body}</p>
+                <p class="text-[15px] leading-relaxed text-paper-dim">
+                  {step.body}
+                </p>
               </div>
               <div class="lg:col-span-3 lg:pt-7 lg:text-right">
                 <span class="inline-block border border-moss/25 bg-ink-950 px-3 py-1.5 font-mono text-xs text-paper-mute">
