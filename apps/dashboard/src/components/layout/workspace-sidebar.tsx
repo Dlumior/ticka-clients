@@ -120,7 +120,7 @@ export function WorkspaceSidebar() {
       <SidebarHeader className="border-b border-sidebar-border/60 group-data-[collapsible=icon]:px-0">
         <WorkspaceSwitcher organization={orgDetail} workspace={activeWorkspace} />
       </SidebarHeader>
-      <SidebarContent className="px-1 pt-3">
+      <SidebarContent className="px-1 pt-3 group-data-[collapsible=icon]:px-0">
         <SidebarGroup>
           <SidebarGroupLabel className="px-2 text-[10px] font-semibold tracking-[0.18em] uppercase text-sidebar-foreground/50">
             {t('nav.workspace')}
