@@ -213,6 +213,23 @@ export function useReprocessAttachment(workspaceId: string) {
           `/api/v1/ingestion/attachments/${attachmentId}/reprocess/`
         )
         .then((r) => r.data),
+    // Invalidate on settle: a refused reprocess re-marks the attachment as a
+    // duplicate server-side, so the list must refresh on error too.
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['inbox-attachments', workspaceId] })
+    },
+  })
+}
+
+export function useDiscardAttachment(workspaceId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (attachmentId: string) =>
+      apiClient
+        .post<{ status: string; attachment_id: string }>(
+          `/api/v1/ingestion/attachments/${attachmentId}/discard/`
+        )
+        .then((r) => r.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['inbox-attachments', workspaceId] })
     },

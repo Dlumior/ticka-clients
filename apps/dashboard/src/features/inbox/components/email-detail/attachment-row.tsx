@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   RiAttachmentLine,
+  RiDeleteBinLine,
   RiDownloadLine,
   RiErrorWarningLine,
   RiEyeLine,
@@ -10,6 +12,14 @@ import {
 } from '@remixicon/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   ATTACHMENT_STATUS_VARIANT,
@@ -21,6 +31,7 @@ import {
 } from '@/features/billing-documents/billing-documents.lib'
 import {
   useAttachmentPreviewUrl,
+  useDiscardAttachment,
   useDownloadAttachment,
   useBillingDocumentForAttachment,
   useReprocessAttachment,
@@ -41,13 +52,24 @@ export function AttachmentRow({
   onSelect,
 }: AttachmentRowProps) {
   const { t } = useTranslation('inbox')
+  const { t: tc } = useTranslation('common')
   const { t: tBillingDocuments } = useTranslation('billing-documents')
   const status = attachment.status ?? 'stored'
   const isPdf = attachment.content_type === 'application/pdf'
   const canDownload = !!attachment.storage_path && status !== 'duplicate'
+  const canReprocess = status === 'failed' || status === 'discarded'
+  const canDiscard = status === 'duplicate' || status === 'failed'
+
+  const [discardOpen, setDiscardOpen] = useState(false)
 
   const download = useDownloadAttachment(workspaceId)
   const reprocess = useReprocessAttachment(workspaceId)
+  const discard = useDiscardAttachment(workspaceId)
+
+  async function handleDiscard() {
+    await discard.mutateAsync(attachment.id)
+    setDiscardOpen(false)
+  }
 
   const { data: billingDocument, isFetching: billingDocumentFetching } = useBillingDocumentForAttachment(
     workspaceId,
@@ -100,7 +122,7 @@ export function AttachmentRow({
             )}
           </div>
 
-          {status === 'failed' && (
+          {canReprocess && (
             <Button
               variant="ghost"
               size="sm"
@@ -115,6 +137,19 @@ export function AttachmentRow({
                 <RiRefreshLine className="size-3.5" />
               )}
               {t('uploadStatus.retry')}
+            </Button>
+          )}
+
+          {canDiscard && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 gap-1.5 px-2.5 text-xs font-medium"
+              onClick={() => setDiscardOpen(true)}
+              disabled={discard.isPending}
+              aria-label={t('attachmentActions.discard')}
+            >
+              <RiDeleteBinLine className="size-3.5" />
             </Button>
           )}
 
@@ -152,6 +187,54 @@ export function AttachmentRow({
           )}
         </div>
       </div>
+
+      {reprocess.isError && (
+        <p className="px-3 pb-1 text-xs text-destructive" role="alert">
+          {reprocess.error.message}
+        </p>
+      )}
+
+      <Dialog
+        open={discardOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setDiscardOpen(false)
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t('discardDialog.title')}</DialogTitle>
+            <DialogDescription>{t('discardDialog.body')}</DialogDescription>
+          </DialogHeader>
+
+          {discard.error && (
+            <div className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3">
+              <RiErrorWarningLine className="mt-0.5 size-4 shrink-0 text-destructive" />
+              <p className="text-xs text-destructive" role="alert">
+                {discard.error.message}
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="mt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDiscardOpen(false)}
+              disabled={discard.isPending}
+            >
+              {tc('cancel')}
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDiscard}
+              disabled={discard.isPending}
+            >
+              {discard.isPending ? tc('deleting') : t('discardDialog.confirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {isSelected && (
         <div className="flex flex-1 flex-col overflow-hidden rounded-lg border bg-background shadow-sm">

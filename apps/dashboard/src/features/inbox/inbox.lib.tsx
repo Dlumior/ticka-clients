@@ -11,6 +11,8 @@ export const ATTACHMENT_STATUS_VARIANT: Record<string, BadgeVariant> = {
   completed: 'default',
   failed: 'destructive',
   duplicate: 'secondary',
+  held: 'outline',
+  discarded: 'secondary',
 }
 
 export const EMAIL_STATUS_VARIANT: Record<string, BadgeVariant> = {

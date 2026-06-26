@@ -315,6 +315,7 @@ export const zSourceEnum = z.enum(["email", "manual_upload"]);
  * * `failed` - Failed
  * * `duplicate` - Duplicate
  * * `held` - Held
+ * * `discarded` - Discarded
  */
 export const zInboundAttachmentStatusEnum = z.enum([
   "stored",
@@ -324,6 +325,7 @@ export const zInboundAttachmentStatusEnum = z.enum([
   "failed",
   "duplicate",
   "held",
+  "discarded",
 ]);
 
 export const zInboundAttachmentListOutput = z.object({

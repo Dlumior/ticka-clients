@@ -12,7 +12,9 @@
     "processing": "Processing",
     "completed": "Processed",
     "failed": "Failed",
-    "duplicate": "Duplicate"
+    "duplicate": "Duplicate",
+    "held": "Held",
+    "discarded": "Discarded"
   },
   "col": {
     "from": "From",
@@ -65,5 +67,13 @@
     "attachments": "Attachments",
     "noAttachments": "No attachments",
     "noMessageBody": "No message body."
+  },
+  "attachmentActions": {
+    "discard": "Discard attachment"
+  },
+  "discardDialog": {
+    "title": "Discard attachment?",
+    "body": "This attachment will be discarded and removed from processing. If it produced an invoice, that invoice will also be permanently deleted. This cannot be undone.",
+    "confirm": "Discard"
   }
 }

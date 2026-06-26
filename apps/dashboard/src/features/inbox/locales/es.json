@@ -12,7 +12,9 @@
     "processing": "Procesando",
     "completed": "Procesado",
     "failed": "Fallido",
-    "duplicate": "Duplicado"
+    "duplicate": "Duplicado",
+    "held": "Retenido",
+    "discarded": "Descartado"
   },
   "col": {
     "from": "Remitente",
@@ -65,5 +67,13 @@
     "attachments": "Adjuntos",
     "noAttachments": "Sin adjuntos",
     "noMessageBody": "Sin cuerpo de mensaje."
+  },
+  "attachmentActions": {
+    "discard": "Descartar adjunto"
+  },
+  "discardDialog": {
+    "title": "¿Descartar adjunto?",
+    "body": "Este adjunto se descartará y se quitará del procesamiento. Si generó un comprobante, ese comprobante también se eliminará de forma permanente. Esta acción no se puede deshacer.",
+    "confirm": "Descartar"
   }
 }
